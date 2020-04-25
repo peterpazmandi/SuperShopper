@@ -1,9 +1,11 @@
 package com.inspirecoding.supershopper.repository.firestore
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.inspirecoding.supershopper.model.ListItem
+import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.extension.await
 import com.inspirecoding.supershopper.utilities.Result
@@ -13,11 +15,11 @@ private const val TAG = "FiresotreRepositoryImpl"
 class FiresotreRepositoryImpl: FiresotreRepository
 {
     private val USER_COLLECTION_NAME = "users"
-    private val LISTITEM_COLLECTION_NAME = "listItems"
+    private val SHOPPINGLIST_COLLECTION_NAME = "shoppingList"
 
     private val firestoreInstance = FirebaseFirestore.getInstance()
     private val userCollection = firestoreInstance.collection(USER_COLLECTION_NAME)
-    private val listItemCollection = firestoreInstance.collection(LISTITEM_COLLECTION_NAME)
+    private val shoppingListCollection = firestoreInstance.collection(SHOPPINGLIST_COLLECTION_NAME)
 
     override suspend fun getUserFromFirestore(userId: String): Result<User>?
     {
@@ -81,15 +83,76 @@ class FiresotreRepositoryImpl: FiresotreRepository
         }
     }
 
-    override suspend fun insertItemsList(listItem: ListItem): Result<Void?>
+    override suspend fun insertShoppingList(shoppingList: ShoppingList): Result<Void?>
     {
         return try
         {
-            listItemCollection.document().set(listItem).await()
+            shoppingListCollection.document().set(shoppingList).await()
         }
         catch (exception: Exception)
         {
             Result.Error(exception)
         }
     }
+
+    override fun getCurrentUserShoppingListsRealTime(): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    {
+        val shoppingListLiveData = MutableLiveData<Map<DocumentChange, ShoppingList>>()
+
+        try
+        {
+            shoppingListCollection.addSnapshotListener { resultDocumentSnapshot, firebaseFirestoreException ->
+                resultDocumentSnapshot?.let {
+                    val mapOfResult = mutableMapOf<DocumentChange, ShoppingList>()
+                    for (document in resultDocumentSnapshot.documentChanges)
+                    {
+                        when (document.type)
+                        {
+                            DocumentChange.Type.ADDED -> {
+                                mapOfResult.put(document, createShoppingList(document))
+                                Log.d(TAG, "${mapOfResult}")
+                            }
+
+                            DocumentChange.Type.MODIFIED -> {
+                                mapOfResult.put(document, createShoppingList(document))
+                            }
+
+                            DocumentChange.Type.REMOVED -> {
+                                mapOfResult.put(document, createShoppingList(document))
+                            }
+                        }
+                    }
+                    shoppingListLiveData.value = mapOfResult
+                }
+            }
+        }
+        catch  (exception: Exception)
+        {
+            return shoppingListLiveData
+        }
+
+        Log.d(TAG, "__::${shoppingListLiveData.value}")
+        return shoppingListLiveData
+    }
+
+    fun createShoppingList(documentChange: DocumentChange): ShoppingList
+    {
+        val shoppingList = documentChange.document.toObject(ShoppingList::class.java)
+        shoppingList.id = documentChange.document.id
+
+        Log.d(TAG, "${documentChange.type}: ${shoppingList}")
+
+        return shoppingList
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

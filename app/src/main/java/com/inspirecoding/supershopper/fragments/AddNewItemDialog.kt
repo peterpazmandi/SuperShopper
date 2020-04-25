@@ -78,9 +78,9 @@ class AddNewItemDialog : BottomSheetDialogFragment()
                     validateQuantity() &&
                     validateSelectedPriority() != Prioirities.EMPTY)
                 {
-                    val listItem = createListItemObject()
-                    Log.d(TAG, "$listItem")
-                    createNewListFragmentViewModel.addItem(listItem)
+                    val _listItem = createListItemObject()
+                    Log.d(TAG, "$_listItem")
+                    createNewListFragmentViewModel.addItem(_listItem)
                     dismiss()
                 }
             }

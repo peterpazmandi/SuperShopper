@@ -33,6 +33,7 @@ import java.util.*
 import androidx.lifecycle.observe
 import com.inspirecoding.supershopper.enums.Crud
 import com.inspirecoding.supershopper.model.ListItem
+import com.inspirecoding.supershopper.model.ShoppingList
 import kotlinx.android.synthetic.main.fragment_create_new_list.*
 
 
@@ -117,10 +118,18 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     {
         super.onViewCreated(view, savedInstanceState)
 
-        firebaseViewModel.usersListLD.observe(viewLifecycleOwner, Observer { usersList ->
-            userAutoCompleteAdapter.updateUsersList(usersList)
-            binding.pbCreateNewListThirdItemSearchFriends.visibility = View.GONE
-        })
+        binding.etCreateNewListFirstItemName.addTextChangedListener {
+            binding.tilCreateNewListFirstItemName.error = null
+        }
+
+        firebaseViewModel.usersListLD.observe(viewLifecycleOwner) { usersList ->
+            firebaseViewModel.currentUserLD.value?.let {currentUser ->
+                val _usersList = createNewListFragmentViewModel.removeCurrentUserAndAddedFriends(currentUser, usersList.toMutableList())
+
+                userAutoCompleteAdapter.updateUsersList(_usersList)
+                binding.pbCreateNewListThirdItemSearchFriends.visibility = View.GONE
+            }
+        }
 
         createNewListFragmentViewModel.itemsListAction.observe(viewLifecycleOwner) { result ->
             val (crud, position, listItem) = result
@@ -129,6 +138,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 Crud.CREATE -> {
                     listItem?.let {
                         listItemAdapter.addItem(listItem)
+                        binding.tvCreateNewListItemsError.visibility = View.INVISIBLE
                     }
                 }
                 Crud.UPDATE -> {
@@ -150,8 +160,18 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         }
 
         binding.llSaveList.setOnClickListener {
-//            firebaseViewModel.insertListItemInFirestore()
-            findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
+            if(validateName() && validateDueDate() && validateItems())
+            {
+                if(createShoppingListObject() != null)
+                {
+                    firebaseViewModel.insertListItemInFirestore(createShoppingListObject()!!, this)
+                    findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
+                }
+                else
+                {
+                    Toast.makeText(context, getString(R.string.sorry_something_went_wrong), Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         listItemAdapter.setOnItemClickListener(object : ListItemAdapter.OnItemClickListener
@@ -174,13 +194,6 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         Log.d(TAG, "Size_3: ${listItemAdapter.itemCount}")
         listItemAdapter.removeAllItems()
         Log.d(TAG, "Size_5: ${listItemAdapter.itemCount}")
-    }
-    override fun onDestroy()
-    {
-        super.onDestroy()
-
-        createNewListFragmentViewModel.clearListOfFriends()
-        listItemAdapter.removeAllItems()
     }
 
     private fun setTodaysDate()
@@ -217,7 +230,76 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
 
         binding.tvCreateNewListSecondItemDueDate.text = date.toLocaleString().substringBeforeLast(" ")
         context?.let {context ->
-            binding.tvCreateNewListSecondItemDueDate.setTextColor(ContextCompat.getColor(context, R.color.gray))
+            binding.tvCreateNewListSecondItemDueDate.setTextColor(ContextCompat.getColor(context, R.color.black))
+            binding.tvCreateNewListDueDateError.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun createShoppingListObject(): ShoppingList?
+    {
+        val idsOfFriends = mutableListOf<String>()
+        if(firebaseViewModel.currentUserLD.value != null)
+        {
+            firebaseViewModel.currentUserLD.value?.id?.let {id ->
+                idsOfFriends.add(id)
+                for(friend in createNewListFragmentViewModel.listOfFriends)
+                {
+                    idsOfFriends.add(friend.id)
+                }
+
+                return ShoppingList (
+                    "",
+                    System.currentTimeMillis(),
+                    binding.etCreateNewListFirstItemName.text.toString(),
+                    createNewListFragmentViewModel.selectedDueDate ?: CurrentDateFunctions.getToday().toDate(),
+                    idsOfFriends,
+                    listItemAdapter.getItemsList()
+                )
+            }
+        }
+
+        return null
+    }
+
+
+
+    private fun validateName(): Boolean
+    {
+        return if(binding.etCreateNewListFirstItemName.text.toString().isEmpty())
+        {
+            binding.tilCreateNewListFirstItemName.error = getString(R.string.enter_a_name)
+            false
+        }
+        else
+        {
+            true
+        }
+    }
+    private fun validateDueDate(): Boolean
+    {
+        return if(binding.tvCreateNewListSecondItemDueDate.text.toString().equals(getString(R.string.select_a_due_date)))
+        {
+            binding.tvCreateNewListDueDateError.visibility = View.VISIBLE
+            false
+        }
+        else
+        {
+            binding.tvCreateNewListDueDateError.visibility = View.INVISIBLE
+            true
+        }
+    }
+    private fun validateItems(): Boolean
+    {
+        val listSize = listItemAdapter.itemCount
+        return if (listSize == 0)
+        {
+            binding.tvCreateNewListItemsError.visibility = View.VISIBLE
+            false
+        }
+        else
+        {
+            binding.tvCreateNewListItemsError.visibility = View.INVISIBLE
+            true
         }
     }
 }

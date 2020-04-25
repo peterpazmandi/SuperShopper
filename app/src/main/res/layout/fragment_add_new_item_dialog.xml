@@ -221,12 +221,12 @@
                 android:id="@+id/tv_addNewItem_unit_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
                 android:text="@string/select_a_unit"
-                android:textSize="@dimen/textsize_medium"
                 android:textColor="@android:color/holo_red_light"
+                android:textSize="@dimen/textsize_medium"
+                android:visibility="invisible"
                 app:layout_constraintLeft_toLeftOf="@+id/chg_createNewItem_unit"
-                app:layout_constraintTop_toBottomOf="@+id/chg_createNewItem_unit"/>
+                app:layout_constraintTop_toBottomOf="@+id/chg_createNewItem_unit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -284,13 +284,14 @@
                 app:layout_constraintLeft_toLeftOf="@+id/cl_createNewItem_thirdItem_title_text"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_thirdItem_title_text">
+
                 <EditText
                     android:id="@+id/et_createNewItem_thirdItem_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
                     android:hint="@string/enter_a_quantity"
                     android:inputType="number"
-                    android:layout_marginBottom="@dimen/margin_large"
                     android:textSize="@dimen/textsize_xlarge" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -360,20 +361,20 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_createNewItem_medium"
+                    style="@style/ChipSelection.priority.medium"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="@dimen/margin_large"
                     app:checkedIconEnabled="false"
-                    app:closeIconEnabled="false"
-                    style="@style/ChipSelection.priority.medium" />
+                    app:closeIconEnabled="false" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_createNewItem_high"
+                    style="@style/ChipSelection.priority.high"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     app:checkedIconEnabled="false"
-                    app:closeIconEnabled="false"
-                    style="@style/ChipSelection.priority.high" />
+                    app:closeIconEnabled="false" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -381,14 +382,14 @@
                 android:id="@+id/tv_addNewItem_priority_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:text="@string/select_a_priority"
-                android:textSize="@dimen/textsize_medium"
-                android:textColor="@android:color/holo_red_light"
                 android:layout_marginBottom="@dimen/margin_medium"
+                android:text="@string/select_a_priority"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="@dimen/textsize_medium"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/chg_createNewItem_priority"
-                app:layout_constraintTop_toBottomOf="@+id/chg_createNewItem_priority"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/chg_createNewItem_priority" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

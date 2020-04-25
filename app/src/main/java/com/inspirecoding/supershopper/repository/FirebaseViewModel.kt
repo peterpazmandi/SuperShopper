@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.DocumentChange
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.fragments.*
 import com.inspirecoding.supershopper.model.User
@@ -38,6 +39,7 @@ import java.util.*
 import com.inspirecoding.supershopper.utilities.Result
 import com.inspirecoding.supershopper.fragments.LoginFragment
 import com.inspirecoding.supershopper.model.ListItem
+import com.inspirecoding.supershopper.model.ShoppingList
 
 private const val TAG = "FirebaseViewModel"
 class FirebaseViewModel(val authRepository: AuthRepository, val firesotreRepository: FiresotreRepository): ViewModel()
@@ -424,10 +426,10 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
     }
 
 
-    fun insertListItemInFirestore(listItem: ListItem, fragment: Fragment)
+    fun insertListItemInFirestore(shoppingList: ShoppingList, fragment: Fragment)
     {
         viewModelScope.launch {
-            when(val result = firesotreRepository.insertItemsList(listItem))
+            when(val result = firesotreRepository.insertShoppingList(shoppingList))
             {
                 is Result.Success -> {
                     Log.d(TAG, "Success")
@@ -447,7 +449,10 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
     }
 
 
-
+    fun getCurrentUserShoppingListsRealTime(): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    {
+        return firesotreRepository.getCurrentUserShoppingListsRealTime()
+    }
 
 
 

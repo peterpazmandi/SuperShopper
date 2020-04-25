@@ -9,6 +9,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!--Error-->
+    <string name="sorry_something_went_wrong">Sorry, something went wrong</string>
+
     <!--Login-->
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -73,4 +76,5 @@
     <string name="select_a_unit">Select a unit</string>
     <string name="select_a_priority">Select a priority</string>
     <string name="select_a_due_date">Select a due date</string>
+    <string name="your_list_is_empty">Your list is empty</string>
 </resources>

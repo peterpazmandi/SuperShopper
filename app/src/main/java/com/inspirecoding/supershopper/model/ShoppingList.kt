@@ -11,5 +11,5 @@ data class ShoppingList (
     var name: String = "",
     var dueDate: Date = Calendar.getInstance().time,
     var friendsSharedWith: MutableList<String> = mutableListOf(),
-    var listOfItems: String = ""
+    var listOfItems: MutableList<ListItem> = mutableListOf()
 ) : Parcelable

@@ -19,6 +19,7 @@ import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.enums.Crud
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.User
+import com.inspirecoding.supershopper.modul.firebaseViewModelModule
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -30,7 +31,7 @@ import kotlin.collections.HashMap
 private const val TAG = "CreateNewListViewModel"
 class CreateNewListFragmentViewModel: ViewModel()
 {
-    private val listOfFriends = mutableListOf<User>()
+    val listOfFriends = mutableListOf<User>()
     var selectedDueDate: Date? = null
 
 
@@ -127,6 +128,13 @@ class CreateNewListFragmentViewModel: ViewModel()
                 delay(2_000)
             }
         }
+    }
+    fun removeCurrentUserAndAddedFriends(currentUser: User, resultList: MutableList<User>): MutableList<User>
+    {
+        val _usersList = resultList.toMutableList()
+        _usersList.remove(currentUser)
+        _usersList.removeAll(listOfFriends)
+        return _usersList
     }
 
     fun addItem(listItem: ListItem)
