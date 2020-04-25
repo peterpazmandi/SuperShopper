@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_createNewItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tv_addNewItem_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_medium"
+            android:text="@string/add_new_item"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--First Item-->
+        <!--cl_createNewItem_firstItem-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_createNewItem_firstItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_addNewItem_title">
+
+            <TextView
+                android:id="@+id/tv_createNewItem_numberOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:background="@drawable/shape_circle_green"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/textsize_large"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view_createNewItem_firstItem"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/darkGreen"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_createNewItem_numberOne"
+                app:layout_constraintRight_toRightOf="@+id/tv_createNewItem_numberOne"
+                app:layout_constraintTop_toBottomOf="@+id/tv_createNewItem_numberOne" />
+
+            <TextView
+                android:id="@+id/cl_createNewItem_firstItem_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:text="Item name"
+                android:textColor="@color/darkGreen"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_createNewItem_numberOne"
+                app:layout_constraintLeft_toRightOf="@+id/tv_createNewItem_numberOne"
+                app:layout_constraintTop_toTopOf="@+id/tv_createNewItem_numberOne" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_createNewItem_firstItem_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/cl_createNewItem_firstItem_name_text"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_firstItem_name_text">
+                <EditText
+                    android:id="@+id/et_createNewItem_firstItem_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:hint="@string/give_me_a_name"
+                    android:textSize="@dimen/textsize_xlarge" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--Second Item-->
+        <!--cl_createNewItem_secondItem-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_createNewItem_secondItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_firstItem">
+
+            <TextView
+                android:id="@+id/tv_createNewItem_numberTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:background="@drawable/shape_circle_green"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/textsize_large"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view_createNewItem_secondItem"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/darkGreen"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_createNewItem_numberTwo"
+                app:layout_constraintRight_toRightOf="@+id/tv_createNewItem_numberTwo"
+                app:layout_constraintTop_toBottomOf="@+id/tv_createNewItem_numberTwo" />
+
+            <TextView
+                android:id="@+id/cl_createNewItem_secondItem_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:text="@string/unit"
+                android:textColor="@color/darkGreen"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_createNewItem_numberTwo"
+                app:layout_constraintLeft_toRightOf="@+id/tv_createNewItem_numberTwo"
+                app:layout_constraintTop_toTopOf="@+id/tv_createNewItem_numberTwo" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chg_createNewItem_unit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@+id/cl_createNewItem_secondItem_title_text"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_secondItem_title_text"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_gram"
+                    style="@style/ChipSelection.WhiteOrange"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/g"
+                    android:textAlignment="center"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_dag"
+                    style="@style/ChipSelection.WhiteOrange"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/dag"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/textsize_xxlarge"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_kg"
+                    style="@style/ChipSelection.WhiteOrange"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/kg"
+                    android:textAlignment="center"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_ml"
+                    style="@style/ChipSelection.WhiteOrange"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/ml"
+                    android:textAlignment="center"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_dl"
+                    style="@style/ChipSelection.WhiteOrange"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/dl"
+                    android:textAlignment="center"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_l"
+                    style="@style/ChipSelection.WhiteOrange"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/l"
+                    android:textAlignment="center"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_pc"
+                    style="@style/ChipSelection.WhiteOrange"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/pc"
+                    android:textAlignment="center"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/tv_addNewItem_unit_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:text="@string/select_a_unit"
+                android:textSize="@dimen/textsize_medium"
+                android:textColor="@android:color/holo_red_light"
+                app:layout_constraintLeft_toLeftOf="@+id/chg_createNewItem_unit"
+                app:layout_constraintTop_toBottomOf="@+id/chg_createNewItem_unit"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--Third Item-->
+        <!--cl_createNewItem_thirdItem-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_createNewItem_thirdItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_secondItem">
+
+            <TextView
+                android:id="@+id/tv_createNewItem_numberThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:background="@drawable/shape_circle_green"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/textsize_large"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view_createNewItem_thirdItem"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/darkGreen"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_createNewItem_numberThree"
+                app:layout_constraintRight_toRightOf="@+id/tv_createNewItem_numberThree"
+                app:layout_constraintTop_toBottomOf="@+id/tv_createNewItem_numberThree" />
+
+            <TextView
+                android:id="@+id/cl_createNewItem_thirdItem_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:text="@string/quantity"
+                android:textColor="@color/darkGreen"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_createNewItem_numberThree"
+                app:layout_constraintLeft_toRightOf="@+id/tv_createNewItem_numberThree"
+                app:layout_constraintTop_toTopOf="@+id/tv_createNewItem_numberThree" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til__createNewItem_thirdItem_quantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/cl_createNewItem_thirdItem_title_text"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_thirdItem_title_text">
+                <EditText
+                    android:id="@+id/et_createNewItem_thirdItem_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_a_quantity"
+                    android:inputType="number"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:textSize="@dimen/textsize_xlarge" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--Forth Item-->
+        <!--cl_createNewItem_fourthItem-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_createNewItem_fourthItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_thirdItem">
+
+            <TextView
+                android:id="@+id/tv_createNewItem_numberFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:background="@drawable/shape_circle_green"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/textsize_large"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view_createNewItem_fourthItem"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@color/darkGreen"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_createNewItem_numberFour"
+                app:layout_constraintRight_toRightOf="@+id/tv_createNewItem_numberFour"
+                app:layout_constraintTop_toBottomOf="@+id/tv_createNewItem_numberFour" />
+
+            <TextView
+                android:id="@+id/cl_createNewItem_fourthItem_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:text="@string/priority"
+                android:textColor="@color/darkGreen"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_createNewItem_numberFour"
+                app:layout_constraintLeft_toRightOf="@+id/tv_createNewItem_numberFour"
+                app:layout_constraintTop_toTopOf="@+id/tv_createNewItem_numberFour" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chg_createNewItem_priority"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@+id/cl_createNewItem_fourthItem_title_text"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_fourthItem_title_text"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_low"
+                    style="@style/ChipSelection.priority.low"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_medium"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="@dimen/margin_large"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false"
+                    style="@style/ChipSelection.priority.medium" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_createNewItem_high"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:checkedIconEnabled="false"
+                    app:closeIconEnabled="false"
+                    style="@style/ChipSelection.priority.high" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/tv_addNewItem_priority_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:text="@string/select_a_priority"
+                android:textSize="@dimen/textsize_medium"
+                android:textColor="@android:color/holo_red_light"
+                android:layout_marginBottom="@dimen/margin_medium"
+                app:layout_constraintLeft_toLeftOf="@+id/chg_createNewItem_priority"
+                app:layout_constraintTop_toBottomOf="@+id/chg_createNewItem_priority"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--Fifth Item-->
+        <!--cl_createNewItem_fifthItem-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_createNewItem_fifthItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:paddingBottom="@dimen/margin_xxlarge"
+            app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_fourthItem">
+
+            <TextView
+                android:id="@+id/tv_createNewItem_numberFive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:background="@drawable/shape_circle_green"
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/textsize_large"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ll_saveItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:background="@drawable/shape_oval_green_30height"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/margin_large"
+                android:paddingEnd="@dimen/margin_large"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_createNewItem_numberFive"
+                app:layout_constraintLeft_toRightOf="@+id/tv_createNewItem_numberFive"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_createNewItem_numberFive">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_save_white" />
+
+                <TextView
+                    android:id="@+id/tv_saveUpdateItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/margin_large"
+                    android:paddingEnd="@dimen/margin_large"
+                    android:text="@string/add_item"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textsize_large"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

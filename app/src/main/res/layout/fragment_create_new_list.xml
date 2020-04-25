@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:scrollbars="none"
+        android:fillViewport="true"
+        tools:context=".fragments.CreateNewListFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_createNewList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_rounded_topleft_corner_white_noborder">
+
+            <!--First Item-->
+            <!--cl_createNewList_firstItem-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_createNewList_firstItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_createNewList_numberOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:background="@drawable/shape_circle_green"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textsize_large"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view_createNewList_firstItem"
+                    android:layout_width="5dp"
+                    android:layout_height="0dp"
+                    android:background="@color/darkGreen"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_createNewList_numberOne"
+                    app:layout_constraintRight_toRightOf="@+id/tv_createNewList_numberOne"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_createNewList_numberOne" />
+
+                <TextView
+                    android:id="@+id/cl_createNewList_firstItem_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name"
+                    android:textColor="@color/darkGreen"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/margin_large"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_createNewList_numberOne"
+                    app:layout_constraintTop_toTopOf="@+id/tv_createNewList_numberOne"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_createNewList_numberOne"/>
+
+                <EditText
+                    android:id="@+id/cl_createNewList_firstItem_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/give_me_a_name"
+                    android:textSize="@dimen/textsize_xlarge"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_createNewList_firstItem_title_text"
+                    app:layout_constraintLeft_toLeftOf="@+id/cl_createNewList_firstItem_title_text"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--Second Item-->
+            <!--cl_createNewList_secondItem-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_createNewList_secondItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_large"
+                app:layout_constraintTop_toBottomOf="@+id/cl_createNewList_firstItem">
+
+                <TextView
+                    android:id="@+id/tv_createNewList_numberTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:background="@drawable/shape_circle_green"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textsize_large"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view_createNewList_secondItem"
+                    android:layout_width="5dp"
+                    android:layout_height="0dp"
+                    android:background="@color/darkGreen"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_createNewList_numberTwo"
+                    app:layout_constraintRight_toRightOf="@+id/tv_createNewList_numberTwo"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_createNewList_numberTwo" />
+
+                <TextView
+                    android:id="@+id/cl_createNewList_secondItem_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/due_date"
+                    android:textColor="@color/darkGreen"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/margin_large"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_createNewList_numberTwo"
+                    app:layout_constraintTop_toTopOf="@+id/tv_createNewList_numberTwo"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_createNewList_numberTwo"/>
+
+                <TextView
+                    android:id="@+id/tv_createNewList_secondItem_dueDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_a_due_date"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/textsize_xlarge"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_createNewList_secondItem_title_text"
+                    app:layout_constraintLeft_toLeftOf="@+id/cl_createNewList_secondItem_title_text"/>
+
+                <TextView
+                    android:id="@+id/tv_addNewItem_unit_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:text="@string/select_a_due_date"
+                    android:textSize="@dimen/textsize_medium"
+                    android:textColor="@android:color/holo_red_light"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_createNewList_secondItem_dueDate"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_createNewList_secondItem_dueDate"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--Third Item-->
+            <!--cl_createNewList_thirdItem-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_createNewList_thirdItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_large"
+                app:layout_constraintTop_toBottomOf="@+id/cl_createNewList_secondItem">
+
+                <TextView
+                    android:id="@+id/tv_createNewList_numberThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:background="@drawable/shape_circle_green"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textsize_large"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view_createNewList_thirdItem"
+                    android:layout_width="5dp"
+                    android:layout_height="0dp"
+                    android:background="@color/darkGreen"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_createNewList_numberThree"
+                    app:layout_constraintRight_toRightOf="@+id/tv_createNewList_numberThree"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_createNewList_numberThree" />
+
+                <TextView
+                    android:id="@+id/cl_createNewList_thirdItem_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share_with_your_friends"
+                    android:textColor="@color/darkGreen"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/margin_large"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_createNewList_numberThree"
+                    app:layout_constraintTop_toTopOf="@+id/tv_createNewList_numberThree"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_createNewList_numberThree"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_createNewList_thirdItem_searchFreinds"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_xxlarge"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@color/dark_braun"
+                    app:hintEnabled="false"
+                    app:layout_constraintLeft_toLeftOf="@+id/cl_createNewList_thirdItem_title_text"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_createNewList_thirdItem_title_text">
+
+                    <com.inspirecoding.supershopper.customview.DelayAutoCompleteTextView
+                        android:id="@+id/actv_createNewList_thirdItem_searchFriends"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/find_your_friends"
+                        android:textSize="@dimen/textsize_xlarge" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/hsv_createNewList_thirdItem_friends"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:scrollbars="none"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/til_createNewList_thirdItem_searchFreinds"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_createNewList_thirdItem_searchFreinds">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chg_createNewList_thirdItem_friends"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </androidx.core.widget.NestedScrollView>
+
+                <ProgressBar
+                    android:id="@+id/pb_createNewList_thirdItem_searchFriends"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:visibility="gone"
+                    app:layout_constraintRight_toRightOf="@+id/til_createNewList_thirdItem_searchFreinds"
+                    app:layout_constraintTop_toTopOf="@+id/til_createNewList_thirdItem_searchFreinds" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--Forth Item-->
+            <!--cl_createNewList_fourthItem-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_createNewList_fourthItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_large"
+                app:layout_constraintTop_toBottomOf="@+id/cl_createNewList_thirdItem">
+
+                <TextView
+                    android:id="@+id/tv_createNewList_numberFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:background="@drawable/shape_circle_green"
+                    android:gravity="center"
+                    android:text="4"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textsize_large"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view_createNewList_fourthItem"
+                    android:layout_width="5dp"
+                    android:layout_height="0dp"
+                    android:background="@color/darkGreen"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_createNewList_numberFour"
+                    app:layout_constraintRight_toRightOf="@+id/tv_createNewList_numberFour"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_createNewList_numberFour" />
+
+                <TextView
+                    android:id="@+id/cl_createNewList_fourthItem_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/items"
+                    android:textColor="@color/darkGreen"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/margin_large"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_createNewList_numberFour"
+                    app:layout_constraintTop_toTopOf="@+id/tv_createNewList_numberFour"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_createNewList_numberFour"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_createNewList_fourthItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/margin_xxlarge"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_createNewList_fourthItem_title_text"
+                    app:layout_constraintLeft_toLeftOf="@+id/cl_createNewList_fourthItem_title_text"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab__createNewList_fourthItem_addNewItem"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:fabCustomSize="40dp"
+                    app:srcCompat="@drawable/ic_add_brown"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_createNewList_fourthItem"
+                    app:layout_constraintLeft_toLeftOf="@+id/rv_createNewList_fourthItem"
+                    app:layout_constraintRight_toRightOf="@+id/rv_createNewList_fourthItem"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--Fifth Item-->
+            <!--cl_createNewList_fifthItem-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_createNewList_fifthItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:paddingBottom="@dimen/margin_xxlarge"
+                app:layout_constraintTop_toBottomOf="@+id/cl_createNewList_fourthItem">
+
+                <TextView
+                    android:id="@+id/tv_createNewList_numberFive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:background="@drawable/shape_circle_green"
+                    android:gravity="center"
+                    android:text="5"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/textsize_large"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/ll_saveList"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_oval_green_30height"
+                    android:layout_marginStart="@dimen/margin_large"
+                    android:paddingStart="@dimen/margin_large"
+                    android:paddingEnd="@dimen/margin_large"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_createNewList_numberFive"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_createNewList_numberFive"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_createNewList_numberFive">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_save_white"/>
+                    <TextView
+                        android:id="@+id/btn_saveList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/save_list"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/margin_large"
+                        android:paddingEnd="@dimen/margin_large"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/textsize_large"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

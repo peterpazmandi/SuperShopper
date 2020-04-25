@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">SuperShopper</string>
+    <string name="app_name_with_space">Super Shopper</string>
+    <string name="motto">We help you keep\nyour shopping list in mind.</string>
+
+    <string name="welcome_to">Welcome to </string>
+    <string name="welcome_back">Welcome back</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--Login-->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="login">Login</string>
+    <string name="or_log_in_with">Or log in with</string>
+    <string name="dont_have_an_account_yet_register_now">Don\'t have an account yet? <big><b>Register Now</b></big></string>
+    <string name="registration_successful">Registration successful!</string>
+
+    <!--Register-->
+    <string name="create_account">Create Account</string>
+    <string name="name">Name</string>
+    <string name="register">Register</string>
+    <string name="or_register_with">Or register with</string>
+    <string name="already_have_an_account">Already have an account? <big><b>Login</b></big></string>
+    <string name="login_successful">Login Successful!</string>
+    <string name="request_canceled">Request canceled</string>
+
+    <string name="facebook_app_id">532612537445839</string>
+    <string name="fb_login_protocol_scheme">fb532612537445839</string>
+    <string name="open_items">Open Items</string>
+    <string name="bought_items">Bought Items</string>
+    <string name="history">History</string>
+    <string name="friends">Friends</string>
+
+    <string name="create_new_list">Create new list</string>
+    <string name="give_me_a_name">Give me a name</string>
+    <string name="find_your_friends">Find your friends</string>
+
+    <string name="enter_at_least_3_characters">Enter at least 3 characters</string>
+    <string name="you_have_already_added_this_friend">You have already added this friend</string>
+    <string name="share_with_your_friends">Share with your friends</string>
+    <string name="due_date">Due date</string>
+    <string name="add_new_item">Add new item</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="unit">Unit</string>
+    <string name="gram">gram</string>
+    <string name="g">g</string>
+    <string name="dag">dag</string>
+    <string name="kg">kg</string>
+    <string name="ml">ml</string>
+    <string name="items">Items</string>
+    <string name="quantity">Quantity</string>
+    <string name="enter_a_quantity">Enter a quantity</string>
+    <string name="priority">Priority</string>
+    <string name="save_list">Save List</string>
+    <string name="add_item">Add item</string>
+    <string name="update_item">Update item</string>
+
+    <string name="enter_a_name">Enter a name</string>
+    <string name="enter_a_qunatity">Enter a qunatity</string>
+
+    <string name="dl">dl</string>
+    <string name="l">l</string>
+    <string name="pc">pc</string>
+
+    <string name="low">LOW</string>
+    <string name="medium">MEDIUM</string>
+    <string name="high">HIGH</string>
+
+    <string name="select_a_unit">Select a unit</string>
+    <string name="select_a_priority">Select a priority</string>
+    <string name="select_a_due_date">Select a due date</string>
+</resources>

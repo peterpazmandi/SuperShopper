@@ -1,0 +1,54 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="chipIconTint">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.CreateNewItem" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ChipSelection.WhiteOrange" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/bg_chip_state</item>
+        <item name="closeIconEnabled">false</item>
+        <item name="android:checkable">true</item>
+        <item name="chipIconEnabled">false</item>
+        <item name="checkedIconEnabled">false</item>
+    </style>
+    <style name="ChipSelection.priority.low" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/bg_chip_low_priority</item>
+        <item name="closeIconEnabled">false</item>
+        <item name="android:checkable">true</item>
+        <item name="chipIconEnabled">false</item>
+        <item name="checkedIconEnabled">false</item>
+    </style>
+    <style name="ChipSelection.priority.medium" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/bg_chip_medium_priority</item>
+        <item name="closeIconEnabled">false</item>
+        <item name="android:checkable">true</item>
+        <item name="chipIconEnabled">false</item>
+        <item name="checkedIconEnabled">false</item>
+    </style>
+    <style name="ChipSelection.priority.high" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/bg_chip_high_priority</item>
+        <item name="closeIconEnabled">false</item>
+        <item name="android:checkable">true</item>
+        <item name="chipIconEnabled">false</item>
+        <item name="checkedIconEnabled">false</item>
+    </style>
+
+</resources>
