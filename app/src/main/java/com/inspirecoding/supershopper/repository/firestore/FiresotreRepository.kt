@@ -14,6 +14,7 @@ interface FiresotreRepository
     suspend fun createUserInFirestore(user: User): Result<Void?>
 
     suspend fun insertShoppingList(shoppingList: ShoppingList): Result<Void?>
+    suspend fun updateShoppingList(shoppingList: ShoppingList): Result<Void?>
 
     fun getCurrentUserShoppingListsRealTime(): MutableLiveData<Map<DocumentChange, ShoppingList>>
 }

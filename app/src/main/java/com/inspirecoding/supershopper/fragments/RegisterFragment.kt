@@ -104,7 +104,7 @@ class RegisterFragment : Fragment()
         Log.d(TAG, "navigateToRegisterFragment")
 
         val navController: NavController = Navigation.findNavController(view)
-        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+        val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
         navController.navigate(action)
     }
 

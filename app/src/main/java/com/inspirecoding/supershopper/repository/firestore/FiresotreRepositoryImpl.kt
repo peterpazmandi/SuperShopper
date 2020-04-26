@@ -95,6 +95,11 @@ class FiresotreRepositoryImpl: FiresotreRepository
         }
     }
 
+    override suspend fun updateShoppingList(shoppingList: ShoppingList): Result<Void?>
+    {
+        return shoppingListCollection.document(shoppingList.id).set(shoppingList).await()
+    }
+
     override fun getCurrentUserShoppingListsRealTime(): MutableLiveData<Map<DocumentChange, ShoppingList>>
     {
         val shoppingListLiveData = MutableLiveData<Map<DocumentChange, ShoppingList>>()
@@ -122,7 +127,11 @@ class FiresotreRepositoryImpl: FiresotreRepository
                             }
                         }
                     }
-                    shoppingListLiveData.value = mapOfResult
+                    val sortedMap = mapOfResult.toList().sortedByDescending {
+                        (_, value) -> value.timeStamp
+                    }.toMap()
+
+                    shoppingListLiveData.value = sortedMap
                 }
             }
         }

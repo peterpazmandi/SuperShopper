@@ -32,13 +32,11 @@ import com.inspirecoding.supershopper.fragments.*
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.authentication.AuthRepository
 import com.inspirecoding.supershopper.repository.firestore.FiresotreRepository
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
 import com.inspirecoding.supershopper.utilities.Result
 import com.inspirecoding.supershopper.fragments.LoginFragment
-import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
 
 private const val TAG = "FirebaseViewModel"
@@ -67,6 +65,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
         get() = _usersListMLD
 
 
+    var sharedWithFriends: MutableList<User> = mutableListOf()
 
 
     //Email
@@ -112,7 +111,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
                     Log.i(TAG, "SignIn - Result.Success - User: ${result.data}")
                     result.data?.let { firebaseUser ->
                         Log.i(TAG, "SignIn - Result.Success - User: ${result.data}")
-                        getUserFromFirestore(firebaseUser.uid, fragment)
+                        getCurrentUserFromFirestore(firebaseUser.uid, fragment)
                     }
                 }
                 is Result.Error -> {
@@ -283,7 +282,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
         }
     }
 
-    private suspend fun getUserFromFirestore(userId: String, fragment: Fragment)
+    suspend fun getCurrentUserFromFirestore(userId: String, fragment: Fragment? = null)
     {
         when(val result = firesotreRepository.getUserFromFirestore(userId))
         {
@@ -291,7 +290,9 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
                 val _user = result.data
                 _currentUserMLD.value = _user
                 Log.d(TAG, "${_user.id}")
-                navigateToMainFragment(fragment)
+                fragment?.let {
+                    navigateToMainFragment(fragment)
+                }
 
                 _spinner.value = false
             }
@@ -301,10 +302,27 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
                 _spinner.value = false
             }
             is Result.Canceled -> {
-                _toast.value = fragment.getString(R.string.request_canceled)
+                _toast.value = fragment?.getString(R.string.request_canceled)
 
                 _spinner.value = false
             }
+        }
+    }
+    suspend fun getUserFromFirestore(userId: String): User?
+    {
+        return when(val result = firesotreRepository.getUserFromFirestore(userId))
+        {
+            is Result.Success -> {
+                result.data
+            }
+            is Result.Error -> {
+                _toast.value = result.exception.message
+                null
+            }
+            is Result.Canceled -> {
+                null
+            }
+            else -> null
         }
     }
 
@@ -443,6 +461,23 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
                     _toast.value = fragment.getString(R.string.request_canceled)
 
                     _spinner.value = false
+                }
+            }
+        }
+    }
+    fun updateShoppingList(shoppingList: ShoppingList, fragment: Fragment)
+    {
+        viewModelScope.launch {
+            when (val result = firesotreRepository.updateShoppingList(shoppingList))
+            {
+                is Result.Success -> {
+                    _toast.value = fragment.getString(R.string.item_updated)
+                }
+                is Result.Error -> {
+                    _toast.value = result.exception.message
+                }
+                is Result.Canceled -> {
+                    _toast.value = fragment.getString(R.string.request_canceled)
                 }
             }
         }

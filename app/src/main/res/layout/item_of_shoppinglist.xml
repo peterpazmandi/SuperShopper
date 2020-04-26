@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_shoppingList"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/margin_medium"
+        android:paddingBottom="@dimen/margin_medium"
+        android:paddingStart="@dimen/margin_xlarge"
+        android:paddingEnd="@dimen/margin_xlarge"
+        android:layout_margin="@dimen/margin_medium"
+        android:background="@drawable/shape_roundedallcorner_lightbrown">
+
+        <TextView
+            android:id="@+id/tv_shoppingList_dueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Tomorrow"
+            android:textSize="@dimen/textsize_medium"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_shoppingList_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="For the weekend"
+            android:textSize="@dimen/textsize_xlarge"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/tv_shoppingList_dueDate"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_shoppingList_itemsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="4 items"
+            android:textSize="@dimen/textsize_xlarge"
+            app:layout_constraintTop_toBottomOf="@+id/tv_shoppingList_name"
+            app:layout_constraintBottom_toTopOf="@+id/iv_shoppingList_sharedWith_1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_shoppingList_sharedWith_1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/profilepicture_blank"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_shoppingList_sharedWith_2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/profilepicture_blank"
+            android:elevation="0.1dp"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_shoppingList_sharedWith_1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_shoppingList_sharedWith_3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/profilepicture_blank"
+            android:elevation="0.2dp"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_shoppingList_sharedWith_1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_shoppingList_sharedWith_more"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            tools:text="+4"
+            android:gravity="center"
+            android:background="@drawable/shape_roundedallcorners_darkbrown"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:elevation="0.3dp"
+            android:paddingStart="@dimen/margin_small"
+            android:paddingEnd="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_shoppingList_sharedWith_1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

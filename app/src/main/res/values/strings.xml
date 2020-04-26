@@ -30,6 +30,8 @@
     <string name="login_successful">Login Successful!</string>
     <string name="request_canceled">Request canceled</string>
 
+    <string name="item_updated">Item updated</string>
+
     <string name="facebook_app_id">532612537445839</string>
     <string name="fb_login_protocol_scheme">fb532612537445839</string>
     <string name="open_items">Open Items</string>
@@ -55,6 +57,8 @@
     <string name="kg">kg</string>
     <string name="ml">ml</string>
     <string name="items">Items</string>
+    <string name="count_items">%1$s Items</string>
+    <string name="plus_number">+ %1$s</string>
     <string name="quantity">Quantity</string>
     <string name="enter_a_quantity">Enter a quantity</string>
     <string name="priority">Priority</string>

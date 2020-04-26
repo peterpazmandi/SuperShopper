@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:background="@drawable/shape_roundedallcorners_noborder_whitebackground">
+
+        <View
+            android:id="@+id/view_priority"
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_roundedleftside_green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_xxlarge"
+            android:paddingTop="@dimen/margin_small"
+            android:textSize="@dimen/textsize_large"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/view_priority"
+            app:layout_constraintRight_toLeftOf="@+id/cb_item_isBought"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Paprika" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:paddingBottom="@dimen/margin_small"
+            android:textSize="@dimen/textsize_medium"
+            app:layout_constraintLeft_toRightOf="@+id/view_priority"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/tv_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_xsmall"
+            android:textSize="@dimen/textsize_medium"
+            app:layout_constraintLeft_toRightOf="@+id/tv_quantity"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item"
+            tools:text="dac" />
+
+        <CheckBox
+            android:id="@+id/cb_item_isBought"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_xxlarge"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

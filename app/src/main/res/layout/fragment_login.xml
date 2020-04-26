@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.35" />
+            app:layout_constraintGuide_percent="0.275" />
         <!--guideline_vertical-->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical"
@@ -43,7 +43,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="@dimen/margin_medium"
             android:text="@string/welcome_back"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/textsize_xlarge"
@@ -123,7 +122,7 @@
         <Button
             android:id="@+id/btn_login_login"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"

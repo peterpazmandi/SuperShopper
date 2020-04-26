@@ -16,6 +16,7 @@ import com.inspirecoding.supershopper.databinding.FragmentAddNewItemDialogBindin
 import com.inspirecoding.supershopper.enums.Prioirities
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.viewmodels.CreateNewListFragmentViewModel
+import java.util.*
 
 private const val TAG = "AddNewItemDialog"
 class AddNewItemDialog : BottomSheetDialogFragment()
@@ -182,6 +183,7 @@ class AddNewItemDialog : BottomSheetDialogFragment()
     private fun createListItemObject(): ListItem
     {
         return ListItem (
+            UUID.randomUUID().toString(),
             binding.etCreateNewItemFirstItemName.text.toString(),
             validateSelectedUnit(),
             binding.etCreateNewItemThirdItemQuantity.text.toString().toFloat(),

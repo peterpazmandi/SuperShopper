@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ListItem (
+    var id: String = "",
     var item: String = "",
     var unit: String = "",
     var qunatity: Float = 0.0f,

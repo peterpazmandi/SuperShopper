@@ -28,6 +28,7 @@
             app:layout_constraintGuide_percent="0.85" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_shoppingLists"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -47,6 +48,26 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_rounded_topleft_corner_white_noborder">
 
+                <View
+                    android:id="@+id/view_header_shoppingListName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/shape_roundedtopleftcorner_noborder_lightbrown"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_shoppingListName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Third list"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/textsize_xlarge"
+                    app:layout_constraintTop_toTopOf="@+id/view_header_shoppingListName"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_header_shoppingListName"/>
+
                 <TextView
                     android:id="@+id/tv_openItems"
                     android:layout_width="wrap_content"
@@ -55,20 +76,10 @@
                     android:layout_marginTop="@dimen/margin_large"
                     android:text="@string/open_items"
                     android:textColor="@color/darkOrange"
-                    android:textSize="@dimen/textsize_xxlarge"
+                    android:textSize="@dimen/textsize_large"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_edit_list"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="@dimen/margin_large"
-                    android:src="@drawable/ic_edit_brown"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_openItems"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_openItems" />
+                    app:layout_constraintTop_toBottomOf="@+id/view_header_shoppingListName" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_openItemsList"
@@ -86,7 +97,7 @@
                     android:layout_margin="@dimen/margin_large"
                     android:text="@string/bought_items"
                     android:textColor="@color/darkGreen"
-                    android:textSize="@dimen/textsize_xxlarge"
+                    android:textSize="@dimen/textsize_large"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rv_openItemsList" />
@@ -105,54 +116,14 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_roundedrightside_darkbrown"
-            android:padding="@dimen/margin_small"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/gl_bottom_horizontal">
-
-            <Button
-                android:id="@+id/btn_history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_roundedallcorners_darkbrown"
-                android:drawableStart="@drawable/ic_history_white"
-                android:drawablePadding="@dimen/margin_small"
-                android:padding="@dimen/margin_small"
-                android:text="@string/history"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btn_friends"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_small"
-                android:background="@drawable/shape_roundedallcorners_darkbrown"
-                android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="@dimen/margin_small"
-                android:padding="@dimen/margin_small"
-                android:text="@string/friends"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/btn_history"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_createNewList"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="@dimen/margin_small"
-                app:srcCompat="@drawable/ic_add_brown"
-                app:layout_constraintLeft_toRightOf="@+id/btn_friends"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_createNewList"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="@dimen/margin_large"
+            app:srcCompat="@drawable/ic_add_brown"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

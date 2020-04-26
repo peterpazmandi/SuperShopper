@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark">
 
         <!--guideline_horizontal-->
         <androidx.constraintlayout.widget.Guideline
@@ -17,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.27" />
+            app:layout_constraintGuide_percent="0.275" />
         <!--guideline_vertical-->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical"
@@ -30,17 +31,17 @@
         <ImageView
             android:id="@+id/iv_splashScreen_background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/loginregister_background"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:src="@drawable/loginregister_headerimage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"/>
 
         <!--tv_register_welcomeback-->
         <TextView
             android:id="@+id/tv_register_welcomeback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
             android:gravity="center"
             android:text="@string/create_account"
             android:textColor="@color/colorPrimary"
@@ -137,7 +138,7 @@
         <Button
             android:id="@+id/btn_register_login"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             android:background="@drawable/shape_rounded_lightbraun_filled_noborder"

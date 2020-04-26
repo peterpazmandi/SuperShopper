@@ -14,7 +14,15 @@ import com.inspirecoding.supershopper.databinding.ActivityMainBinding
 import android.util.Base64
 import android.util.Log
 import android.content.pm.PackageManager
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.lifecycle.observe
+import com.inspirecoding.supershopper.model.User
+import com.inspirecoding.supershopper.repository.FirebaseViewModel
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.app_bar_with_fragment.view.*
+import org.koin.android.ext.android.inject
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -23,6 +31,8 @@ class MainActivity : AppCompatActivity()
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private val firebaseViewModel: FirebaseViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -62,8 +72,29 @@ class MainActivity : AppCompatActivity()
             appBarConfiguration
         )
 
-        printKeyHash()
+//        printKeyHash()
+
+
+        firebaseViewModel.currentUserLD.observe(this) { user ->
+            setProfilePictures(user, toolbar.iv_currentUserProfilePic)
+        }
     }
+
+
+    private fun setProfilePictures(user: User?, imageView: ImageView)
+    {
+        user?.let {
+            if(user.profilePicture.isNotEmpty())
+            {
+                Picasso
+                    .get()
+                    .load(user.profilePicture)
+                    .placeholder(R.drawable.ic_person)
+                    .into(imageView)
+            }
+        }
+    }
+
     private fun printKeyHash()
     {
         try
