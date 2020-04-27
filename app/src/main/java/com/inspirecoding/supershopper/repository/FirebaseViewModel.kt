@@ -31,7 +31,7 @@ import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.fragments.*
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.authentication.AuthRepository
-import com.inspirecoding.supershopper.repository.firestore.FiresotreRepository
+import com.inspirecoding.supershopper.repository.firestore.FirestoreRepository
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
@@ -40,7 +40,7 @@ import com.inspirecoding.supershopper.fragments.LoginFragment
 import com.inspirecoding.supershopper.model.ShoppingList
 
 private const val TAG = "FirebaseViewModel"
-class FirebaseViewModel(val authRepository: AuthRepository, val firesotreRepository: FiresotreRepository): ViewModel()
+class FirebaseViewModel(val authRepository: AuthRepository, val firestoreRepository: FirestoreRepository): ViewModel()
 {
     private var callbackManager: CallbackManager? = null
 
@@ -284,7 +284,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
 
     suspend fun getCurrentUserFromFirestore(userId: String, fragment: Fragment? = null)
     {
-        when(val result = firesotreRepository.getUserFromFirestore(userId))
+        when(val result = firestoreRepository.getUserFromFirestore(userId))
         {
             is Result.Success -> {
                 val _user = result.data
@@ -310,7 +310,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
     }
     suspend fun getUserFromFirestore(userId: String): User?
     {
-        return when(val result = firesotreRepository.getUserFromFirestore(userId))
+        return when(val result = firestoreRepository.getUserFromFirestore(userId))
         {
             is Result.Success -> {
                 result.data
@@ -329,7 +329,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
     fun getListOfFilteredUsersFromFirestore(searchText: String, limit: Long)
     {
         viewModelScope.launch {
-            when(val result = firesotreRepository.getListOfFilteredUsersFromFirestore(searchText, limit))
+            when(val result = firestoreRepository.getListOfFilteredUsersFromFirestore(searchText, limit))
             {
                 is Result.Success -> {
                     _usersListMLD.value = result.data
@@ -347,7 +347,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
     private suspend fun createUserInFirestore(user: User, fragment: Fragment)
     {
         Log.d(TAG, "Result - ${user.name}")
-        when(val result = firesotreRepository.createUserInFirestore(user))
+        when(val result = firestoreRepository.createUserInFirestore(user))
         {
             is Result.Success -> {
                 when(fragment)
@@ -395,7 +395,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
         Log.i(TAG, "$userId _1")
         viewModelScope.launch {
             Log.i(TAG, "$userId _2")
-            when (val result = firesotreRepository.getUserFromFirestore(userId))
+            when (val result = firestoreRepository.getUserFromFirestore(userId))
             {
                 is Result.Success -> {
                     Log.i(TAG, "$userId _3")
@@ -447,7 +447,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
     fun insertListItemInFirestore(shoppingList: ShoppingList, fragment: Fragment)
     {
         viewModelScope.launch {
-            when(val result = firesotreRepository.insertShoppingList(shoppingList))
+            when(val result = firestoreRepository.insertShoppingList(shoppingList))
             {
                 is Result.Success -> {
                     Log.d(TAG, "Success")
@@ -468,7 +468,8 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
     fun updateShoppingList(shoppingList: ShoppingList, fragment: Fragment)
     {
         viewModelScope.launch {
-            when (val result = firesotreRepository.updateShoppingList(shoppingList))
+            Log.d(TAG, "$shoppingList")
+            when (val result = firestoreRepository.updateShoppingList(shoppingList))
             {
                 is Result.Success -> {
                     _toast.value = fragment.getString(R.string.item_updated)
@@ -484,9 +485,9 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firesotreReposit
     }
 
 
-    fun getCurrentUserShoppingListsRealTime(): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
     {
-        return firesotreRepository.getCurrentUserShoppingListsRealTime()
+        return firestoreRepository.getCurrentUserShoppingListsRealTime(currentUser)
     }
 
 

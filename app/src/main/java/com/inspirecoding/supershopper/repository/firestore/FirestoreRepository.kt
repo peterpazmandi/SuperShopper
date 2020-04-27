@@ -7,7 +7,7 @@ import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.utilities.Result
 
-interface FiresotreRepository
+interface FirestoreRepository
 {
     suspend fun getUserFromFirestore(userId: String): Result<User>?
     suspend fun getListOfFilteredUsersFromFirestore(searchText: String, limit: Long): Result<List<User>>
@@ -16,5 +16,5 @@ interface FiresotreRepository
     suspend fun insertShoppingList(shoppingList: ShoppingList): Result<Void?>
     suspend fun updateShoppingList(shoppingList: ShoppingList): Result<Void?>
 
-    fun getCurrentUserShoppingListsRealTime(): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
 }

@@ -1,5 +1,6 @@
 package com.inspirecoding.supershopper.fragments
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +34,8 @@ private const val TAG = "MainFragment"
 class MainFragment : Fragment()
 {
     private lateinit var binding: FragmentMainBinding
+
+    private var isFabOpen = false
 
     private val firebaseViewModel: FirebaseViewModel by inject()
     private val mainFragmentViewModel by navGraphViewModels<MainFragmentViewModel>(R.id.navigation_graph)
@@ -90,93 +95,126 @@ class MainFragment : Fragment()
     {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.fabCreateNewList.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_createNewListFragment)
+        binding.fab.setOnClickListener {
+            if(isFabOpen)
+            {
+                hideFabMenu()
+            }
+            else
+            {
+                showFabMenu()
+            }
         }
 
-        firebaseViewModel.getCurrentUserShoppingListsRealTime().observe(viewLifecycleOwner) {listOfShoppingLists ->
-            Log.d(TAG, "${listOfShoppingLists.size}")
-            for(key in listOfShoppingLists.keys)
-            {
-                when(key.type)
+        // Create new item
+        binding.llCreateNewList.setOnClickListener {view ->
+            navigateToCreateNewList(view)
+        }
+        binding.fabCreateNewList.setOnClickListener {view ->
+            navigateToCreateNewList(view)
+        }
+
+        //Edit existing item
+        binding.llEditList.setOnClickListener {view ->
+            navigateToCreateNewList(view, mainFragmentViewModel.selectedShoppingList, mainFragmentViewModel.selectedPosition)
+        }
+        binding.fabEditList.setOnClickListener {view ->
+            navigateToCreateNewList(view, mainFragmentViewModel.selectedShoppingList, mainFragmentViewModel.selectedPosition)
+        }
+
+        firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) {user ->
+            firebaseViewModel.getCurrentUserShoppingListsRealTime(user).observe(viewLifecycleOwner) {listOfShoppingLists ->
+                Log.d(TAG, "${listOfShoppingLists.size}")
+                for(key in listOfShoppingLists.keys)
                 {
-                    DocumentChange.Type.ADDED -> {
-                        Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
-                        val listOfToDos = listOfShoppingLists.get(key)
-                        listOfToDos?.let { shoppingListItem ->
-                            shoppingListAdapter.addShoppingListItem(shoppingListItem)
-                        }
-                    }
+                    when(key.type)
+                    {
+                        DocumentChange.Type.ADDED -> {
+                            Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
+                            val listOfToDos = listOfShoppingLists.get(key)
+                            listOfToDos?.let { shoppingList ->
+                                shoppingListAdapter.addShoppingListItem(shoppingList)
 
-                    DocumentChange.Type.MODIFIED -> {
-                        Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
-                        val listOfToDos = listOfShoppingLists.get(key)
-                        listOfToDos?.let { shoppingList ->
-                            val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
-                            shoppingListAdapter.updateShoppingListItem(position, shoppingList)
-
-                            if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
-                            {
-                                openShoppingList(shoppingList)
+                                if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
+                                {
+                                    val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
+                                    openShoppingList(shoppingList, position)
+                                }
                             }
                         }
-                    }
 
-                    DocumentChange.Type.REMOVED -> {
-                        Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
-                        val listOfToDos = listOfShoppingLists.get(key)
-                        listOfToDos?.let { shoppingList ->
-                            val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
-                            shoppingListAdapter.removeShoppingListItem(position)
+                        DocumentChange.Type.MODIFIED -> {
+                            Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
+                            val listOfToDos = listOfShoppingLists.get(key)
+                            listOfToDos?.let { shoppingList ->
+                                val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
+                                shoppingListAdapter.updateShoppingListItem(position, shoppingList)
 
-                            if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
-                            {
-                                openShoppingList(shoppingList)
+                                if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
+                                {
+                                    openShoppingList(shoppingList, position)
+                                }
+                            }
+                        }
+
+                        DocumentChange.Type.REMOVED -> {
+                            Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
+                            val listOfToDos = listOfShoppingLists.get(key)
+                            listOfToDos?.let { shoppingList ->
+                                val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
+                                shoppingListAdapter.removeShoppingListItem(position)
+
+                                if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
+                                {
+                                    openShoppingList(shoppingList, position)
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            if(shoppingListAdapter.itemCount > 0)
-            {
-                openShoppingList(shoppingListAdapter.getShoppingListItemFromPosition(0))
+                if(shoppingListAdapter.itemCount > 0)
+                {
+                    openShoppingList(shoppingListAdapter.getShoppingListItemFromPosition(0), 0)
+                }
             }
         }
 
         shoppingListAdapter.setOnItemClickListener(object : ShoppingListAdapter.OnItemClickListener
         {
-            override fun onItemSelected(shoppingList: ShoppingList)
+            override fun onItemSelected(shoppingList: ShoppingList, position: Int)
             {
-                openShoppingList(shoppingList)
+                Log.d(TAG, "${shoppingList}")
+                openShoppingList(shoppingList, position)
             }
         })
 
         openItemsAdapter.setOnItemClickListener(object : OpenBoughtItemsAdapter.OnItemClickListener {
             override fun onItemSelected(listItem: ListItem, isChecked: Boolean)
             {
-                Log.d(TAG, "$listItem, $isChecked")
                 listItem.isBought = isChecked
                 val indexOfItem = mainFragmentViewModel.selectedShoppingList.listOfItems.indexOf(listItem)
                 mainFragmentViewModel.selectedShoppingList.listOfItems[indexOfItem] = listItem
+                Log.d(TAG, "$listItem, ${mainFragmentViewModel.selectedShoppingList}")
                 firebaseViewModel.updateShoppingList(mainFragmentViewModel.selectedShoppingList, this@MainFragment)
             }
         })
         boughtItemsAdapter.setOnItemClickListener(object : OpenBoughtItemsAdapter.OnItemClickListener {
             override fun onItemSelected(listItem: ListItem, isChecked: Boolean)
             {
-                Log.d(TAG, "$listItem, $isChecked")
                 listItem.isBought = isChecked
                 val indexOfItem = mainFragmentViewModel.selectedShoppingList.listOfItems.indexOf(listItem)
                 mainFragmentViewModel.selectedShoppingList.listOfItems[indexOfItem] = listItem
+                Log.d(TAG, "$listItem, ${mainFragmentViewModel.selectedShoppingList}")
                 firebaseViewModel.updateShoppingList(mainFragmentViewModel.selectedShoppingList, this@MainFragment)
             }
         })
     }
 
-    private fun openShoppingList(shoppingList: ShoppingList)
+    private fun openShoppingList(shoppingList: ShoppingList, position: Int)
     {
         mainFragmentViewModel.selectedShoppingList = shoppingList
+        mainFragmentViewModel.selectedPosition = position
 
         binding.tvShoppingListName.text = shoppingList.name
         updateSelectedShoppingListItems(shoppingList.listOfItems)
@@ -188,5 +226,42 @@ class MainFragment : Fragment()
 
         val boughtItems = listOfItems.filter { it.isBought }
         mainFragmentViewModel.updateBoughtItems(boughtItems.toMutableList())
+    }
+
+    private fun navigateToCreateNewList(view: View, shoppingList: ShoppingList? = null, position: Int = -1)
+    {
+        hideFabMenu()
+        val navController: NavController = Navigation.findNavController(view)
+        val action = MainFragmentDirections.actionMainFragmentToCreateNewListFragment(shoppingList, position)
+        navController.navigate(action)
+    }
+
+    private fun showFabMenu()
+    {
+        isFabOpen = true
+
+        binding.llListDetails.visibility = View.VISIBLE
+        binding.llEditList.visibility = View.VISIBLE
+        binding.llCreateNewList.visibility = View.VISIBLE
+
+        binding.fab.animate().alpha(0.5f)
+        ObjectAnimator.ofFloat(binding.fab, View.ROTATION, 0f, 135f).setDuration(500).start()
+        binding.llListDetails.animate().translationY(-resources.getDimension(R.dimen.fab_move_upwards_65)).duration = 500
+        binding.llEditList.animate().translationY(-resources.getDimension(R.dimen.fab_move_upwards_130)).duration = 500
+        binding.llCreateNewList.animate().translationY(-resources.getDimension(R.dimen.fab_move_upwards_195)).duration = 500
+    }
+    private fun hideFabMenu()
+    {
+        isFabOpen = false
+
+        binding.fab.animate().alpha(1f)
+        ObjectAnimator.ofFloat(binding.fab, View.ROTATION, 135f, 0f).setDuration(500).start()
+        binding.llListDetails.animate().translationY(0f).duration = 500
+        binding.llEditList.animate().translationY(0f).duration = 500
+        binding.llCreateNewList.animate().translationY(0f).setDuration(500).withEndAction {
+            binding.llListDetails.visibility = View.INVISIBLE
+            binding.llEditList.visibility = View.INVISIBLE
+            binding.llCreateNewList.visibility = View.INVISIBLE
+        }
     }
 }

@@ -27,7 +27,7 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
     private var onItemClickListener: OnItemClickListener? = null
     interface OnItemClickListener
     {
-        fun onItemSelected(shoppingList: ShoppingList)
+        fun onItemSelected(shoppingList: ShoppingList, position: Int)
     }
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener?)
     {
@@ -113,6 +113,9 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
             binding.tvShoppingListItemsCount.text = itemsCount
 
             val sharedWith = shoppingList.friendsSharedWith.size
+
+            // First, Remove the ID of the currently logged in user
+            val removeCurrentUser = shoppingList.friendsSharedWith.filter { it != firebaseViewModel.currentUserLD.value?.id }
             when(sharedWith)
             {
                 1 -> { // The creator user of the list
@@ -129,7 +132,7 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
 
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[1]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[0]),
                             binding.ivShoppingListSharedWith1
                         )
                     }
@@ -142,13 +145,13 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
 
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[1]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[0]),
                             binding.ivShoppingListSharedWith1
                         )
                     }
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[2]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[1]),
                             binding.ivShoppingListSharedWith2
                         )
                     }
@@ -161,19 +164,19 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
 
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[1]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[0]),
                             binding.ivShoppingListSharedWith1
                         )
                     }
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[2]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[1]),
                             binding.ivShoppingListSharedWith2
                         )
                     }
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[3]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[2]),
                             binding.ivShoppingListSharedWith3
                         )
                     }
@@ -187,19 +190,19 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
 
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[1]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[0]),
                             binding.ivShoppingListSharedWith1
                         )
                     }
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[2]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[1]),
                             binding.ivShoppingListSharedWith2
                         )
                     }
                     firebaseViewModel.viewModelScope.launch {
                         setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(shoppingList.friendsSharedWith[3]),
+                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[2]),
                             binding.ivShoppingListSharedWith3
                         )
                     }
@@ -227,7 +230,7 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
         override fun onClick(view: View?)
         {
             Log.d(TAG, "${listOfShoppingLists[adapterPosition]}")
-            onItemClickListener?.onItemSelected(listOfShoppingLists[adapterPosition])
+            onItemClickListener?.onItemSelected(listOfShoppingLists[adapterPosition], adapterPosition)
         }
     }
 }

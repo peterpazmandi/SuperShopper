@@ -74,7 +74,7 @@
             android:layout_width="35dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/margin_xxlarge"
-            android:src="@drawable/ic_edit_brown"
+            android:src="@drawable/ic_edit_black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/iv_deleteItem"
             app:layout_constraintTop_toTopOf="parent" />

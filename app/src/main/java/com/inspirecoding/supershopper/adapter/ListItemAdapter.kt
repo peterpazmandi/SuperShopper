@@ -15,8 +15,10 @@ import com.inspirecoding.supershopper.fragments.CreateNewListFragmentDirections
 import com.inspirecoding.supershopper.model.ListItem
 
 private const val TAG = "ListItemAdapter"
-class ListItemAdapter(val context: Context, var listOfItems: MutableList<ListItem>): RecyclerView.Adapter<ListItemAdapter.ItemViewHolder>()
+class ListItemAdapter(val context: Context): RecyclerView.Adapter<ListItemAdapter.ItemViewHolder>()
 {
+    var listOfItems: MutableList<ListItem> = mutableListOf()
+
     private var onItemClickListener: OnItemClickListener? = null
 
     interface OnItemClickListener

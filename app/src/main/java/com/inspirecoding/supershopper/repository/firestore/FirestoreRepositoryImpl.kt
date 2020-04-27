@@ -12,7 +12,7 @@ import com.inspirecoding.supershopper.utilities.Result
 import java.lang.Exception
 
 private const val TAG = "FiresotreRepositoryImpl"
-class FiresotreRepositoryImpl: FiresotreRepository
+class FirestoreRepositoryImpl: FirestoreRepository
 {
     private val USER_COLLECTION_NAME = "users"
     private val SHOPPINGLIST_COLLECTION_NAME = "shoppingList"
@@ -100,39 +100,41 @@ class FiresotreRepositoryImpl: FiresotreRepository
         return shoppingListCollection.document(shoppingList.id).set(shoppingList).await()
     }
 
-    override fun getCurrentUserShoppingListsRealTime(): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    override fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
     {
         val shoppingListLiveData = MutableLiveData<Map<DocumentChange, ShoppingList>>()
 
         try
         {
-            shoppingListCollection.addSnapshotListener { resultDocumentSnapshot, firebaseFirestoreException ->
-                resultDocumentSnapshot?.let {
-                    val mapOfResult = mutableMapOf<DocumentChange, ShoppingList>()
-                    for (document in resultDocumentSnapshot.documentChanges)
-                    {
-                        when (document.type)
+            shoppingListCollection
+                .whereArrayContains("friendsSharedWith", currentUser.id)
+                .addSnapshotListener { resultDocumentSnapshot, firebaseFirestoreException ->
+                    resultDocumentSnapshot?.let {
+                        val mapOfResult = mutableMapOf<DocumentChange, ShoppingList>()
+                        for (document in resultDocumentSnapshot.documentChanges)
                         {
-                            DocumentChange.Type.ADDED -> {
-                                mapOfResult.put(document, createShoppingList(document))
-                                Log.d(TAG, "${mapOfResult}")
-                            }
+                            when (document.type)
+                            {
+                                DocumentChange.Type.ADDED -> {
+                                    mapOfResult.put(document, createShoppingList(document))
+                                    Log.d(TAG, "${mapOfResult}")
+                                }
 
-                            DocumentChange.Type.MODIFIED -> {
-                                mapOfResult.put(document, createShoppingList(document))
-                            }
+                                DocumentChange.Type.MODIFIED -> {
+                                    mapOfResult.put(document, createShoppingList(document))
+                                }
 
-                            DocumentChange.Type.REMOVED -> {
-                                mapOfResult.put(document, createShoppingList(document))
+                                DocumentChange.Type.REMOVED -> {
+                                    mapOfResult.put(document, createShoppingList(document))
+                                }
                             }
                         }
-                    }
-                    val sortedMap = mapOfResult.toList().sortedByDescending {
-                        (_, value) -> value.timeStamp
-                    }.toMap()
+                        val sortedMap = mapOfResult.toList().sortedByDescending {
+                            (_, value) -> value.timeStamp
+                        }.toMap()
 
-                    shoppingListLiveData.value = sortedMap
-                }
+                        shoppingListLiveData.value = sortedMap
+                    }
             }
         }
         catch  (exception: Exception)

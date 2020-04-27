@@ -20,4 +20,8 @@
 
     <dimen name="round_corner_small">8dp</dimen>
     <dimen name="round_corner_medium">12dp</dimen>
+
+    <dimen name="fab_move_upwards_65">65dp</dimen>
+    <dimen name="fab_move_upwards_130">130dp</dimen>
+    <dimen name="fab_move_upwards_195">195dp</dimen>
 </resources>

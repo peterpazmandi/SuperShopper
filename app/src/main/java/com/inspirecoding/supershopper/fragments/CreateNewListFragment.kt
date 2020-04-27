@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
@@ -31,10 +32,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.lifecycle.observe
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.navArgs
 import com.inspirecoding.supershopper.enums.Crud
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
 import kotlinx.android.synthetic.main.fragment_create_new_list.*
+import kotlinx.coroutines.launch
 
 
 private const val TAG = "CreateNewListFragment"
@@ -47,6 +51,9 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     private val createNewListFragmentViewModel: CreateNewListFragmentViewModel by navGraphViewModels(R.id.navigation_graph)
 
     private lateinit var listItemAdapter: ListItemAdapter
+
+    private var selectedShoppingList: ShoppingList? = null
+    private var selectedPosition = -1
 
     override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -95,7 +102,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 }
             }
 
-            listItemAdapter = ListItemAdapter(context, mutableListOf<ListItem>())
+            listItemAdapter = ListItemAdapter(context)
             listItemAdapter.removeAllItems()
             binding.rvCreateNewListFourthItem.apply {
                 layoutManager = LinearLayoutManager(context)
@@ -117,6 +124,23 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
+
+        val safeArgs: CreateNewListFragmentArgs by navArgs()
+        selectedShoppingList = safeArgs.shoppingList
+        selectedPosition = safeArgs.position
+        Log.i(TAG, "$selectedShoppingList")
+        Log.i(TAG, "$selectedPosition")
+
+        if(selectedShoppingList == null)
+        {
+            (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.create_new_list)
+            binding.btnSaveList.text = getString(R.string.save_list)
+        }
+        else
+        {
+            (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.edit_list)
+            binding.btnSaveList.text = getString(R.string.edit_list)
+        }
 
         binding.etCreateNewListFirstItemName.addTextChangedListener {
             binding.tilCreateNewListFirstItemName.error = null
@@ -164,8 +188,18 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             {
                 if(createShoppingListObject() != null)
                 {
-                    firebaseViewModel.insertListItemInFirestore(createShoppingListObject()!!, this)
-                    findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
+                    if(selectedShoppingList == null)
+                    {
+                        firebaseViewModel.insertListItemInFirestore(createShoppingListObject()!!, this)
+                        findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
+                    }
+                    else
+                    {
+                        val updatedShoppingList = createShoppingListObject()!!
+                        updatedShoppingList.id = (selectedShoppingList as ShoppingList).id
+                        firebaseViewModel.updateShoppingList(updatedShoppingList, this)
+                        findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
+                    }
                 }
                 else
                 {
@@ -188,12 +222,34 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         })
     }
 
+    private fun populateForm(shoppingList: ShoppingList)
+    {
+        context?.let { context ->
+            binding.etCreateNewListFirstItemName.setText(shoppingList.name)
+            binding.tvCreateNewListSecondItemDueDate.text = shoppingList.dueDate.toLocaleString().substringBeforeLast(" ")
+            binding.tvCreateNewListSecondItemDueDate.setTextColor(ContextCompat.getColor(context, R.color.black))
+
+            listItemAdapter.addAllItem(shoppingList.listOfItems)
+
+            for(friendId in shoppingList.friendsSharedWith)
+            {
+                firebaseViewModel.viewModelScope.launch {
+                    val friend = firebaseViewModel.getUserFromFirestore(friendId)
+                    friend?.let {
+                        createNewListFragmentViewModel.addFriendChip(context, friend, binding.chgCreateNewListThirdItemFriends)
+                    }
+                }
+            }
+        }
+    }
+
     override fun onResume()
     {
         super.onResume()
-        Log.d(TAG, "Size_3: ${listItemAdapter.itemCount}")
         listItemAdapter.removeAllItems()
-        Log.d(TAG, "Size_5: ${listItemAdapter.itemCount}")
+        selectedShoppingList?.let {
+            populateForm(selectedShoppingList as ShoppingList)
+        }
     }
 
     private fun setTodaysDate()

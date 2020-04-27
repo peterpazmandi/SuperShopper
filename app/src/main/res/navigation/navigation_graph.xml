@@ -57,6 +57,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.inspirecoding.supershopper.fragments.MainFragment"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_createNewListFragment"
@@ -69,8 +70,16 @@
     <fragment
         android:id="@+id/createNewListFragment"
         android:name="com.inspirecoding.supershopper.fragments.CreateNewListFragment"
-        android:label="@string/create_new_list"
         tools:layout="@layout/fragment_create_new_list" >
+        <argument
+            android:name="shoppingList"
+            app:nullable="true"
+            android:defaultValue="@null"
+            app:argType="com.inspirecoding.supershopper.model.ShoppingList"/>
+        <argument
+            android:name="position"
+            android:defaultValue="-1"
+            app:argType="integer"/>
         <action
             android:id="@+id/action_createNewListFragment_to_addNewItemDialog"
             app:destination="@id/addNewItemDialog" />
@@ -85,7 +94,7 @@
     <dialog
         android:id="@+id/addNewItemDialog"
         android:name="com.inspirecoding.supershopper.fragments.AddNewItemDialog"
-        android:label="AddNewItemDialog"
+        android:label="Add New Item"
         tools:layout="@layout/fragment_add_new_item_dialog">
         <argument
             android:name="listItem"

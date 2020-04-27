@@ -16,6 +16,7 @@ class MainFragmentViewModel: ViewModel()
         get() = _boughtItemsMLD
 
     var selectedShoppingList = ShoppingList()
+    var selectedPosition: Int = -1
 
     fun updateOpenItems(listOfItems: MutableList<ListItem>)
     {
