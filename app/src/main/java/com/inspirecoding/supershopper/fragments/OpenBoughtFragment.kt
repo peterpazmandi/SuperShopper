@@ -8,19 +8,18 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 
 import com.inspirecoding.supershopper.R
-import com.inspirecoding.supershopper.databinding.FragmentShoppingListDetailsBinding
+import com.inspirecoding.supershopper.databinding.FragmentOpenBoughtBinding
 
 
-class ShoppingListDetailsFragment : Fragment()
+class OpenBoughtFragment : Fragment()
 {
-    private lateinit var binding: FragmentShoppingListDetailsBinding
+    private lateinit var binding: FragmentOpenBoughtBinding
 
     override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_shopping_list_details, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_open_bought, container, false)
 
 
-
-        return binding.root
+        return layoutInflater.inflate(R.layout.fragment_open_bought, container, false)
     }
 }

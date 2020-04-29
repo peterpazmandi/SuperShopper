@@ -83,4 +83,7 @@ dependencies {
 
     //Joda time
     implementation "net.danlew:android.joda:$joda_time"
+
+    //ViewPager2
+    implementation "androidx.viewpager2:$viewpager2"
 }

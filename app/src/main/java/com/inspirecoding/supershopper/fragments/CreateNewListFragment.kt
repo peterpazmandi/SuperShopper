@@ -4,12 +4,11 @@ import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
@@ -37,6 +36,7 @@ import androidx.navigation.fragment.navArgs
 import com.inspirecoding.supershopper.enums.Crud
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
+import kotlinx.android.synthetic.main.app_bar_with_fragment.view.*
 import kotlinx.android.synthetic.main.fragment_create_new_list.*
 import kotlinx.coroutines.launch
 
@@ -357,5 +357,14 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             binding.tvCreateNewListItemsError.visibility = View.INVISIBLE
             true
         }
+    }
+
+
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
+    {
+        inflater.inflate(R.menu.menu_nav_drawer, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

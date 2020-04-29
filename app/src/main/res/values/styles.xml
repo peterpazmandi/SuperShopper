@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="chipIconTint">@color/colorAccent</item>
+        <item name="chipIconTint">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
@@ -49,6 +49,12 @@
         <item name="android:checkable">true</item>
         <item name="chipIconEnabled">false</item>
         <item name="checkedIconEnabled">false</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/textsize_large</item>
+        <item name="android:textColor">@color/light_brown</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

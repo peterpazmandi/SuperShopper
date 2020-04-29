@@ -25,17 +25,7 @@
             android:layout_gravity="end"
             app:elevation="0dp"
             android:translationZ="0dp"
-            android:background="?attr/colorPrimaryDark" >
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_currentUserProfilePic"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:src="@drawable/profilepicture_blank"/>
-
-        </androidx.appcompat.widget.Toolbar>
+            android:background="?attr/colorPrimaryDark" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <fragment

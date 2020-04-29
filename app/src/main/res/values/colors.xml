@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F9F6F1</color>
+    <color name="colorPrimary">#F9F4EA</color>
     <color name="colorPrimaryDark">#5F4C3F</color>
     <color name="colorAccent">#F68054</color>
 
@@ -11,10 +11,10 @@
     <color name="lightRed">#EDCAC6</color>
     <color name="darkRed">#FF1A00</color>
 
-    <color name="light_braun">#F1E9DC</color>
-    <color name="middle_braun">#C8B9A8</color>
+    <color name="light_brown">#F1E9DC</color>
+    <color name="middle_brown">#C8B9A8</color>
     <color name="brown">#5F4C3F</color>
-    <color name="dark_braun">#2D1F14</color>
+    <color name="dark_brown">#2D1F14</color>
 
     <color name="gray">#CCCCCC</color>
     <color name="dark_gray">#949494</color>

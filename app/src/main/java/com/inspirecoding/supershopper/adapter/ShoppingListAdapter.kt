@@ -9,9 +9,12 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.ItemOfShoppinglistBinding
+import com.inspirecoding.supershopper.fragments.MainFragmentDirections
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
@@ -22,17 +25,6 @@ private const val TAG = "ShoppingListAdapter"
 class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseViewModel): RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>()
 {
     var listOfShoppingLists: MutableList<ShoppingList> = mutableListOf()
-
-
-    private var onItemClickListener: OnItemClickListener? = null
-    interface OnItemClickListener
-    {
-        fun onItemSelected(shoppingList: ShoppingList, position: Int)
-    }
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener?)
-    {
-        this.onItemClickListener = onItemClickListener
-    }
 
 
     fun addShoppingListItem(shoppingListItem: ShoppingList)
@@ -108,9 +100,22 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
             binding.tvShoppingListDueDate.text = shoppingList.dueDate.toLocaleString().substringBeforeLast(" ")
             binding.tvShoppingListName.text = shoppingList.name
 
-            val _size = shoppingList.listOfItems.size
-            val itemsCount = context.getString(R.string.count_items, _size.toString())
-            binding.tvShoppingListItemsCount.text = itemsCount
+            val itemsCount = shoppingList.listOfItems.size
+            val boughtItemsCount = shoppingList.listOfItems.filter { it.isBought }.size
+            binding.pbItemProgress.progress = calculateRatio(boughtItemsCount, itemsCount)
+
+            if(itemsCount != boughtItemsCount)
+            {
+                binding.tvOpenBoughtItemsCount.text = getItemRateCountString(boughtItemsCount, itemsCount)
+
+                binding.tvOpenBoughtItemsCount.visibility = View.VISIBLE
+                binding.ivShoppingListsDoneMark.visibility = View.INVISIBLE
+            }
+            else
+            {
+                binding.tvOpenBoughtItemsCount.visibility = View.INVISIBLE
+                binding.ivShoppingListsDoneMark.visibility = View.VISIBLE
+            }
 
             val sharedWith = shoppingList.friendsSharedWith.size
 
@@ -226,11 +231,18 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
                 }
             }
         }
-
-        override fun onClick(view: View?)
+        private fun calculateRatio(subset: Int, completeSet: Int): Int
         {
-            Log.d(TAG, "${listOfShoppingLists[adapterPosition]}")
-            onItemClickListener?.onItemSelected(listOfShoppingLists[adapterPosition], adapterPosition)
+            val rate = (subset.toFloat()/completeSet.toFloat())*100f
+            return rate.toInt()
+        }
+        private fun getItemRateCountString(subset: Int, completeSet: Int) = "$subset / $completeSet"
+
+        override fun onClick(view: View)
+        {
+            val navController: NavController = Navigation.findNavController(view)
+            val action = MainFragmentDirections.actionMainFragmentToShoppingListFragment(listOfShoppingLists[adapterPosition])
+            navController.navigate(action)
         }
     }
 }

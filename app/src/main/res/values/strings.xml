@@ -58,6 +58,7 @@
     <string name="kg">kg</string>
     <string name="ml">ml</string>
     <string name="items">Items</string>
+    <string name="details">Details</string>
     <string name="count_items">%1$s Items</string>
     <string name="plus_number">+ %1$s</string>
     <string name="quantity">Quantity</string>
@@ -84,4 +85,6 @@
     <string name="your_list_is_empty">Your list is empty</string>
     <string name="list_details">List details</string>
     <string name="shopping_list_details">Shopping list details</string>
+    <string name="profile_picture">Profile Picture</string>
+
 </resources>

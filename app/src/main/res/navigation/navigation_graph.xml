@@ -66,6 +66,9 @@
             app:exitAnim="@anim/slide_out_from_right"
             app:popEnterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_from_right"/>
+        <action
+            android:id="@+id/action_mainFragment_to_shoppingListFragment"
+            app:destination="@id/shoppingListFragment" />
     </fragment>
     <fragment
         android:id="@+id/createNewListFragment"
@@ -106,4 +109,12 @@
             android:defaultValue="0"
             app:argType="integer"/>
     </dialog>
+    <fragment
+        android:id="@+id/shoppingListFragment"
+        android:name="com.inspirecoding.supershopper.fragments.ShoppingListFragment"
+        tools:layout="@layout/fragment_open_bought">
+        <argument
+            android:name="shoppingList"
+            app:argType="com.inspirecoding.supershopper.model.ShoppingList"/>
+    </fragment>
 </navigation>

@@ -75,9 +75,9 @@ class MainActivity : AppCompatActivity()
 //        printKeyHash()
 
 
-        firebaseViewModel.currentUserLD.observe(this) { user ->
-            setProfilePictures(user, toolbar.iv_currentUserProfilePic)
-        }
+//        firebaseViewModel.currentUserLD.observe(this) { user ->
+//            setProfilePictures(user, toolbar.iv_currentUserProfilePic)
+//        }
     }
 
 

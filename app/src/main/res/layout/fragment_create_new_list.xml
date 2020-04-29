@@ -209,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textsize_xxlarge"
                     app:errorEnabled="true"
-                    app:errorTextAppearance="@color/dark_braun"
+                    app:errorTextAppearance="@color/dark_brown"
                     app:hintEnabled="false"
                     app:layout_constraintLeft_toLeftOf="@+id/cl_createNewList_thirdItem_title_text"
                     app:layout_constraintRight_toRightOf="parent"
