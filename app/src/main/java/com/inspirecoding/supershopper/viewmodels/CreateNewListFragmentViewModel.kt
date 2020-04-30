@@ -9,24 +9,29 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.Coil
+import coil.api.get
+import coil.api.load
+import coil.request.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.BitmapDrawableEncoder
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.enums.Crud
+import com.inspirecoding.supershopper.fragments.DetailsFragment
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.User
-import com.inspirecoding.supershopper.modul.firebaseViewModelModule
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.*
-import kotlin.collections.HashMap
 
 private const val TAG = "CreateNewListViewModel"
 class CreateNewListFragmentViewModel: ViewModel()
@@ -53,19 +58,51 @@ class CreateNewListFragmentViewModel: ViewModel()
         else
         {
             Log.i(TAG, "isNotEmpty")
-            val target = getTargetOfPicasso(context, chip)
+
+//            viewModelScope.launch {
+//                val queue = async(Dispatchers.IO) {
+//                    delay(2_000)
+//                    when (val result = Coil.imageLoader(context)
+//                        .execute(GetRequest.Builder(context).data(user.profilePicture).apply {}.build())) {
+//                        is SuccessResult -> result.drawable
+//                        is ErrorResult -> throw result.throwable }
+//                }
+//                chip.chipIcon = queue.await()
+//            }
+
+//            viewModelScope.launch {
+//                val request = async(Dispatchers.IO)
+//                {
+//                    GetRequest.Builder(context)
+//                        .data(user.profilePicture)
+//                        .build()
+//                }
+//
+//                chip.chipIcon = Coil.execute(request.await()).drawable
+//            }
+
+
             Picasso
                 .get()
                 .load(user.profilePicture)
                 .placeholder(R.drawable.ic_person)
+                .error(R.drawable.ic_add_brown)
                 .transform(CropCircleTransformation())
-                .into(target)
+                .into(getTargetOfPicasso(context, chip))
         }
 
-        chip.isCloseIconVisible = true
+        when (chipGroup.id)
+        {
+            R.id.chg_friends -> {
+                chip.isCloseIconVisible = false
+            }
+            R.id.chg_createNewList_thirdItem_friends -> {
+                chip.isCloseIconVisible = true
+            }
+        }
 
-        context?.let { context ->
-            chip.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white))
+        context.let { _context ->
+            chip.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(_context, R.color.white))
         }
         chip.setChipIconTintResource(R.color.colorPrimaryDark)
 
@@ -107,11 +144,8 @@ class CreateNewListFragmentViewModel: ViewModel()
     {
         override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom)
         {
-            viewModelScope.launch {
-                delay(1_000)
-                val drawable: Drawable = BitmapDrawable(context.resources, bitmap)
-                targetChip.chipIcon = drawable
-            }
+            val drawable = RoundedBitmapDrawableFactory.create(context.resources, bitmap)
+            targetChip.chipIcon = drawable
         }
 
         override fun onBitmapFailed(exception: Exception, errorDrawable: Drawable)
@@ -120,12 +154,11 @@ class CreateNewListFragmentViewModel: ViewModel()
             Log.i(TAG, exception.message!!)
         }
 
-        override fun onPrepareLoad(placeHolderDrawable: Drawable)
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?)
         {
             viewModelScope.launch {
-                targetChip.chipIcon?.invalidateSelf()
-                targetChip.chipIcon = ContextCompat.getDrawable(context, R.drawable.ic_person)
-                delay(2_000)
+                delay(1_800_000)
+                targetChip.chipIcon = placeHolderDrawable
             }
         }
     }

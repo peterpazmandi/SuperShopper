@@ -68,7 +68,11 @@
             app:popExitAnim="@anim/slide_out_from_right"/>
         <action
             android:id="@+id/action_mainFragment_to_shoppingListFragment"
-            app:destination="@id/shoppingListFragment" />
+            app:destination="@id/shoppingListFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right" />
     </fragment>
     <fragment
         android:id="@+id/createNewListFragment"
@@ -79,10 +83,6 @@
             app:nullable="true"
             android:defaultValue="@null"
             app:argType="com.inspirecoding.supershopper.model.ShoppingList"/>
-        <argument
-            android:name="position"
-            android:defaultValue="-1"
-            app:argType="integer"/>
         <action
             android:id="@+id/action_createNewListFragment_to_addNewItemDialog"
             app:destination="@id/addNewItemDialog" />
@@ -116,5 +116,12 @@
         <argument
             android:name="shoppingList"
             app:argType="com.inspirecoding.supershopper.model.ShoppingList"/>
+        <action
+            android:id="@+id/action_shoppingListFragment_to_addNewItemDialog"
+            app:destination="@id/createNewListFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"/>
     </fragment>
 </navigation>

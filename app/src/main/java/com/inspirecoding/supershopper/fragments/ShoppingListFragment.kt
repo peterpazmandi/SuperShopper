@@ -2,19 +2,22 @@ package com.inspirecoding.supershopper.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.adapter.OpenedShoppingListAdapter
 import com.inspirecoding.supershopper.databinding.FragmentShoppingListBinding
 import com.inspirecoding.supershopper.model.ShoppingList
+import com.inspirecoding.supershopper.viewmodels.ShoppingListFragmentViewModel
+import org.koin.android.ext.android.bind
 
 
 private const val TAG = "ShoppingListFragment"
@@ -22,6 +25,7 @@ class ShoppingListFragment : Fragment()
 {
     private lateinit var binding: FragmentShoppingListBinding
     private lateinit var openedShoppingListAdapter: OpenedShoppingListAdapter
+    private val shoppingListFragmentViewModel by navGraphViewModels<ShoppingListFragmentViewModel>(R.id.navigation_graph)
 
     private val TAB_ITEMS_COUNT = 2
 
@@ -38,6 +42,8 @@ class ShoppingListFragment : Fragment()
     {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
+
+        setHasOptionsMenu(true)
 
         binding.tlItemsDetails.tabGravity = TabLayout.GRAVITY_FILL
         binding.tlItemsDetails.addTab(binding.tlItemsDetails.newTab().setText(getString(R.string.items)))
@@ -57,6 +63,7 @@ class ShoppingListFragment : Fragment()
         val safeArgs: ShoppingListFragmentArgs by navArgs()
         shoppingList = safeArgs.shoppingList
         (activity as AppCompatActivity).supportActionBar?.title = shoppingList.name
+        shoppingListFragmentViewModel.openedShoppingList = shoppingList
 
         binding.tlItemsDetails.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener
         {
@@ -66,22 +73,34 @@ class ShoppingListFragment : Fragment()
                 binding.vpItemDetails.currentItem = tabItem.position
             }
         })
-
-        Log.d(TAG, "${binding.tlItemsDetails.tabCount}")
     }
 
-    override fun onResume()
+    private fun navigateToCreateNewList(view: View, shoppingList: ShoppingList? = null)
     {
-        super.onResume()
-        Log.d(TAG, "onResume")
-
-        addPagerFragments()
-        binding.vpItemDetails.adapter = openedShoppingListAdapter
+        val navController: NavController = Navigation.findNavController(view)
+        val action = ShoppingListFragmentDirections.actionShoppingListFragmentToAddNewItemDialog(shoppingList)
+        navController.navigate(action)
     }
 
-    private fun addPagerFragments()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
-        openedShoppingListAdapter.addFragments(DetailsFragment())
-        openedShoppingListAdapter.addFragments(OpenBoughtFragment())
+        inflater.inflate(R.menu.menu_edit_delete_shoppinglist, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        return when(item.itemId)
+        {
+            R.id.item_edit -> {
+                navigateToCreateNewList(binding.root, shoppingListFragmentViewModel.openedShoppingList)
+                true
+            }
+            R.id.item_delete -> {
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

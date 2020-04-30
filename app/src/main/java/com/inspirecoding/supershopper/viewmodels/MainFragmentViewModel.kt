@@ -8,22 +8,6 @@ import com.inspirecoding.supershopper.model.ShoppingList
 
 class MainFragmentViewModel: ViewModel()
 {
-    private val _openItemsMLD = MutableLiveData<MutableList<ListItem>>()
-    val openItemsLD: LiveData<MutableList<ListItem>>
-        get() = _openItemsMLD
-    private val _boughtItemsMLD = MutableLiveData<MutableList<ListItem>>()
-    val boughtItemsLD: LiveData<MutableList<ListItem>>
-        get() = _boughtItemsMLD
-
     var selectedShoppingList = ShoppingList()
     var selectedPosition: Int = -1
-
-    fun updateOpenItems(listOfItems: MutableList<ListItem>)
-    {
-        _openItemsMLD.value = listOfItems
-    }
-    fun updateBoughtItems(listOfItems: MutableList<ListItem>)
-    {
-        _boughtItemsMLD.value = listOfItems
-    }
 }

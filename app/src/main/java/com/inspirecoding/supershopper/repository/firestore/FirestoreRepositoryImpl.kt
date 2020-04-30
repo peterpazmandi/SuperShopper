@@ -146,6 +146,49 @@ class FirestoreRepositoryImpl: FirestoreRepository
         return shoppingListLiveData
     }
 
+    override fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    {
+        val shoppingListLiveData = MutableLiveData<Map<DocumentChange, ShoppingList>>()
+
+        try
+        {
+            shoppingListCollection
+                .whereEqualTo("id", shoppingListId)
+                .addSnapshotListener { resultDocumentSnapshot, firebaseFirestoreException ->
+                    resultDocumentSnapshot?.let {
+                        val mapOfResult = mutableMapOf<DocumentChange, ShoppingList>()
+                        for (document in resultDocumentSnapshot.documentChanges)
+                        {
+                            when (document.type)
+                            {
+                                DocumentChange.Type.ADDED -> {
+                                    mapOfResult.put(document, createShoppingList(document))
+                                    Log.d(TAG, "${mapOfResult}")
+                                }
+
+                                DocumentChange.Type.MODIFIED -> {
+                                    mapOfResult.put(document, createShoppingList(document))
+                                }
+
+                                DocumentChange.Type.REMOVED -> {
+                                    mapOfResult.put(document, createShoppingList(document))
+                                }
+                            }
+                        }
+
+                        shoppingListLiveData.value = mapOfResult
+                    }
+                }
+        }
+        catch  (exception: Exception)
+        {
+            return shoppingListLiveData
+        }
+
+        Log.d(TAG, "__::${shoppingListLiveData.value}")
+        return shoppingListLiveData
+    }
+
     fun createShoppingList(documentChange: DocumentChange): ShoppingList
     {
         val shoppingList = documentChange.document.toObject(ShoppingList::class.java)

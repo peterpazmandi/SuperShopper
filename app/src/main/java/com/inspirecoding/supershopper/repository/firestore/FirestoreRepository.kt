@@ -17,4 +17,5 @@ interface FirestoreRepository
     suspend fun updateShoppingList(shoppingList: ShoppingList): Result<Void?>
 
     fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<Map<DocumentChange, ShoppingList>>
 }

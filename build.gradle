@@ -2,8 +2,10 @@
 
 buildscript {
     ext.circular_image_view = '3.1.0'
+    ext.coil = '0.10.1'
     ext.firebase_auth = '19.2.0'
     ext.facebook_android_sdk = '[5,6)'
+    ext.glide = '4.11.0'
     ext.google_auth = '18.0.0'
     ext.joda_time = '2.10.3'
     ext.koin_version = '2.0.1'

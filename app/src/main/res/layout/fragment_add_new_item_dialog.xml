@@ -83,6 +83,7 @@
                     android:id="@+id/et_createNewItem_firstItem_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
                     android:layout_marginBottom="@dimen/margin_large"
                     android:hint="@string/give_me_a_name"
                     android:textSize="@dimen/textsize_xlarge" />
@@ -291,6 +292,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_large"
                     android:hint="@string/enter_a_quantity"
+                    android:backgroundTint="@color/colorPrimary"
                     android:inputType="number"
                     android:textSize="@dimen/textsize_xlarge" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -345,7 +347,7 @@
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chg_createNewItem_priority"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
                 app:layout_constraintLeft_toLeftOf="@+id/cl_createNewItem_fourthItem_title_text"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cl_createNewItem_fourthItem_title_text"
@@ -354,25 +356,24 @@
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_createNewItem_low"
                     style="@style/ChipSelection.priority.low"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
                     app:checkedIconEnabled="false"
                     app:closeIconEnabled="false" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_createNewItem_medium"
                     style="@style/ChipSelection.priority.medium"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="@dimen/margin_large"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
                     app:checkedIconEnabled="false"
                     app:closeIconEnabled="false" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_createNewItem_high"
                     style="@style/ChipSelection.priority.high"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
                     app:checkedIconEnabled="false"
                     app:closeIconEnabled="false" />
 

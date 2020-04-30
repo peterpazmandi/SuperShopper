@@ -130,22 +130,12 @@ class MainFragment : Fragment()
     {
         mainFragmentViewModel.selectedShoppingList = shoppingList
         mainFragmentViewModel.selectedPosition = position
-
-        updateSelectedShoppingListItems(shoppingList.listOfItems)
-    }
-    private fun updateSelectedShoppingListItems(listOfItems: MutableList<ListItem>)
-    {
-        val openItems = listOfItems.filter { !it.isBought }
-        mainFragmentViewModel.updateOpenItems(openItems.toMutableList())
-
-        val boughtItems = listOfItems.filter { it.isBought }
-        mainFragmentViewModel.updateBoughtItems(boughtItems.toMutableList())
     }
 
-    private fun navigateToCreateNewList(view: View, shoppingList: ShoppingList? = null, position: Int = -1)
+    private fun navigateToCreateNewList(view: View)
     {
         val navController: NavController = Navigation.findNavController(view)
-        val action = MainFragmentDirections.actionMainFragmentToCreateNewListFragment(shoppingList, position)
+        val action = MainFragmentDirections.actionMainFragmentToCreateNewListFragment()
         navController.navigate(action)
     }
 

@@ -47,6 +47,7 @@
     <string name="enter_at_least_3_characters">Enter at least 3 characters</string>
     <string name="you_have_already_added_this_friend">You have already added this friend</string>
     <string name="share_with_your_friends">Share with your friends</string>
+    <string name="friends_shared_with">Friends shared with</string>
     <string name="due_date">Due date</string>
     <string name="add_new_item">Add new item</string>
 
@@ -86,5 +87,8 @@
     <string name="list_details">List details</string>
     <string name="shopping_list_details">Shopping list details</string>
     <string name="profile_picture">Profile Picture</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="creator">Creator</string>
 
 </resources>
