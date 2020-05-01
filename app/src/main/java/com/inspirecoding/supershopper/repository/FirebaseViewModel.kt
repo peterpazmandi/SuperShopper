@@ -65,9 +65,6 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
         get() = _usersListMLD
 
 
-    var sharedWithFriends: MutableList<User> = mutableListOf()
-
-
     //Email
     fun registerUserFromAuthWithEmailAndPassword(name: String, email: String, password: String, fragment: Fragment)
     {
@@ -127,19 +124,19 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             }
         }
     }
-    fun sendPasswordResetEmail(email: String, activity: Activity)
+    fun sendPasswordResetEmail(email: String, fragment: Fragment)
     {
         viewModelScope.launch {
             when(val result = authRepository.sendPasswordResetEmail(email))
             {
                 is Result.Success -> {
-                    Toast.makeText(activity, "Check email to reset your password!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(fragment.context, fragment.getString(R.string.check_your_emails_to_reset_your_password), Toast.LENGTH_SHORT).show()
                 }
                 is Result.Error -> {
                     _toast.value = result.exception.message
                 }
                 is Result.Canceled -> {
-                    _toast.value = activity.getString(R.string.request_canceled)
+                    _toast.value = fragment.getString(R.string.request_canceled)
                 }
             }
         }
@@ -164,12 +161,21 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                     {
                         is Result.Success -> {
                             Log.d(TAG, "Result.Success - ${result.data?.user?.uid}")
-                            result.data?.user?.let {user ->
-                                val _user = user.displayName?.let {
-                                    createUserObject(user, it)
+                            result.data?.user?.let { user ->
+                                val userExists = getUserFromFirestore(user.uid)
+                                if(userExists == null)
+                                {
+                                    val _user = user.displayName?.let {
+                                        createUserObject(user, it)
+                                    }
+                                    _user?.let {
+                                        createUserInFirestore(_user, fragment)
+                                    }
                                 }
-                                _user?.let {
-                                    createUserInFirestore(_user, fragment)
+                                else
+                                {
+                                    _currentUserMLD.value = userExists
+                                    navigateToMainFragment(fragment)
                                 }
                             }
                         }
@@ -232,14 +238,20 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                         is Result.Success -> {
                             Log.d(TAG, "Result.Success - ${result.data?.user?.uid}")
                             result.data?.user?.let {user ->
-                                val _user = user.displayName?.let {
-                                    createUserObject(
-                                        user,
-                                        it
-                                    )
+                                val userExists = getUserFromFirestore(user.uid)
+                                if(userExists == null)
+                                {
+                                    val _user = user.displayName?.let {
+                                        createUserObject(user, it)
+                                    }
+                                    _user?.let {
+                                        createUserInFirestore(_user, fragment)
+                                    }
                                 }
-                                _user?.let {
-                                    createUserInFirestore(_user, fragment)
+                                else
+                                {
+                                    _currentUserMLD.value = userExists
+                                    navigateToMainFragment(fragment)
                                 }
                             }
 
@@ -360,7 +372,6 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                         _toast.value = fragment.getString(R.string.login_successful)
                     }
                 }
-                Log.d(TAG, "Result.Error - ${user.name}")
                 _currentUserMLD.value = user
                 navigateToMainFragment(fragment)
 

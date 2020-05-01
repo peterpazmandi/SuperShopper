@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.inspirecoding.supershopper.MainActivity
 
@@ -70,19 +71,19 @@ class LoginFragment : Fragment()
                 )
             }
         }
-
+        binding.tvLoginForgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_resetPasswordFragment)
+        }
         binding.tvLoginFacebook.setOnClickListener {
             (activity as MainActivity).let { activity ->
                 firebaseViewModel.signInWithFacebook(activity, this)
             }
         }
-
         binding.tvLoginGoogle.setOnClickListener {
             (activity as MainActivity).let { activity ->
                 firebaseViewModel.signInWithGoogle(activity)
             }
         }
-
         binding.tvLoginRegisternow.setOnClickListener { button ->
             navigateToRegisterFragment(button)
         }
@@ -95,14 +96,6 @@ class LoginFragment : Fragment()
         })
     }
 
-    private fun navigateToMainFragment(view: View)
-    {
-        Log.d(TAG, "navigateToMainFragment")
-
-        val navController: NavController = Navigation.findNavController(view)
-        val action = LoginFragmentDirections.actionLoginFragmentToMainFragment()
-        navController.navigate(action)
-    }
     fun navigateToRegisterFragment(view: View)
     {
         Log.d(TAG, "navigateToRegisterFragment")

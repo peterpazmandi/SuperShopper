@@ -33,6 +33,7 @@ import java.util.*
 import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
+import com.inspirecoding.supershopper.adapter.FriendsListAdapter
 import com.inspirecoding.supershopper.enums.Crud
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
@@ -52,6 +53,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     private val createNewListFragmentViewModel: CreateNewListFragmentViewModel by navGraphViewModels(R.id.navigation_graph)
 
     private lateinit var listItemAdapter: ListItemAdapter
+    private lateinit var friendsListAdapter: FriendsListAdapter
 
     private var selectedShoppingList: ShoppingList? = null
     private var selectedPosition = -1
@@ -64,6 +66,8 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         binding.rvCreateNewListFourthItem.postInvalidate()
 
         userAutoCompleteAdapter = UserAutoCompleteAdapter(this, firebaseViewModel)
+        binding.actvCreateNewListThirdItemSearchFriends.threshold = 3
+        binding.actvCreateNewListThirdItemSearchFriends.setAdapter(userAutoCompleteAdapter)
 
         setTodaysDate()
 
@@ -79,13 +83,10 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                     {
                         binding.tilCreateNewListThirdItemSearchFreinds.error = null
                         binding.pbCreateNewListThirdItemSearchFriends.visibility = View.VISIBLE
+                        userAutoCompleteAdapter.notifyDataSetChanged()
                     }
                 }
             }
-
-            binding.actvCreateNewListThirdItemSearchFriends.threshold = 3
-
-            binding.actvCreateNewListThirdItemSearchFriends.setAdapter(userAutoCompleteAdapter)
 
             binding.actvCreateNewListThirdItemSearchFriends.setOnItemClickListener{ parent, view, position, arg3 ->
                 binding.actvCreateNewListThirdItemSearchFriends.text = null
@@ -98,11 +99,15 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 else
                 {
                     binding.tilCreateNewListThirdItemSearchFreinds.error = null
-                    createNewListFragmentViewModel.insertToFriends(selectedFriend)
-                    createNewListFragmentViewModel.addFriendChip(context, selectedFriend, binding.chgCreateNewListThirdItemFriends)
+                    friendsListAdapter.addFriend(selectedFriend)
                 }
             }
 
+            friendsListAdapter = FriendsListAdapter(context, this)
+            binding.rvCreateNewListThirdItemFriends.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = friendsListAdapter
+            }
             listItemAdapter = ListItemAdapter(context)
             listItemAdapter.removeAllItems()
             binding.rvCreateNewListFourthItem.apply {
@@ -148,14 +153,14 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             binding.tilCreateNewListFirstItemName.error = null
         }
 
-        firebaseViewModel.usersListLD.observeOnce(viewLifecycleOwner, Observer<List<User>> { usersList ->
-            firebaseViewModel.currentUserLD.value?.let {currentUser ->
-                val _usersList = createNewListFragmentViewModel.removeCurrentUserAndAddedFriends(currentUser, usersList.toMutableList())
+        firebaseViewModel.usersListLD.observe(viewLifecycleOwner) { usersList ->
+            firebaseViewModel.currentUserLD.value?.let { currentUser ->
+                val _usersList = createNewListFragmentViewModel.removeCurrentUserAndAddedFriends(currentUser, friendsListAdapter.getFrindsList(), usersList.toMutableList())
 
                 userAutoCompleteAdapter.updateUsersList(_usersList)
                 binding.pbCreateNewListThirdItemSearchFriends.visibility = View.GONE
             }
-        })
+        }
 
         createNewListFragmentViewModel.itemsListAction.observe(viewLifecycleOwner) { result ->
             val (crud, position, listItem) = result
@@ -210,6 +215,12 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             }
         }
 
+        friendsListAdapter.setOnItemClickListener(object: FriendsListAdapter.OnItemClickListener{
+            override fun onDeleteClick(position: Int)
+            {
+                friendsListAdapter.removeFriend(position)
+            }
+        })
         listItemAdapter.setOnItemClickListener(object : ListItemAdapter.OnItemClickListener
         {
             override fun onUpdateClick(position: Int, listItem: ListItem)
@@ -239,9 +250,8 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 {
                     firebaseViewModel.viewModelScope.launch {
                         val friend = firebaseViewModel.getUserFromFirestore(friendId)
-                        friend?.let {
-                            createNewListFragmentViewModel.addFriendChip(context, friend, binding.chgCreateNewListThirdItemFriends)
-                            createNewListFragmentViewModel.listOfFriends.add(friend)
+                        friend?.let {user ->
+                            friendsListAdapter.addFriend(user)
                         }
                     }
                 }
@@ -294,7 +304,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         firebaseViewModel.currentUserLD.value?.id?.let {id ->
             idsOfFriends.clear()
             idsOfFriends.add(id)
-            for(friend in createNewListFragmentViewModel.listOfFriends)
+            for(friend in friendsListAdapter.getFrindsList())
             {
                 idsOfFriends.add(friend.id)
             }
@@ -362,4 +372,10 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         inflater.inflate(R.menu.menu_nav_drawer, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+
+
+
+
+
+
 }

@@ -26,7 +26,8 @@
     <string name="name">Name</string>
     <string name="register">Register</string>
     <string name="or_register_with">Or register with</string>
-    <string name="already_have_an_account">Already have an account? <big><b>Login</b></big></string>
+    <string name="already_have_an_account">Already have an account?<big><b>Login</b></big></string>
+    <string name="check_your_emails_to_reset_your_password">Check your emails to reset your password!</string>
     <string name="login_successful">Login Successful!</string>
     <string name="request_canceled">Request canceled</string>
 
@@ -90,5 +91,8 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="creator">Creator</string>
+    <string name="please_enter_nyour_email_address">Please enter\nyour email address</string>
+    <string name="here">here</string>
+    <string name="get_new_password">Get new password</string>
 
 </resources>

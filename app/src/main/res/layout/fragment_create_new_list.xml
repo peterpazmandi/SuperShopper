@@ -82,7 +82,8 @@
                         android:id="@+id/et_createNewList_firstItem_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPrimary"
+                        android:background="@color/colorPrimary"
+                        android:textCursorDrawable="@null"
                         android:hint="@string/give_me_a_name"
                         android:textSize="@dimen/textsize_xlarge"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -219,27 +220,21 @@
                         android:id="@+id/actv_createNewList_thirdItem_searchFriends"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
+                        android:background="@color/colorPrimary"
+                        android:textCursorDrawable="@null"
                         android:hint="@string/find_your_friends"
                         android:textSize="@dimen/textsize_xlarge" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.core.widget.NestedScrollView
-                    android:id="@+id/hsv_createNewList_thirdItem_friends"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_createNewList_thirdItem_friends"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_large"
-                    android:scrollbars="none"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="@+id/til_createNewList_thirdItem_searchFreinds"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/til_createNewList_thirdItem_searchFreinds">
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chg_createNewList_thirdItem_friends"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </androidx.core.widget.NestedScrollView>
+                    app:layout_constraintTop_toBottomOf="@+id/til_createNewList_thirdItem_searchFreinds"/>
 
                 <ProgressBar
                     android:id="@+id/pb_createNewList_thirdItem_searchFriends"

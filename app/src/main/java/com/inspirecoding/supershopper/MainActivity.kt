@@ -29,10 +29,6 @@ import java.security.NoSuchAlgorithmException
 class MainActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
-
-    private val firebaseViewModel: FirebaseViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -46,53 +42,6 @@ class MainActivity : AppCompatActivity()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.mainFragment
-            ), binding.drawerLayout
-        )
-
-        navController = Navigation.findNavController(this, R.id.fragmentContainer)
-
-        val toggle = ActionBarDrawerToggle(
-            this,
-            binding.drawerLayout,
-            toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        NavigationUI.setupWithNavController(
-            toolbar,
-            navController,
-            appBarConfiguration
-        )
-
-//        printKeyHash()
-
-
-//        firebaseViewModel.currentUserLD.observe(this) { user ->
-//            setProfilePictures(user, toolbar.iv_currentUserProfilePic)
-//        }
-    }
-
-
-    private fun setProfilePictures(user: User?, imageView: ImageView)
-    {
-        user?.let {
-            if(user.profilePicture.isNotEmpty())
-            {
-                Picasso
-                    .get()
-                    .load(user.profilePicture)
-                    .placeholder(R.drawable.ic_person)
-                    .into(imageView)
-            }
-        }
     }
 
     private fun printKeyHash()

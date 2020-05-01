@@ -10,7 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.inspirecoding.supershopper.R
+import com.inspirecoding.supershopper.adapter.FriendsListAdapter
 import com.inspirecoding.supershopper.databinding.FragmentDetailsBinding
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
@@ -25,12 +27,20 @@ class DetailsFragment() : Fragment()
 {
     private lateinit var binding: FragmentDetailsBinding
     private val shoppingListFragmentViewModel by navGraphViewModels<ShoppingListFragmentViewModel>(R.id.navigation_graph)
-    private val createNewListFragmentViewModel: CreateNewListFragmentViewModel by navGraphViewModels(R.id.navigation_graph)
     private val firebaseViewModel: FirebaseViewModel by inject()
+    private lateinit var friendsListAdapter: FriendsListAdapter
 
     override fun onCreateView (layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details, container, false)
+
+        context?.let { context ->
+            friendsListAdapter = FriendsListAdapter(context, this)
+            binding.rvListOfFriends.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = friendsListAdapter
+            }
+        }
 
         firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { listOfShoppingLists ->
             Log.d(TAG, "$listOfShoppingLists")
@@ -44,16 +54,6 @@ class DetailsFragment() : Fragment()
         }
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
-    {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onResume()
-    {
-        super.onResume()
     }
 
     private fun populateDetailsForm(shoppingList: ShoppingList)
@@ -74,8 +74,7 @@ class DetailsFragment() : Fragment()
                     firebaseViewModel.viewModelScope.launch {
                         val friend = firebaseViewModel.getUserFromFirestore(friendId)
                         friend?.let { _friend ->
-                            createNewListFragmentViewModel.addFriendChip(_context, _friend, binding.chgFriends)
-                            createNewListFragmentViewModel.listOfFriends.add(_friend)
+                            friendsListAdapter.addFriend(_friend)
                         }
                     }
                 }

@@ -10,6 +10,6 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
-        tools:src="@drawable/ic_save" />
+        android:src="@drawable/profilepicture_blank" />
 
 </FrameLayout>

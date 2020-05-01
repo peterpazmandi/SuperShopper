@@ -11,7 +11,6 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.facebook.internal.Mutable
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -58,26 +57,26 @@ class UserAutoCompleteAdapter(
         {
             override fun performFiltering(constraint: CharSequence?): FilterResults
             {
-                Log.d(TAG, "$constraint")
                 val filterResults = FilterResults()
                 if (constraint != null)
                 {
-                    Log.d(TAG, "$constraint")
-                    val books: List<String> = foundUsers(constraint.toString())
+                    val users: List<String> = foundUsers(constraint.toString())
 
                     // Assign the data to the FilterResults
-                    filterResults.values = books
-                    filterResults.count = books.size
+                    filterResults.values = users
+                    filterResults.count = users.size
+                    Log.d(TAG, "1_ $filterResults")
                 }
                 return filterResults
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?)
             {
-                Log.d(TAG, "$constraint")
+                Log.d(TAG, "2_ ${results?.count}")
                 if (results != null && results.count > 0)
                 {
                     resultList = results.values as MutableList<User>
+                    Log.d(TAG, "3_ $resultList")
                     notifyDataSetChanged()
                 }
                 else

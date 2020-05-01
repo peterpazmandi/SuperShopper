@@ -83,7 +83,8 @@
                     android:id="@+id/et_createNewItem_firstItem_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:background="@color/colorPrimary"
+                    android:textCursorDrawable="@null"
                     android:layout_marginBottom="@dimen/margin_large"
                     android:hint="@string/give_me_a_name"
                     android:textSize="@dimen/textsize_xlarge" />
@@ -292,7 +293,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_large"
                     android:hint="@string/enter_a_quantity"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:background="@color/colorPrimary"
+                    android:textCursorDrawable="@null"
                     android:inputType="number"
                     android:textSize="@dimen/textsize_xlarge" />
             </com.google.android.material.textfield.TextInputLayout>

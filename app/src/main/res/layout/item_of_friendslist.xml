@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@drawable/shape_roundedallcorners_noborder_whitebackground">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_profilePicture"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/profilepicture_blank"
+            android:layout_marginStart="@dimen/margin_xsmall"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_nameOfFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Inspire Coding"
+            android:textSize="@dimen/textsize_large"
+            android:paddingStart="@dimen/margin_small"
+            android:paddingEnd="@dimen/margin_small"
+            app:layout_constraintRight_toLeftOf="@+id/iv_remove"
+            app:layout_constraintLeft_toRightOf="@+id/civ_profilePicture"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_remove"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_close_brown"
+            android:layout_marginEnd="@dimen/margin_small"
+            app:layout_constraintLeft_toRightOf="@+id/tv_nameOfFriend"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

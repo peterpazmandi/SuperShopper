@@ -14,6 +14,12 @@ class DelayAutoCompleteTextView(context: Context?, attrs: AttributeSet?) : AppCo
     private var mAutoCompleteDelay = DEFAULT_AUTOCOMPLETE_DELAY
     private var mLoadingIndicator: ProgressBar? = null
 
+    companion object
+    {
+        private const val MESSAGE_TEXT_CHANGED = 100
+        private const val DEFAULT_AUTOCOMPLETE_DELAY = 750
+    }
+
     private val mHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super@DelayAutoCompleteTextView.performFiltering(
@@ -55,11 +61,5 @@ class DelayAutoCompleteTextView(context: Context?, attrs: AttributeSet?) : AppCo
             mLoadingIndicator!!.visibility = View.GONE
         }
         super.onFilterComplete(count)
-    }
-
-    companion object
-    {
-        private const val MESSAGE_TEXT_CHANGED = 100
-        private const val DEFAULT_AUTOCOMPLETE_DELAY = 750
     }
 }
