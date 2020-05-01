@@ -62,6 +62,9 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_create_new_list, container, false)
 
+        val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+
         binding.rvCreateNewListFourthItem.invalidate()
         binding.rvCreateNewListFourthItem.postInvalidate()
 

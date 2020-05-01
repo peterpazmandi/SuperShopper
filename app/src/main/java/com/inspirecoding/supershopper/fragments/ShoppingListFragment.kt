@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -41,7 +42,9 @@ class ShoppingListFragment : Fragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated")
+
+        val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
 
         setHasOptionsMenu(true)
 

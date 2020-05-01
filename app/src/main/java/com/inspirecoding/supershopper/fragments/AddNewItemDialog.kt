@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.navArgs
@@ -34,6 +36,9 @@ class AddNewItemDialog : BottomSheetDialogFragment()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
 
         val safeArgs: AddNewItemDialogArgs by navArgs()
         val listItem = safeArgs.listItem

@@ -29,10 +29,15 @@ import java.security.NoSuchAlgorithmException
 class MainActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setHomeButtonEnabled(false)
 
         binding = DataBindingUtil.setContentView(
             this,
@@ -42,6 +47,20 @@ class MainActivity : AppCompatActivity()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        navController = Navigation.findNavController(this, R.id.fragmentContainer)
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.mainFragment
+            ), binding.drawerLayout
+        )
+
+        NavigationUI.setupWithNavController(
+            toolbar,
+            navController,
+            appBarConfiguration
+        )
     }
 
     private fun printKeyHash()

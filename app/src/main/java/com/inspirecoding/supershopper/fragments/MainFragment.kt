@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
@@ -52,13 +53,14 @@ class MainFragment : Fragment()
     {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_main, container, false)
 
+        val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setNavigationIcon(null)
+
         context?.let { context ->
             shoppingListAdapter = ShoppingListAdapter(context, firebaseViewModel)
             binding.rvShoppingLists.apply {
                 adapter = shoppingListAdapter
             }
-
-
         }
 
         return binding.root

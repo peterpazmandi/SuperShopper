@@ -51,11 +51,27 @@ class OpenBoughtFragment : Fragment()
 
         shoppingListFragmentViewModel.openItemsLD.observe(viewLifecycleOwner) { listOfOpenItems ->
             firebaseViewModel.viewModelScope.launch (Dispatchers.Main) {
+                if(listOfOpenItems.count() == 0)
+                {
+                    binding.tvOpenItems.visibility = View.GONE
+                }
+                else
+                {
+                    binding.tvOpenItems.visibility = View.VISIBLE
+                }
                 openItemsAdapter.addAllItem(listOfOpenItems)
             }
         }
         shoppingListFragmentViewModel.boughtItemsLD.observe(viewLifecycleOwner) { listOfBoughtItems ->
             firebaseViewModel.viewModelScope.launch (Dispatchers.Main) {
+                if(listOfBoughtItems.count() == 0)
+                {
+                    binding.tvBoughtItems.visibility = View.GONE
+                }
+                else
+                {
+                    binding.tvBoughtItems.visibility = View.VISIBLE
+                }
                 boughtItemsAdapter.addAllItem(listOfBoughtItems)
             }
         }
