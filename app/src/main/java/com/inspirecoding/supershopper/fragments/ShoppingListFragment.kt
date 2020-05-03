@@ -84,6 +84,12 @@ class ShoppingListFragment : Fragment()
         val action = ShoppingListFragmentDirections.actionShoppingListFragmentToAddNewItemDialog(shoppingList)
         navController.navigate(action)
     }
+    private fun navigateToDeleteListDialog(view: View, shoppingList: ShoppingList)
+    {
+        val navController: NavController = Navigation.findNavController(view)
+        val action = ShoppingListFragmentDirections.actionShoppingListFragmentToDeleteDialog(shoppingList)
+        navController.navigate(action)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
@@ -95,12 +101,12 @@ class ShoppingListFragment : Fragment()
     {
         return when(item.itemId)
         {
-            R.id.item_edit -> {
-                navigateToCreateNewList(binding.root, shoppingListFragmentViewModel.openedShoppingList)
+            R.id.item_delete -> {
+                navigateToDeleteListDialog(binding.root, shoppingListFragmentViewModel.openedShoppingList)
                 true
             }
-            R.id.item_delete -> {
-
+            R.id.item_edit -> {
+                navigateToCreateNewList(binding.root, shoppingListFragmentViewModel.openedShoppingList)
                 true
             }
             else -> super.onOptionsItemSelected(item)

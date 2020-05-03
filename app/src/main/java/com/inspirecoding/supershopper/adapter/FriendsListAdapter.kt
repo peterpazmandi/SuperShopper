@@ -77,7 +77,7 @@ class FriendsListAdapter(val context: Context, val fragment: Fragment): Recycler
                     .get()
                     .load(user.profilePicture)
                     .placeholder(R.drawable.ic_person)
-                    .error(R.drawable.ic_add_brown)
+                    .error(R.drawable.ic_person)
                     .into(binding.civProfilePicture)
             }
 

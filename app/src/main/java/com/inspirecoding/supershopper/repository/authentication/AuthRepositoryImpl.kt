@@ -90,6 +90,24 @@ class AuthRepositoryImpl : AuthRepository
             Result.Error(exception)
         }
     }
+    override suspend fun updatePassword(newPassword: String): Result<Void?>
+    {
+        return try
+        {
+            if(firebaseAuth.currentUser != null)
+            {
+                firebaseAuth.currentUser?.updatePassword(newPassword)!!.await()
+            }
+            else
+            {
+                Result.Canceled(Exception())
+            }
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
+    }
 
     override suspend fun signInWithCredential(authCredential: AuthCredential): Result<AuthResult?>
     {

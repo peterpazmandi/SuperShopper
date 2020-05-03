@@ -89,8 +89,6 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
 
     inner class ShoppingListViewHolder(val binding: ItemOfShoppinglistBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener
     {
-        private var itemPosition = -1
-
         init {
             binding.clShoppingList.setOnClickListener(this)
         }

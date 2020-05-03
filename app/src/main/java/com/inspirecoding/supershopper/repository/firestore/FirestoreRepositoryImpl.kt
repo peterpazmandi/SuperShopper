@@ -9,6 +9,8 @@ import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.extension.await
 import com.inspirecoding.supershopper.utilities.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 
 private const val TAG = "FiresotreRepositoryImpl"
@@ -83,6 +85,33 @@ class FirestoreRepositoryImpl: FirestoreRepository
         }
     }
 
+    override suspend fun updateNameOFUserInFirestore(user: User): Result<Void?>
+    {
+        return try
+        {
+            userCollection.document(user.id)
+                .update("name", user.name)
+                .await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
+    }
+    override suspend fun updateProfilePictureOFUserInFirestore(user: User): Result<Void?>
+    {
+        return try
+        {
+            userCollection.document(user.id)
+                .update("profilePicture", user.profilePicture)
+                .await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
+    }
+
     override suspend fun insertShoppingList(shoppingList: ShoppingList): Result<Void?>
     {
         return try
@@ -98,6 +127,11 @@ class FirestoreRepositoryImpl: FirestoreRepository
     override suspend fun updateShoppingList(shoppingList: ShoppingList): Result<Void?>
     {
         return shoppingListCollection.document(shoppingList.id).set(shoppingList).await()
+    }
+
+    override suspend fun deleteShoppingList(shoppingListId: String): Result<Void?>
+    {
+        return shoppingListCollection.document(shoppingListId).delete().await()
     }
 
     override fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
@@ -146,37 +180,20 @@ class FirestoreRepositoryImpl: FirestoreRepository
         return shoppingListLiveData
     }
 
-    override fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    override fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<ShoppingList>
     {
-        val shoppingListLiveData = MutableLiveData<Map<DocumentChange, ShoppingList>>()
+        val shoppingListLiveData = MutableLiveData<ShoppingList>()
 
         try
         {
-            shoppingListCollection
-                .whereEqualTo("id", shoppingListId)
+            shoppingListCollection.document(shoppingListId)
                 .addSnapshotListener { resultDocumentSnapshot, firebaseFirestoreException ->
-                    resultDocumentSnapshot?.let {
-                        val mapOfResult = mutableMapOf<DocumentChange, ShoppingList>()
-                        for (document in resultDocumentSnapshot.documentChanges)
-                        {
-                            when (document.type)
-                            {
-                                DocumentChange.Type.ADDED -> {
-                                    mapOfResult.put(document, createShoppingList(document))
-                                    Log.d(TAG, "${mapOfResult}")
-                                }
-
-                                DocumentChange.Type.MODIFIED -> {
-                                    mapOfResult.put(document, createShoppingList(document))
-                                }
-
-                                DocumentChange.Type.REMOVED -> {
-                                    mapOfResult.put(document, createShoppingList(document))
-                                }
-                            }
+                    resultDocumentSnapshot?.let {document ->
+                        val shoppingList = document.toObject(ShoppingList::class.java)
+                        Log.d(TAG, "1_ ${shoppingList}")
+                        shoppingList?.let { _shoppingList ->
+                            shoppingListLiveData.value = shoppingList
                         }
-
-                        shoppingListLiveData.value = mapOfResult
                     }
                 }
         }

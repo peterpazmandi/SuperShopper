@@ -16,6 +16,7 @@ interface AuthRepository
     suspend fun registerUserFromAuthWithEmailAndPassword(email: String, password: String, context: Context): Result<FirebaseUser?>
 
     suspend fun sendPasswordResetEmail(email: String): Result<Void?>
+    suspend fun updatePassword(email: String): Result<Void?>
 
     suspend fun signInWithCredential(authCredential: AuthCredential): Result<AuthResult?>
 }

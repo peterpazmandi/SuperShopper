@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        tools:context=".fragments.ProfileFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_profilePicture"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="@dimen/margin_xlarge"
+                android:elevation="6dp"
+                android:src="@drawable/profilepicture_blank"
+                app:civ_border_color="@color/colorPrimaryDark"
+                app:civ_border_width="@dimen/margin_small"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_changeProfilePicture"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:backgroundTint="@color/darkOrange"
+                app:fabCustomSize="40dp"
+                app:layout_constraintBottom_toBottomOf="@id/civ_profilePicture"
+                app:layout_constraintRight_toRightOf="@id/civ_profilePicture"
+                app:srcCompat="@drawable/ic_camera_white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/shape_rounded_topleft_corner_white"
+                app:layout_constraintTop_toTopOf="@id/fab_changeProfilePicture">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_rounded_topbottomleft_corner_white_noborder">
+
+                    <TextView
+                        android:id="@+id/tv_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_large"
+                        android:layout_marginTop="60dp"
+                        android:background="@drawable/shape_circle_green"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/margin_medium"
+                        android:paddingEnd="@dimen/margin_medium"
+                        android:text="@string/name"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/textsize_large"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true"
+                        app:hintEnabled="false"
+                        android:layout_marginStart="@dimen/margin_4xlarge"
+                        android:layout_marginEnd="@dimen/margin_xlarge"
+                        android:layout_marginBottom="@dimen/margin_large"
+                        app:layout_constraintBottom_toTopOf="@+id/btn_saveName"
+                        app:layout_constraintLeft_toLeftOf="@+id/tv_name_text"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_name_text">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorPrimary"
+                            android:textCursorDrawable="@null"
+                            android:textSize="@dimen/textsize_xlarge"
+                            android:hint="@string/name" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_saveName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:background="@drawable/shape_roundedallcorners_darkbrown"
+                        android:text="@string/save"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        app:layout_constraintRight_toRightOf="@+id/til_name"
+                        app:layout_constraintTop_toBottomOf="@+id/til_name"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_changePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/margin_xlarge"
+                    android:layout_marginStart="@dimen/margin_3xlarge"
+                    android:layout_marginEnd="@dimen/margin_3xlarge"
+                    android:background="@drawable/shape_roundedallcorner_middlebrown"
+                    android:text="@string/change_password"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_signOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/margin_xlarge"
+                    android:layout_marginStart="@dimen/margin_3xlarge"
+                    android:layout_marginEnd="@dimen/margin_3xlarge"
+                    android:background="@drawable/shape_roundedallcorner_middlebrown"
+                    android:text="@string/sign_out"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_deleteAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="@dimen/margin_4xlarge"
+                    android:layout_marginBottom="@dimen/margin_4xlarge"
+                    android:layout_marginStart="@dimen/margin_3xlarge"
+                    android:layout_marginEnd="@dimen/margin_3xlarge"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_roundedallcorner_red"
+                    android:text="@string/delete_account"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</layout>

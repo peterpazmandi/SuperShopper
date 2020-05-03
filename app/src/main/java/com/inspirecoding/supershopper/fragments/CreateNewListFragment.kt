@@ -1,7 +1,6 @@
 package com.inspirecoding.supershopper.fragments
 
 import android.app.DatePickerDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -13,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +25,6 @@ import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.viewmodels.CreateNewListFragmentViewModel
 import org.joda.time.DateTime
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.lifecycle.observe
@@ -37,9 +34,6 @@ import com.inspirecoding.supershopper.adapter.FriendsListAdapter
 import com.inspirecoding.supershopper.enums.Crud
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
-import com.inspirecoding.supershopper.repository.extension.observeOnce
-import kotlinx.android.synthetic.main.app_bar_with_fragment.view.*
-import kotlinx.android.synthetic.main.fragment_create_new_list.*
 import kotlinx.coroutines.launch
 
 
@@ -201,7 +195,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 {
                     if(selectedShoppingList == null)
                     {
-                        firebaseViewModel.insertListItemInFirestore(newShoppingList, this)
+                        firebaseViewModel.insertShoppingList(newShoppingList, this)
                         findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
                     }
                     else
@@ -245,6 +239,8 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             binding.tvCreateNewListSecondItemDueDate.text = shoppingList.dueDate.toLocaleString().substringBeforeLast(" ")
             binding.tvCreateNewListSecondItemDueDate.setTextColor(ContextCompat.getColor(context, R.color.black))
 
+            listItemAdapter.removeAllItems()
+            Log.d(TAG, "${shoppingList.listOfItems}")
             listItemAdapter.addAllItem(shoppingList.listOfItems)
 
             for(friendId in shoppingList.friendsSharedWith)
@@ -375,10 +371,4 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         inflater.inflate(R.menu.menu_nav_drawer, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-
-
-
-
-
-
 }

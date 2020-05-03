@@ -42,15 +42,9 @@ class DetailsFragment() : Fragment()
             }
         }
 
-        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { listOfShoppingLists ->
-            Log.d(TAG, "$listOfShoppingLists")
-            for(key in listOfShoppingLists.keys)
-            {
-                val shoppingList = listOfShoppingLists[key]
-                shoppingList?.let { shoppingListItem ->
-                    populateDetailsForm(shoppingListItem)
-                }
-            }
+        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { shoppingList ->
+            Log.d(TAG, "$shoppingList")
+            populateDetailsForm(shoppingList)
         }
 
         return binding.root

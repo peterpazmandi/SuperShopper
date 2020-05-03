@@ -9,7 +9,7 @@ import com.inspirecoding.supershopper.model.ShoppingList
 
 class ShoppingListFragmentViewModel: ViewModel()
 {
-    var openedShoppingList = ShoppingList()
+    var openedShoppingList: ShoppingList = ShoppingList()
 
     private val _openItemsMLD = MutableLiveData<MutableList<ListItem>>()
     val openItemsLD: LiveData<MutableList<ListItem>>

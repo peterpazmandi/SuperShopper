@@ -2,6 +2,7 @@ package com.inspirecoding.supershopper.repository
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentChange
+import com.inspirecoding.supershopper.MyApp
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.fragments.*
 import com.inspirecoding.supershopper.model.User
@@ -48,8 +50,8 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     private val RC_SIGN_IN = 1
 
 
-    private val _toast = MutableLiveData<String?>()
-    val toast: LiveData<String?>
+    private val _toast = MutableLiveData<Pair<Boolean, String>>()
+    val toast: LiveData<Pair<Boolean, String>>
         get() = _toast
 
     private val _spinner = MutableLiveData<Boolean>(false)
@@ -79,20 +81,22 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                             createUserInFirestore(createUserObject(firebaseUser, name), fragment)
 
                             _spinner.value = false
-                            _toast.value = fragment.getString(R.string.registration_successful)
+                            setToastMessage(MyApp.applicationContext().getString(R.string.registration_successful))
                         }
                     }
                     is Result.Error -> {
                         Log.e(TAG, "${result.exception.message}")
 
                         _spinner.value = false
-                        _toast.value = result.exception.message
+                        result.exception.message?.let { message ->
+                            setToastMessage(message)
+                        }
                     }
                     is Result.Canceled -> {
                         Log.e(TAG, "${result.exception!!.message}")
 
                         _spinner.value = false
-                        _toast.value = fragment.getString(R.string.request_canceled)
+                        setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
                     }
                 }
             }
@@ -112,12 +116,14 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                     }
                 }
                 is Result.Error -> {
-                    _toast.value = result.exception.message
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
 
                     _spinner.value = false
                 }
                 is Result.Canceled -> {
-                    _toast.value = fragment.getString(R.string.request_canceled)
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
 
                     _spinner.value = false
                 }
@@ -130,13 +136,40 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             when(val result = authRepository.sendPasswordResetEmail(email))
             {
                 is Result.Success -> {
-                    Toast.makeText(fragment.context, fragment.getString(R.string.check_your_emails_to_reset_your_password), Toast.LENGTH_SHORT).show()
+                    setToastMessage(MyApp.applicationContext().getString(R.string.check_your_emails_to_reset_your_password))
+                    onToastMessageDone()
                 }
                 is Result.Error -> {
-                    _toast.value = result.exception.message
+                    result.exception.message?.let {  message ->
+                        setToastMessage(message)
+                        onToastMessageDone()
+                    }
                 }
                 is Result.Canceled -> {
-                    _toast.value = fragment.getString(R.string.request_canceled)
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    onToastMessageDone()
+                }
+            }
+        }
+    }
+    fun updatePassword(newPassword: String)
+    {
+        viewModelScope.launch {
+            when(val result = authRepository.updatePassword(newPassword))
+            {
+                is Result.Success -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.your_password_has_been_updated))
+                    onToastMessageDone()
+                }
+                is Result.Error -> {
+                    result.exception.message?.let {  message ->
+                        setToastMessage(message)
+                        onToastMessageDone()
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    onToastMessageDone()
                 }
             }
         }
@@ -181,13 +214,15 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                         }
                         is Result.Error -> {
                             Log.e(TAG, "Result.Error - ${result.exception.message}")
-                            _toast.value = result.exception.message
+                            result.exception.message?.let { message ->
+                                setToastMessage(message)
+                            }
 
                             _spinner.value = false
                         }
                         is Result.Canceled -> {
                             Log.d(TAG, "Result.Canceled")
-                            _toast.value = activity.applicationContext.getString(R.string.request_canceled)
+                            setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
 
                             _spinner.value = false
                         }
@@ -259,13 +294,15 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                         }
                         is Result.Error -> {
                             Log.e(TAG, "Result.Error - ${result.exception.message}")
-                            _toast.value = result.exception.message
+                            result.exception.message?.let { message ->
+                                setToastMessage(message)
+                            }
 
                             _spinner.value = false
                         }
                         is Result.Canceled -> {
                             Log.d(TAG, "Result.Canceled")
-                            _toast.value = fragment.getString(R.string.request_canceled)
+                            setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
 
                             _spinner.value = false
                         }
@@ -309,12 +346,14 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                 _spinner.value = false
             }
             is Result.Error -> {
-                _toast.value = result.exception.message
+                result.exception.message?.let { message ->
+                    setToastMessage(message)
+                }
 
                 _spinner.value = false
             }
             is Result.Canceled -> {
-                _toast.value = fragment?.getString(R.string.request_canceled)
+                setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
 
                 _spinner.value = false
             }
@@ -328,13 +367,62 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                 result.data
             }
             is Result.Error -> {
-                _toast.value = result.exception.message
+                result.exception.message?.let { message ->
+                    setToastMessage(message)
+                }
                 null
             }
             is Result.Canceled -> {
+                setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
                 null
             }
             else -> null
+        }
+    }
+    fun updateNameOFUserInFirestore(user: User)
+    {
+        viewModelScope.launch {
+            when(val result = firestoreRepository.updateNameOFUserInFirestore(user))
+            {
+                is Result.Success -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.your_name_has_been_updated))
+                    onToastMessageDone()
+                    _currentUserMLD.value = user
+                }
+                is Result.Error -> {
+                    result.exception.message?.let {  message ->
+                        setToastMessage(message)
+                        onToastMessageDone()
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    onToastMessageDone()
+                }
+            }
+        }
+    }
+    fun updateProfilePictureOFUserInFirestore(user: User)
+    {
+        viewModelScope.launch {
+            when(val result = firestoreRepository.updateProfilePictureOFUserInFirestore(user))
+            {
+                is Result.Success -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.your_name_has_been_updated))
+                    onToastMessageDone()
+                    _currentUserMLD.value = user
+                }
+                is Result.Error -> {
+                    result.exception.message?.let {  message ->
+                        setToastMessage(message)
+                        onToastMessageDone()
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    onToastMessageDone()
+                }
+            }
         }
     }
 
@@ -365,11 +453,11 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                 when(fragment)
                 {
                     is RegisterFragment -> {
-                        _toast.value = fragment.getString(R.string.registration_successful)
+                        setToastMessage(MyApp.applicationContext().getString(R.string.registration_successful))
                     }
                     is LoginFragment -> {
                         Log.d(TAG, "Result - ${user.name}")
-                        _toast.value = fragment.getString(R.string.login_successful)
+                        setToastMessage(MyApp.applicationContext().getString(R.string.login_successful))
                     }
                 }
                 _currentUserMLD.value = user
@@ -378,12 +466,14 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                 _spinner.value = false
             }
             is Result.Error -> {
-                _toast.value = result.exception.message
+                result.exception.message?.let { message ->
+                    setToastMessage(message)
+                }
 
                 _spinner.value = false
             }
             is Result.Canceled -> {
-                _toast.value = fragment.getString(R.string.request_canceled)
+                setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
 
                 _spinner.value = false
             }
@@ -413,10 +503,12 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                     _currentUserMLD.value = result.data
                 }
                 is Result.Error -> {
-                    _toast.value = result.exception.message
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
                 }
                 is Result.Canceled -> {
-                    _toast.value = fragment.getString(R.string.request_canceled)
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
                 }
             }
         }
@@ -455,7 +547,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     }
 
 
-    fun insertListItemInFirestore(shoppingList: ShoppingList, fragment: Fragment)
+    fun insertShoppingList(shoppingList: ShoppingList, fragment: Fragment)
     {
         viewModelScope.launch {
             when(val result = firestoreRepository.insertShoppingList(shoppingList))
@@ -464,12 +556,14 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                     Log.d(TAG, "Success")
                 }
                 is Result.Error -> {
-                    _toast.value = result.exception.message
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
 
                     _spinner.value = false
                 }
                 is Result.Canceled -> {
-                    _toast.value = fragment.getString(R.string.request_canceled)
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
 
                     _spinner.value = false
                 }
@@ -483,13 +577,34 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             when (val result = firestoreRepository.updateShoppingList(shoppingList))
             {
                 is Result.Success -> {
-                    _toast.value = fragment.getString(R.string.item_updated)
+                    setToastMessage(MyApp.applicationContext().getString(R.string.item_updated))
                 }
                 is Result.Error -> {
-                    _toast.value = result.exception.message
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
                 }
                 is Result.Canceled -> {
-                    _toast.value = fragment.getString(R.string.request_canceled)
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                }
+            }
+        }
+    }
+    fun deleteShoppingList(shoppingListId: String)
+    {
+        viewModelScope.launch {
+            when (val result = firestoreRepository.deleteShoppingList(shoppingListId))
+            {
+                is Result.Success -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.shopping_list_deleted))
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
                 }
             }
         }
@@ -500,7 +615,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     {
         return firestoreRepository.getCurrentUserShoppingListsRealTime(currentUser)
     }
-    fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<Map<DocumentChange, ShoppingList>>
+    fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<ShoppingList>
     {
         return firestoreRepository.getShoppingListRealTime(shoppingListId)
     }
@@ -514,8 +629,17 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
 
 
-
-
+    private fun setToastMessage(message: String)
+    {
+        val pair = Pair(true, message)
+        _toast.value = pair
+        onToastMessageDone()
+    }
+    private fun onToastMessageDone()
+    {
+        val pair = Pair(false, "")
+        _toast.value = pair
+    }
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?, fragment: Fragment)
     {
         Log.d(TAG, "data: $data")

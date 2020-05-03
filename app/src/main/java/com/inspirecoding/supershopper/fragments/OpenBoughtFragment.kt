@@ -75,16 +75,12 @@ class OpenBoughtFragment : Fragment()
                 boughtItemsAdapter.addAllItem(listOfBoughtItems)
             }
         }
+        Log.d(TAG, "1_ ${shoppingListFragmentViewModel.openedShoppingList}")
 
-        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { listOfShoppingLists ->
-            Log.d(TAG, "$listOfShoppingLists")
-            for(key in listOfShoppingLists.keys)
-            {
-                val listOfToDos = listOfShoppingLists[key]
-                listOfToDos?.let { shoppingListItem ->
-                    updateSelectedShoppingListItems(shoppingListItem.listOfItems)
-                }
-            }
+
+        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { shoppingList ->
+            Log.d(TAG, "$shoppingList")
+            updateSelectedShoppingListItems(shoppingList.listOfItems)
         }
 
         return binding.root

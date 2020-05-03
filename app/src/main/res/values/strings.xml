@@ -28,10 +28,13 @@
     <string name="or_register_with">Or register with</string>
     <string name="already_have_an_account">Already have an account?<big><b>Login</b></big></string>
     <string name="check_your_emails_to_reset_your_password">Check your emails to reset your password!</string>
+    <string name="your_password_has_been_updated">Your password has been updated</string>
+    <string name="your_name_has_been_updated">Your name has been updated</string>
     <string name="login_successful">Login Successful!</string>
     <string name="request_canceled">Request canceled</string>
 
     <string name="item_updated">Item updated</string>
+    <string name="shopping_list_deleted">Shopping list deleted</string>
 
     <string name="facebook_app_id">532612537445839</string>
     <string name="fb_login_protocol_scheme">fb532612537445839</string>
@@ -94,5 +97,15 @@
     <string name="please_enter_nyour_email_address">Please enter\nyour email address</string>
     <string name="here">here</string>
     <string name="get_new_password">Get new password</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="delete_shopping_list">Delete shopping list</string>
+    <string name="do_you_really_want_to_delete_these_shopping_list_nthis_process_cannot_be_undone">Do you really want to delete these shopping list?\nThis process cannot be undone.</string>
+    <string name="yes_delete">Yes, Delete</string>
+    <string name="no_cancel">No, Cancel</string>
+    <string name="profile">Profile</string>
+    <string name="save">Save</string>
+    <string name="change_password">Change Password</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="delete_account">Delete Account</string>
 
 </resources>

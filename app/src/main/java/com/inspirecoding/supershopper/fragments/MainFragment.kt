@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,6 +13,7 @@ import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import coil.Coil
 import coil.request.GetRequest
@@ -60,6 +62,13 @@ class MainFragment : Fragment()
             shoppingListAdapter = ShoppingListAdapter(context, firebaseViewModel)
             binding.rvShoppingLists.apply {
                 adapter = shoppingListAdapter
+            }
+        }
+
+        firebaseViewModel.toast.observe(viewLifecycleOwner) { message ->
+            if(message.first)
+            {
+                Toast.makeText(context, message.second, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -174,6 +183,10 @@ class MainFragment : Fragment()
         firebaseViewModel.currentUserLD.observe(this) { user ->
             Log.d(TAG, "$user _1")
             setProfilePictures(user, ivProfilePicture)
+        }
+
+        ivProfilePicture.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
         }
 
         super.onPrepareOptionsMenu(menu)

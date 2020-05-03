@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -88,9 +89,12 @@ class LoginFragment : Fragment()
             navigateToRegisterFragment(button)
         }
 
-        firebaseViewModel.toast.observe(viewLifecycleOwner, Observer { message ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        })
+        firebaseViewModel.toast.observe(viewLifecycleOwner) { message ->
+            if(message.first)
+            {
+                Toast.makeText(context, message.second, Toast.LENGTH_SHORT).show()
+            }
+        }
         firebaseViewModel.spinner.observe(viewLifecycleOwner, Observer { show ->
             binding.spinnerLogin.visibility = if (show) View.VISIBLE else View.GONE
         })
