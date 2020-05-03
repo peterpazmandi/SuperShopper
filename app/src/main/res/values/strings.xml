@@ -30,7 +30,9 @@
     <string name="check_your_emails_to_reset_your_password">Check your emails to reset your password!</string>
     <string name="your_password_has_been_updated">Your password has been updated</string>
     <string name="your_name_has_been_updated">Your name has been updated</string>
+    <string name="your_profile_picture_has_been_updated">Your profile picture has been updated</string>
     <string name="login_successful">Login Successful!</string>
+    <string name="you_have_successfully_logged_out">You have successfully logged out</string>
     <string name="request_canceled">Request canceled</string>
 
     <string name="item_updated">Item updated</string>
@@ -42,6 +44,8 @@
     <string name="bought_items">Bought Items</string>
     <string name="history">History</string>
     <string name="friends">Friends</string>
+
+    <string name="profile_photo">Profile Photo</string>
 
     <string name="create_new_list">Create new list</string>
     <string name="edit_list">Edit list</string>
@@ -107,5 +111,6 @@
     <string name="change_password">Change Password</string>
     <string name="sign_out">Sign Out</string>
     <string name="delete_account">Delete Account</string>
+    <string name="please_enter_nyour_new_password">Please enter\nyour new password</string>
 
 </resources>

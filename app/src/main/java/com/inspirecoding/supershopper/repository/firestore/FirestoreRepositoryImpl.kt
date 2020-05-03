@@ -1,16 +1,20 @@
 package com.inspirecoding.supershopper.repository.firestore
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.extension.await
 import com.inspirecoding.supershopper.utilities.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import java.lang.Exception
 
 private const val TAG = "FiresotreRepositoryImpl"
@@ -20,6 +24,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
     private val SHOPPINGLIST_COLLECTION_NAME = "shoppingList"
 
     private val firestoreInstance = FirebaseFirestore.getInstance()
+    private var imageStorage  = FirebaseStorage.getInstance()
     private val userCollection = firestoreInstance.collection(USER_COLLECTION_NAME)
     private val shoppingListCollection = firestoreInstance.collection(SHOPPINGLIST_COLLECTION_NAME)
 
@@ -98,13 +103,27 @@ class FirestoreRepositoryImpl: FirestoreRepository
             Result.Error(exception)
         }
     }
-    override suspend fun updateProfilePictureOFUserInFirestore(user: User): Result<Void?>
+    override suspend fun updateProfilePictureUserInFirestore(user: User): Result<Void?>
     {
         return try
         {
             userCollection.document(user.id)
                 .update("profilePicture", user.profilePicture)
                 .await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
+    }
+    override suspend fun uploadProfilePictureOfUserToStorage(user: User): Result<UploadTask.TaskSnapshot?>
+    {
+        return try
+        {
+            val image = Uri.fromFile(File(user.profilePicture))
+            val storageRef = imageStorage.reference
+            val profileImageReference = storageRef.child("profileImages/${image.lastPathSegment}")
+            profileImageReference.putFile(image).await()
         }
         catch (exception: Exception)
         {

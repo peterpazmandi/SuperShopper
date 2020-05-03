@@ -2,6 +2,7 @@ package com.inspirecoding.supershopper.repository.firestore
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.storage.UploadTask
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
@@ -13,7 +14,8 @@ interface FirestoreRepository
     suspend fun getListOfFilteredUsersFromFirestore(searchText: String, limit: Long): Result<List<User>>
     suspend fun createUserInFirestore(user: User): Result<Void?>
     suspend fun updateNameOFUserInFirestore(user: User): Result<Void?>
-    suspend fun updateProfilePictureOFUserInFirestore(user: User): Result<Void?>
+    suspend fun updateProfilePictureUserInFirestore(user: User): Result<Void?>
+    suspend fun uploadProfilePictureOfUserToStorage(user: User): Result<UploadTask.TaskSnapshot?>
 
     suspend fun insertShoppingList(shoppingList: ShoppingList): Result<Void?>
     suspend fun updateShoppingList(shoppingList: ShoppingList): Result<Void?>

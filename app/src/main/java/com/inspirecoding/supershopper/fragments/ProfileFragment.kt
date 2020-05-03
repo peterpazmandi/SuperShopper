@@ -1,5 +1,7 @@
 package com.inspirecoding.supershopper.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import com.inspirecoding.supershopper.MyApp
 
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.FragmentProfileBinding
@@ -20,15 +24,20 @@ import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.viewmodels.LoginRegisterFragmentViewModel
 import com.squareup.picasso.Picasso
+import com.theartofdev.edmodo.cropper.CropImage
 import org.koin.android.ext.android.inject
 
 private const val TAG = "ProfileFragment"
 class ProfileFragment : Fragment()
 {
+    private val PROFILE_IMAGE_REQUEST_CODE = 0
+
     private lateinit var binding: FragmentProfileBinding
     private val firebaseViewModel: FirebaseViewModel by inject()
     private val loginRegisterFragmentViewModel by navGraphViewModels<LoginRegisterFragmentViewModel>(R.id.navigation_graph)
     private lateinit var currentUser: User
+
+    private var isImageCropperRunning = false
 
     override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -60,12 +69,32 @@ class ProfileFragment : Fragment()
             if(nameIsValid)
             {
                 currentUser.name = binding.etName.text.toString()
-                firebaseViewModel.updateNameOFUserInFirestore(currentUser)
+                firebaseViewModel.updateNameOfUserInFirestore(currentUser)
             }
+        }
+        binding.fabChangeProfilePicture.setOnClickListener {
+            startImageCropper()
+        }
+        binding.btnChangePassword.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_changePasswordFragment)
+        }
+        binding.btnSignOut.setOnClickListener {
+            firebaseViewModel.logOut()
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
     }
 
 
+
+    private fun startImageCropper()
+    {
+        isImageCropperRunning = true
+        val profileImageIntent: Intent = CropImage.activity()
+            .setActivityTitle(MyApp.applicationContext().getString(R.string.profile_photo))
+            .setAspectRatio(1,1)
+            .getIntent(MyApp.applicationContext())
+        startActivityForResult(profileImageIntent, PROFILE_IMAGE_REQUEST_CODE)
+    }
     private fun populateForm(user: User)
     {
         setProfilePictures(user, binding.civProfilePicture)
@@ -87,4 +116,29 @@ class ProfileFragment : Fragment()
             }
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val result: CropImage.ActivityResult = CropImage.getActivityResult(data)
+        val imageUri: Uri = result.uri
+
+        binding.civProfilePicture.setImageURI(imageUri)
+
+        if(result.uri.path != null && firebaseViewModel.currentUserLD.value != null && isImageCropperRunning)
+        {
+            isImageCropperRunning = false
+            currentUser.profilePicture = (result.uri.path as String)
+            Log.d(TAG, "${currentUser.profilePicture}")
+            firebaseViewModel.updateProfilePictureOfUserInFirestore(currentUser)
+        }
+    }
+
+
+
+
+
+
+
 }

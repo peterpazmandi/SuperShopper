@@ -2,7 +2,6 @@ package com.inspirecoding.supershopper.repository
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.Resources
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -174,6 +173,13 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             }
         }
     }
+    fun logOut()
+    {
+        viewModelScope.launch {
+            authRepository.logOutUser()
+            setToastMessage(MyApp.applicationContext().getString(R.string.you_have_successfully_logged_out))
+        }
+    }
 
     //Facebook
     fun signInWithFacebook(activity: Activity, fragment: Fragment)
@@ -324,12 +330,6 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
         }
         return _firebaseUser
     }
-    fun logOutUser()
-    {
-        viewModelScope.launch {
-            authRepository.logOutUser()
-        }
-    }
 
     suspend fun getCurrentUserFromFirestore(userId: String, fragment: Fragment? = null)
     {
@@ -379,7 +379,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             else -> null
         }
     }
-    fun updateNameOFUserInFirestore(user: User)
+    fun updateNameOfUserInFirestore(user: User)
     {
         viewModelScope.launch {
             when(val result = firestoreRepository.updateNameOFUserInFirestore(user))
@@ -402,13 +402,45 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             }
         }
     }
-    fun updateProfilePictureOFUserInFirestore(user: User)
+    fun updateProfilePictureOfUserInFirestore(user: User)
     {
         viewModelScope.launch {
-            when(val result = firestoreRepository.updateProfilePictureOFUserInFirestore(user))
+            when(val result = firestoreRepository.uploadProfilePictureOfUserToStorage(user))
             {
                 is Result.Success -> {
-                    setToastMessage(MyApp.applicationContext().getString(R.string.your_name_has_been_updated))
+                    result.data?.metadata?.reference?.downloadUrl?.let { uploadTask ->
+                        uploadTask.addOnSuccessListener { _result ->
+                            user.profilePicture = _result.toString()
+                            Log.d(TAG, "1_ ${user}")
+                            if(user.profilePicture.isNotEmpty())
+                            {
+                                updateProfilePictureUserInFirestore(user)
+                            }
+                        }
+                    }
+                }
+                is Result.Error -> {
+                    result.exception.message?.let {  message ->
+                        setToastMessage(message)
+                        onToastMessageDone()
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    onToastMessageDone()
+                }
+            }
+        }
+    }
+
+    fun updateProfilePictureUserInFirestore(user: User)
+    {
+        viewModelScope.launch {
+            when(val result = firestoreRepository.updateProfilePictureUserInFirestore(user))
+            {
+                is Result.Success -> {
+                    Log.d(TAG, "2_ ${user}")
+                    setToastMessage(MyApp.applicationContext().getString(R.string.your_profile_picture_has_been_updated))
                     onToastMessageDone()
                     _currentUserMLD.value = user
                 }

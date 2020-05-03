@@ -78,7 +78,11 @@
             app:popExitAnim="@anim/slide_out_from_right" />
         <action
             android:id="@+id/action_mainFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"/>
     </fragment>
     <fragment
         android:id="@+id/createNewListFragment"
@@ -173,5 +177,23 @@
         android:id="@+id/profileFragment"
         android:name="com.inspirecoding.supershopper.fragments.ProfileFragment"
         android:label="@string/profile"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"
+            app:popUpTo="@id/deleteDialog"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <dialog
+        android:id="@+id/changePasswordFragment"
+        android:name="com.inspirecoding.supershopper.fragments.ChangePasswordFragment"
+        android:label="ChangePasswordFragment"
+        tools:layout="@layout/fragment_change_password" />
 </navigation>
