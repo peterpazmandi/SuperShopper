@@ -29,10 +29,12 @@
     <string name="already_have_an_account">Already have an account?<big><b>Login</b></big></string>
     <string name="check_your_emails_to_reset_your_password">Check your emails to reset your password!</string>
     <string name="your_password_has_been_updated">Your password has been updated</string>
+    <string name="your_email_has_been_updated">Your email has been updated</string>
     <string name="your_name_has_been_updated">Your name has been updated</string>
     <string name="your_profile_picture_has_been_updated">Your profile picture has been updated</string>
     <string name="login_successful">Login Successful!</string>
     <string name="you_have_successfully_logged_out">You have successfully logged out</string>
+    <string name="the_security_check_was_successful">The security check was successful.</string>
     <string name="request_canceled">Request canceled</string>
 
     <string name="item_updated">Item updated</string>
@@ -112,5 +114,10 @@
     <string name="sign_out">Sign Out</string>
     <string name="delete_account">Delete Account</string>
     <string name="please_enter_nyour_new_password">Please enter\nyour new password</string>
+    <string name="for_security_reasons_nplease_provide_your_login_information">For security reasons,\nplease provide your login information.</string>
+    <string name="ok">OK</string>
+    <string name="change_email">Change email</string>
+    <string name="please_enter_nyour_new_email">Please enter\nyour new email</string>
+    <string name="for_security_reasons_n_you_must_log_in_again">For security reasons,\n you must log in again.</string>
 
 </resources>

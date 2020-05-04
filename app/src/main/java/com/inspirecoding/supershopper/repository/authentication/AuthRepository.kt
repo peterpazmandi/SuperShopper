@@ -12,11 +12,13 @@ interface AuthRepository
 
     suspend fun checkUserLoggedIn(): FirebaseUser?
     suspend fun logOutUser()
+    suspend fun reAuthenticateUser(email: String, password: String): Result<Void?>
 
     suspend fun registerUserFromAuthWithEmailAndPassword(email: String, password: String, context: Context): Result<FirebaseUser?>
 
     suspend fun sendPasswordResetEmail(email: String): Result<Void?>
-    suspend fun updatePassword(email: String): Result<Void?>
+    suspend fun updatePassword(newPassword: String): Result<Void?>
+    suspend fun updateEmail(email: String): Result<Void?>
 
     suspend fun signInWithCredential(authCredential: AuthCredential): Result<AuthResult?>
 }

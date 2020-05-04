@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
@@ -56,6 +57,10 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     private val _spinner = MutableLiveData<Boolean>(false)
     val spinner: LiveData<Boolean>
         get() = _spinner
+
+    private val _securityCheck = MutableLiveData<Pair<Boolean, String>>()
+    val securityCheck: LiveData<Pair<Boolean, String>>
+        get() = _securityCheck
 
     private val _currentUserMLD = MutableLiveData<User>(User())
     val currentUserLD: LiveData<User>
@@ -173,11 +178,60 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             }
         }
     }
+    fun updateEmail(email: String)
+    {
+        viewModelScope.launch {
+            when(val result = authRepository.updateEmail(email))
+            {
+                is Result.Success -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.your_email_has_been_updated))
+                    onToastMessageDone()
+                }
+                is Result.Error -> {
+                    result.exception.message?.let {  message ->
+                        setToastMessage(message)
+                        onToastMessageDone()
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    onToastMessageDone()
+                }
+            }
+        }
+    }
     fun logOut()
     {
         viewModelScope.launch {
             authRepository.logOutUser()
             setToastMessage(MyApp.applicationContext().getString(R.string.you_have_successfully_logged_out))
+        }
+    }
+    fun reAuthenticateUser(email: String, password: String, source: String)
+    {
+        _spinner.value = true
+        viewModelScope.launch {
+            when (val result = authRepository.reAuthenticateUser(email, password))
+            {
+                is Result.Success -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.the_security_check_was_successful))
+                    securityCheckDone(source)
+
+                    _spinner.value = false
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+
+                    _spinner.value = false
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+
+                    _spinner.value = false
+                }
+            }
         }
     }
 
@@ -189,8 +243,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
         callbackManager = CallbackManager.Factory.create()
 
         LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("email", "public_profile"))
-        LoginManager.getInstance().registerCallback(callbackManager, object :
-            FacebookCallback<LoginResult>
+        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult>
         {
             override fun onSuccess(result: LoginResult?)
             {
@@ -661,6 +714,21 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
 
 
+    fun startSecurityCheck(source: String)
+    {
+        val pair = Pair(false, source)
+        _securityCheck.value = pair
+    }
+    fun securityCheckDone(source: String)
+    {
+        val pair = Pair(true, source)
+        _securityCheck.value = pair
+    }
+    fun clearSecurityCheck()
+    {
+        val pair = Pair(false, "")
+        _securityCheck.value = pair
+    }
     private fun setToastMessage(message: String)
     {
         val pair = Pair(true, message)

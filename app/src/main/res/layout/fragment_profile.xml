@@ -119,26 +119,26 @@
                     android:text="@string/change_password"/>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_signOut"
+                    android:id="@+id/btn_changeEmail"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/margin_xlarge"
                     android:layout_marginStart="@dimen/margin_3xlarge"
                     android:layout_marginEnd="@dimen/margin_3xlarge"
                     android:background="@drawable/shape_roundedallcorner_middlebrown"
-                    android:text="@string/sign_out"/>
+                    android:text="@string/change_email"/>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_deleteAccount"
+                    android:id="@+id/btn_signOut"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="@dimen/margin_4xlarge"
-                    android:layout_marginBottom="@dimen/margin_4xlarge"
                     android:layout_marginStart="@dimen/margin_3xlarge"
                     android:layout_marginEnd="@dimen/margin_3xlarge"
-                    android:textColor="@color/white"
-                    android:background="@drawable/shape_roundedallcorner_red"
-                    android:text="@string/delete_account"/>
+                    android:layout_marginBottom="@dimen/margin_3xlarge"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/shape_roundedallcorners_darkbrown"
+                    android:text="@string/sign_out"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -188,12 +188,58 @@
             app:exitAnim="@anim/slide_out_from_right"
             app:popEnterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_from_right"
-            app:popUpTo="@id/deleteDialog"
+            app:popUpTo="@id/profileFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_sensitiveDataFragment"
+            app:destination="@id/sensitiveDataFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_changeEmailFragment"
+            app:destination="@id/changeEmailFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"/>
     </fragment>
     <dialog
         android:id="@+id/changePasswordFragment"
         android:name="com.inspirecoding.supershopper.fragments.ChangePasswordFragment"
         android:label="ChangePasswordFragment"
         tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/sensitiveDataFragment"
+        android:name="com.inspirecoding.supershopper.fragments.SensitiveDataFragment"
+        android:label="Sensitive Data"
+        tools:layout="@layout/fragment_sensitive_data">
+        <action
+            android:id="@+id/action_sensitiveDataFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"
+            app:popUpTo="@id/sensitiveDataFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="source"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_sensitiveDataFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <dialog
+        android:id="@+id/changeEmailFragment"
+        android:name="com.inspirecoding.supershopper.fragments.ChangeEmailFragment"
+        android:label="ChangeEmailFragment"
+        tools:layout="@layout/fragment_change_email"/>
 </navigation>

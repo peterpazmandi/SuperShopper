@@ -4,20 +4,24 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import com.google.android.material.snackbar.Snackbar
 import com.inspirecoding.supershopper.MyApp
-
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.FragmentProfileBinding
 import com.inspirecoding.supershopper.model.User
@@ -31,6 +35,8 @@ private const val TAG = "ProfileFragment"
 class ProfileFragment : Fragment()
 {
     private val PROFILE_IMAGE_REQUEST_CODE = 0
+    private val PASSWORD = "password"
+    private val EMAIL = "email"
 
     private lateinit var binding: FragmentProfileBinding
     private val firebaseViewModel: FirebaseViewModel by inject()
@@ -38,6 +44,8 @@ class ProfileFragment : Fragment()
     private lateinit var currentUser: User
 
     private var isImageCropperRunning = false
+
+    private var snackBar: Snackbar? = null
 
     override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -63,6 +71,21 @@ class ProfileFragment : Fragment()
                 Toast.makeText(context, message.second, Toast.LENGTH_SHORT).show()
             }
         }
+        firebaseViewModel.securityCheck.observe(viewLifecycleOwner) { securityCheck ->
+            if (securityCheck.first && securityCheck.second.isNotEmpty())
+            {
+                if(securityCheck.second.equals(PASSWORD))
+                {
+                    findNavController().navigate(R.id.action_profileFragment_to_changePasswordFragment)
+                    firebaseViewModel.clearSecurityCheck()
+                }
+                else if (securityCheck.second.equals(EMAIL))
+                {
+                    findNavController().navigate(R.id.action_profileFragment_to_changeEmailFragment)
+                    firebaseViewModel.clearSecurityCheck()
+                }
+            }
+        }
 
         binding.btnSaveName.setOnClickListener {
             val nameIsValid = loginRegisterFragmentViewModel.validateName(binding.tilName, binding.etName)
@@ -75,8 +98,13 @@ class ProfileFragment : Fragment()
         binding.fabChangeProfilePicture.setOnClickListener {
             startImageCropper()
         }
-        binding.btnChangePassword.setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_changePasswordFragment)
+        binding.btnChangePassword.setOnClickListener { _view ->
+            firebaseViewModel.startSecurityCheck(PASSWORD)
+            navigateToSensitiveDataFragment(_view, PASSWORD)
+        }
+        binding.btnChangeEmail.setOnClickListener { _view ->
+            firebaseViewModel.startSecurityCheck(EMAIL)
+            navigateToSensitiveDataFragment(_view, EMAIL)
         }
         binding.btnSignOut.setOnClickListener {
             firebaseViewModel.logOut()
@@ -115,6 +143,20 @@ class ProfileFragment : Fragment()
                     .into(imageView)
             }
         }
+    }
+
+    private fun navigateToSensitiveDataFragment(view: View, source: String)
+    {
+        val navController: NavController = Navigation.findNavController(view)
+        val action = ProfileFragmentDirections.actionProfileFragmentToSensitiveDataFragment(source)
+        navController.navigate(action)
+    }
+
+    override fun onResume()
+    {
+        super.onResume()
+
+        snackBar?.dismiss()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)

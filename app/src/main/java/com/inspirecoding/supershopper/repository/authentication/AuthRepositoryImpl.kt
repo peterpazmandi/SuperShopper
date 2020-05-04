@@ -2,13 +2,16 @@ package com.inspirecoding.supershopper.repository.authentication
 
 import android.content.Context
 import android.util.Log
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.facebook.AccessToken
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.*
+import com.inspirecoding.supershopper.MyApp
 import com.inspirecoding.supershopper.repository.extension.await
 import com.inspirecoding.supershopper.utilities.Result
-import java.lang.Exception
+
 
 private const val TAG = "AuthRepositoryImpl"
 class AuthRepositoryImpl : AuthRepository
@@ -50,6 +53,80 @@ class AuthRepositoryImpl : AuthRepository
     override suspend fun logOutUser()
     {
         firebaseAuth.signOut()
+    }
+
+    override suspend fun reAuthenticateUser(email: String, password: String): Result<Void?>
+    {
+        try
+        {
+            val user = firebaseAuth.currentUser
+            val credential: AuthCredential = EmailAuthProvider.getCredential(email, password)
+            val googleSignInAccount: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(MyApp.applicationContext())
+
+            if(googleSignInAccount != null)
+            {
+                val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
+                return when(val resultDocumentSnapshot = user?.reauthenticate(authCredential)?.await())
+                {
+                    is Result.Success -> {
+                        Result.Success(resultDocumentSnapshot.data)
+                    }
+                    is Result.Error -> {
+                        Log.e(TAG, "${resultDocumentSnapshot.exception}")
+                        Result.Error(resultDocumentSnapshot.exception)
+                    }
+                    is Result.Canceled ->  {
+                        Log.e(TAG, "${resultDocumentSnapshot.exception}")
+                        Result.Canceled(resultDocumentSnapshot.exception)
+                    }
+                    else -> Result.Canceled(null)
+                }
+            }
+
+            Log.d(TAG, "${AccessToken.isCurrentAccessTokenActive()}")
+            AccessToken.refreshCurrentAccessTokenAsync()
+            val facebookAuthProvider: AuthCredential? = FacebookAuthProvider.getCredential(AccessToken.getCurrentAccessToken().toString())
+            if(facebookAuthProvider != null)
+            {
+                return when(val resultDocumentSnapshot = user?.reauthenticate(facebookAuthProvider)?.await())
+                {
+                    is Result.Success -> {
+                        Result.Success(resultDocumentSnapshot.data)
+                    }
+                    is Result.Error -> {
+                        Log.e(TAG, "${resultDocumentSnapshot.exception}")
+                        Result.Error(resultDocumentSnapshot.exception)
+                    }
+                    is Result.Canceled ->  {
+                        Log.e(TAG, "${resultDocumentSnapshot.exception}")
+                        Result.Canceled(resultDocumentSnapshot.exception)
+                    }
+                    else -> Result.Canceled(null)
+                }
+            }
+            else
+            {
+                return when(val resultDocumentSnapshot = user?.reauthenticate(credential)?.await())
+                {
+                    is Result.Success -> {
+                        Result.Success(resultDocumentSnapshot.data)
+                    }
+                    is Result.Error -> {
+                        Log.e(TAG, "${resultDocumentSnapshot.exception}")
+                        Result.Error(resultDocumentSnapshot.exception)
+                    }
+                    is Result.Canceled ->  {
+                        Log.e(TAG, "${resultDocumentSnapshot.exception}")
+                        Result.Canceled(resultDocumentSnapshot.exception)
+                    }
+                    else -> Result.Canceled(null)
+                }
+            }
+        }
+        catch (exception: Exception)
+        {
+            return Result.Error(exception)
+        }
     }
 
     override suspend fun registerUserFromAuthWithEmailAndPassword(email: String, password: String, context: Context): Result<FirebaseUser?>
@@ -97,6 +174,25 @@ class AuthRepositoryImpl : AuthRepository
             if(firebaseAuth.currentUser != null)
             {
                 firebaseAuth.currentUser?.updatePassword(newPassword)!!.await()
+            }
+            else
+            {
+                Result.Canceled(Exception())
+            }
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
+    }
+
+    override suspend fun updateEmail(email: String): Result<Void?>
+    {
+        return try
+        {
+            if(firebaseAuth.currentUser != null)
+            {
+                firebaseAuth.currentUser?.updateEmail(email)!!.await()
             }
             else
             {
