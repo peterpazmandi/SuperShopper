@@ -83,6 +83,13 @@
             app:exitAnim="@anim/slide_out_from_right"
             app:popEnterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_from_right"/>
+        <action
+            android:id="@+id/action_mainFragment_to_friendsMainFragment"
+            app:destination="@id/friendsMainFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"/>
     </fragment>
     <fragment
         android:id="@+id/createNewListFragment"
@@ -242,4 +249,34 @@
         android:name="com.inspirecoding.supershopper.fragments.ChangeEmailFragment"
         android:label="ChangeEmailFragment"
         tools:layout="@layout/fragment_change_email"/>
+    <fragment
+        android:id="@+id/friendsMainFragment"
+        android:name="com.inspirecoding.supershopper.fragments.FriendsMainFragment"
+        android:label="" >
+        <action
+            android:id="@+id/action_friendsMainFragment_to_otherUsersProfileFragment"
+            app:destination="@id/otherUsersProfileFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/otherUsersProfileFragment"
+        android:name="com.inspirecoding.supershopper.fragments.OtherUsersProfileFragment"
+        android:label="Profile" >
+        <argument
+            android:name="friend"
+            app:argType="com.inspirecoding.supershopper.model.Friend"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+        <argument
+            android:name="friendRequest"
+            app:argType="com.inspirecoding.supershopper.model.FriendRequest"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+        <argument
+            android:name="user"
+            app:argType="com.inspirecoding.supershopper.model.User"/>
+    </fragment>
 </navigation>

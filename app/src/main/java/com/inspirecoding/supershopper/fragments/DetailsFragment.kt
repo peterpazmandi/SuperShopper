@@ -12,12 +12,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.inspirecoding.supershopper.R
-import com.inspirecoding.supershopper.adapter.FriendsListAdapter
+import com.inspirecoding.supershopper.adapter.FriendsListChipAdapter
 import com.inspirecoding.supershopper.databinding.FragmentDetailsBinding
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
-import com.inspirecoding.supershopper.viewmodels.CreateNewListFragmentViewModel
 import com.inspirecoding.supershopper.viewmodels.ShoppingListFragmentViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -28,17 +27,17 @@ class DetailsFragment() : Fragment()
     private lateinit var binding: FragmentDetailsBinding
     private val shoppingListFragmentViewModel by navGraphViewModels<ShoppingListFragmentViewModel>(R.id.navigation_graph)
     private val firebaseViewModel: FirebaseViewModel by inject()
-    private lateinit var friendsListAdapter: FriendsListAdapter
+    private lateinit var friendsListChipAdapter: FriendsListChipAdapter
 
     override fun onCreateView (layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details, container, false)
 
         context?.let { context ->
-            friendsListAdapter = FriendsListAdapter(context, this)
+            friendsListChipAdapter = FriendsListChipAdapter(context, this)
             binding.rvListOfFriends.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = friendsListAdapter
+                adapter = friendsListChipAdapter
             }
         }
 
@@ -68,7 +67,7 @@ class DetailsFragment() : Fragment()
                     firebaseViewModel.viewModelScope.launch {
                         val friend = firebaseViewModel.getUserFromFirestore(friendId)
                         friend?.let { _friend ->
-                            friendsListAdapter.addFriend(_friend)
+                            friendsListChipAdapter.addFriend(_friend)
                         }
                     }
                 }

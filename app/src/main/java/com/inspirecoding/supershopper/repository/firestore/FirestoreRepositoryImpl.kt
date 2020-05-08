@@ -3,17 +3,15 @@ package com.inspirecoding.supershopper.repository.firestore
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.inspirecoding.supershopper.model.Friend
+import com.inspirecoding.supershopper.model.FriendRequest
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.extension.await
 import com.inspirecoding.supershopper.utilities.Result
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.lang.Exception
 
@@ -22,11 +20,17 @@ class FirestoreRepositoryImpl: FirestoreRepository
 {
     private val USER_COLLECTION_NAME = "users"
     private val SHOPPINGLIST_COLLECTION_NAME = "shoppingList"
+    private val FRIENDS_COLLECTION_NAME = "friends"
+    private val FRIENDSREQUEST_COLLECTION_NAME = "friend_requests"
 
     private val firestoreInstance = FirebaseFirestore.getInstance()
     private var imageStorage  = FirebaseStorage.getInstance()
     private val userCollection = firestoreInstance.collection(USER_COLLECTION_NAME)
     private val shoppingListCollection = firestoreInstance.collection(SHOPPINGLIST_COLLECTION_NAME)
+    private val friendsCollection = firestoreInstance.collection(FRIENDS_COLLECTION_NAME)
+    private val friendsRequestCollection = firestoreInstance.collection(FRIENDSREQUEST_COLLECTION_NAME)
+
+    private var lastResultOfFriends: DocumentSnapshot? = null
 
     override suspend fun getUserFromFirestore(userId: String): Result<User>?
     {
@@ -56,8 +60,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
                 .whereLessThanOrEqualTo("name", searchText + '\uf8ff')
                 .orderBy("name", Query.Direction.DESCENDING)
                 .limit(limit)
-                .get()
-                .await())
+                .get().await())
             {
                 is Result.Success -> {
                     val usersList = mutableListOf<User>()
@@ -225,6 +228,125 @@ class FirestoreRepositoryImpl: FirestoreRepository
         return shoppingListLiveData
     }
 
+    override suspend fun getListOfFriends(friendshipOwnerId: String): Result<List<Friend>>
+    {
+        var resultsDocumentSnapshot: Result<QuerySnapshot>
+
+        if (lastResultOfFriends == null)
+        {
+            resultsDocumentSnapshot = friendsCollection
+                .whereEqualTo("friendshipOwnerId", friendshipOwnerId)
+                .orderBy("friendName", Query.Direction.ASCENDING)
+                .limit(10)
+                .get().await()
+        }
+        else
+        {
+            Log.d(TAG, "getFriendsFromFirestore_3: $lastResultOfFriends")
+            resultsDocumentSnapshot = friendsCollection
+                .whereEqualTo("friendshipOwnerId", friendshipOwnerId)
+                .orderBy("friendName", Query.Direction.ASCENDING)
+                .startAfter(lastResultOfFriends as DocumentSnapshot)
+                .limit(10)
+                .get().await()
+        }
+
+        return when (resultsDocumentSnapshot) {
+            is Result.Success -> {
+                val usersList = mutableListOf<Friend>()
+                for(resultDocumentSnapshot in resultsDocumentSnapshot.data)
+                {
+                    val friend = resultDocumentSnapshot.toObject(Friend::class.java)
+                    friend.id = resultDocumentSnapshot.id
+                    usersList.add(friend)
+                }
+                Log.d(TAG, "$usersList")
+
+                if(resultsDocumentSnapshot.data.documents.size != 0)
+                {
+                    lastResultOfFriends = resultsDocumentSnapshot.data.documents[resultsDocumentSnapshot.data.documents.size -1]
+                }
+                Result.Success(usersList)
+            }
+            is Result.Error -> Result.Error(resultsDocumentSnapshot.exception)
+            is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
+        }
+    }
+
+    override suspend fun getFriend(friendshipOwnerId: String, friendId: String): Result<Friend>
+    {
+        var friend: Friend = Friend()
+        try
+        {
+            return when(val resultsDocumentSnapshot = friendsCollection
+                .whereEqualTo("friendshipOwnerId", friendshipOwnerId)
+                .whereEqualTo("friendId", friendId)
+                .get().await())
+            {
+                is Result.Success -> {
+                    for(resultDocumentSnapshot in resultsDocumentSnapshot.data)
+                    {
+                        friend = resultDocumentSnapshot.toObject(Friend::class.java)
+                        friend.id = resultDocumentSnapshot.id
+                    }
+                    Result.Success(friend)
+                }
+                is Result.Error -> Result.Error(resultsDocumentSnapshot.exception)
+                is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
+            }
+        }
+        catch (exception: Exception)
+        {
+            return Result.Error(exception)
+        }
+    }
+
+    override suspend fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): Result<FriendRequest>
+    {
+        Log.d(TAG, "$requestOwnerId, $requestPartnerId")
+        var friendRequest: FriendRequest = FriendRequest()
+        try
+        {
+            return when(val resultsDocumentSnapshot = friendsRequestCollection
+                .whereEqualTo("requestOwnerId", requestOwnerId)
+                .whereEqualTo("requestPartnerId", requestPartnerId)
+                .get().await())
+            {
+                is Result.Success -> {
+                    for(resultDocumentSnapshot in resultsDocumentSnapshot.data)
+                    {
+                        friendRequest = resultDocumentSnapshot.toObject(FriendRequest::class.java)
+                        friendRequest.id = resultDocumentSnapshot.id
+                    }
+                    Log.d(TAG, "$friendRequest")
+                    Result.Success(friendRequest)
+                }
+                is Result.Error -> Result.Error(resultsDocumentSnapshot.exception)
+                is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
+            }
+        }
+        catch (exception: Exception)
+        {
+            return Result.Error(exception)
+        }
+    }
+
+    override suspend fun deleteFriendFromFirestore(friendId: String): Result<Void?>
+    {
+        return friendsCollection.document(friendId).delete().await()
+    }
+
+
+
+
+    override fun clearLastResultOfFriends()
+    {
+        lastResultOfFriends = null
+    }
+
+
+
+
     fun createShoppingList(documentChange: DocumentChange): ShoppingList
     {
         val shoppingList = documentChange.document.toObject(ShoppingList::class.java)
@@ -234,9 +356,15 @@ class FirestoreRepositoryImpl: FirestoreRepository
 
         return shoppingList
     }
+    fun createFriend(documentChange: DocumentChange): Friend
+    {
+        val friend = documentChange.document.toObject(Friend::class.java)
+        friend.id = documentChange.document.id
 
+        Log.d(TAG, "${documentChange.type}: ${friend}")
 
-
+        return friend
+    }
 
 
 

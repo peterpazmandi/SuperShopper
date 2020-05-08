@@ -229,6 +229,7 @@ class AddNewItemDialog : BottomSheetDialogFragment()
             Prioirities.LOW -> binding.chgCreateNewItemPriority.check(R.id.chip_createNewItem_low)
             Prioirities.MEDIUM -> binding.chgCreateNewItemPriority.check(R.id.chip_createNewItem_medium)
             Prioirities.HIGH -> binding.chgCreateNewItemPriority.check(R.id.chip_createNewItem_high)
+            else -> binding.chgCreateNewItemPriority.check(R.id.chip_createNewItem_low)
         }
     }
 }

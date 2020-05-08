@@ -6,35 +6,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.ItemOfFriendslistBinding
-import com.inspirecoding.supershopper.fragments.CreateNewListFragment
-import com.inspirecoding.supershopper.fragments.DetailsFragment
-import com.inspirecoding.supershopper.model.ListItem
+import com.inspirecoding.supershopper.fragments.FriendsMainFragmentDirections
+import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.User
+import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 private const val TAG = "FriendsListAdapter"
-class FriendsListAdapter(val context: Context, val fragment: Fragment): RecyclerView.Adapter<FriendsListAdapter.FriendsViewHolder>()
+class FriendsListAdapter(val context: Context, val firebaseViewModel: FirebaseViewModel): RecyclerView.Adapter<FriendsListAdapter.FriendsListViewHolder>()
 {
-    var listOfFriends: MutableList<User> = mutableListOf()
+    private var listOfFriends = mutableListOf<Pair<Friend, User>>()
+    private var fetchedProfilePicture: HashMap<Int, Boolean> = HashMap()
 
-    private var onItemClickListener: OnItemClickListener? = null
-    interface OnItemClickListener
+    fun addFriend(pairOfFriendAndUser: Pair<Friend, User>)
     {
-        fun onDeleteClick(position: Int)
-    }
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener?)
-    {
-        this.onItemClickListener = onItemClickListener
-    }
-
-    fun addFriend(user: User)
-    {
-        listOfFriends.add(user)
+        listOfFriends.add(pairOfFriendAndUser)
         notifyItemInserted(listOfFriends.size)
+    }
+    fun updateFriend(position: Int, pairOfFriendAndUser: Pair<Friend, User>)
+    {
+        listOfFriends[position] = pairOfFriendAndUser
+        notifyItemChanged(position)
     }
     fun removeFriend(position: Int)
     {
@@ -42,10 +41,43 @@ class FriendsListAdapter(val context: Context, val fragment: Fragment): Recycler
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, listOfFriends.size)
     }
+    fun addFriends(listOfFriends: MutableList<Pair<Friend, User>>)
+    {
+        for(i in 0..listOfFriends.lastIndex)
+        {
+            this.listOfFriends.add(listOfFriends[i])
+        }
+        notifyItemRangeInserted(this.listOfFriends.size - listOfFriends.size, this.listOfFriends.size)
+    }
+    fun getPositionOfTheFriend(pairOfFriendAndUser: Pair<Friend, User>): Int
+    {
+        val foundFriend = listOfFriends.find {
+            it.first.id.equals(pairOfFriendAndUser.first.id)
+        }
+        return listOfFriends.indexOf(foundFriend)
+    }
 
-    fun getFrindsList() = listOfFriends
+    override fun onViewAttachedToWindow(holder: FriendsListViewHolder)
+    {
+        holder.setIsRecyclable(false)
+        super.onViewAttachedToWindow(holder)
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsViewHolder
+
+    override fun getItemId(position: Int): Long
+    {
+        return position.toLong()
+    }
+    override fun getItemViewType(position: Int): Int
+    {
+        return position
+    }
+    override fun onViewDetachedFromWindow(holder: FriendsListViewHolder)
+    {
+        holder.setIsRecyclable(true)
+        super.onViewDetachedFromWindow(holder)
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsListViewHolder
     {
         val layoutInflater = LayoutInflater.from(context)
         val binding: ItemOfFriendslistBinding = DataBindingUtil.inflate(
@@ -54,52 +86,61 @@ class FriendsListAdapter(val context: Context, val fragment: Fragment): Recycler
             parent, false
         )
 
-        return FriendsViewHolder(binding)
-    }
-    override fun getItemCount() = listOfFriends.size
-    override fun onBindViewHolder(friendsViewHolder: FriendsViewHolder, position: Int)
-    {
-        friendsViewHolder.bindFriend(listOfFriends[position])
+        return FriendsListViewHolder(binding)
     }
 
-    inner class FriendsViewHolder(val binding: ItemOfFriendslistBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener
+    override fun getItemCount() = listOfFriends.size
+
+    override fun onBindViewHolder(friendsListViewHolder: FriendsListViewHolder, position: Int)
+    {
+        if(!fetchedProfilePicture.contains(position))
+        {
+            friendsListViewHolder.bindItem(listOfFriends[position].second)
+            fetchedProfilePicture[position] = true
+            Log.d(TAG, "Fetched now")
+        }
+        else
+        {
+            Log.d(TAG, "Already fetched")
+        }
+    }
+
+
+
+
+
+    inner class FriendsListViewHolder (val binding: ItemOfFriendslistBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener
     {
         init
         {
-            binding.ivRemove.setOnClickListener(this)
+            binding.constraintLayout.setOnClickListener(this)
         }
 
-        fun bindFriend(user: User)
+        fun bindItem(user: User)
         {
             if(user.profilePicture.isNotEmpty())
             {
-                Picasso
-                    .get()
+                Picasso.get()
                     .load(user.profilePicture)
-                    .placeholder(R.drawable.ic_person)
-                    .error(R.drawable.ic_person)
                     .into(binding.civProfilePicture)
             }
 
             binding.tvNameOfFriend.text = user.name
-
-            Log.d(TAG, "$fragment")
-            when (fragment)
-            {
-                is DetailsFragment -> {
-                    Log.d(TAG, "DetailsFragment")
-                    binding.ivRemove.visibility = View.GONE
-                }
-                is CreateNewListFragment -> {
-                    Log.d(TAG, "CreateNewListFragment")
-                    binding.ivRemove.visibility = View.VISIBLE
-                }
-            }
         }
 
-        override fun onClick(v: View?)
+        override fun onClick(view: View)
         {
-            onItemClickListener?.onDeleteClick(adapterPosition)
+            navigateToCreateNewList(view)
+        }
+
+        private fun navigateToCreateNewList(view: View)
+        {
+            firebaseViewModel.viewModelScope.launch {
+                val navController: NavController = Navigation.findNavController(view)
+                val action = FriendsMainFragmentDirections.actionFriendsMainFragmentToOtherUsersProfileFragment(
+                    user = listOfFriends[adapterPosition].second)
+                navController.navigate(action)
+            }
         }
     }
 }

@@ -10,27 +10,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import coil.Coil
-import coil.request.GetRequest
-import coil.transform.CircleCropTransformation
-import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentChange
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.adapter.ShoppingListAdapter
 import com.inspirecoding.supershopper.databinding.FragmentMainBinding
-import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.viewmodels.MainFragmentViewModel
 import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 private const val TAG = "MainFragment"
@@ -82,12 +74,15 @@ class MainFragment : Fragment()
         setHasOptionsMenu(true)
 
         // Create new item
-        binding.fabCreateNewList.setOnClickListener {view ->
-            navigateToCreateNewList(view)
+        binding.fabCreateNewList.setOnClickListener { _view ->
+            navigateToCreateNewList(_view)
+        }
+        binding.fabFriends.setOnClickListener { _view ->
+            navigateToFriends(_view)
         }
 
         firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) {user ->
-            firebaseViewModel.getCurrentUserShoppingListsRealTime(user).observe(viewLifecycleOwner) {listOfShoppingLists ->
+            firebaseViewModel.getCurrentUserShoppingListsRealTime(user).observe(viewLifecycleOwner) { listOfShoppingLists ->
                 Log.d(TAG, "${listOfShoppingLists.size}")
                 for(key in listOfShoppingLists.keys)
                 {
@@ -95,8 +90,8 @@ class MainFragment : Fragment()
                     {
                         DocumentChange.Type.ADDED -> {
                             Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
-                            val listOfToDos = listOfShoppingLists.get(key)
-                            listOfToDos?.let { shoppingList ->
+                            val shoppingList = listOfShoppingLists.get(key)
+                            shoppingList?.let { shoppingList ->
                                 shoppingListAdapter.addShoppingListItem(shoppingList)
 
                                 if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
@@ -109,8 +104,8 @@ class MainFragment : Fragment()
 
                         DocumentChange.Type.MODIFIED -> {
                             Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
-                            val listOfToDos = listOfShoppingLists.get(key)
-                            listOfToDos?.let { shoppingList ->
+                            val shoppingList = listOfShoppingLists.get(key)
+                            shoppingList?.let { shoppingList ->
                                 val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
                                 shoppingListAdapter.updateShoppingListItem(position, shoppingList)
 
@@ -123,8 +118,8 @@ class MainFragment : Fragment()
 
                         DocumentChange.Type.REMOVED -> {
                             Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
-                            val listOfToDos = listOfShoppingLists.get(key)
-                            listOfToDos?.let { shoppingList ->
+                            val shoppingList = listOfShoppingLists.get(key)
+                            shoppingList?.let { shoppingList ->
                                 val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
                                 shoppingListAdapter.removeShoppingListItem(position)
 
@@ -155,6 +150,12 @@ class MainFragment : Fragment()
     {
         val navController: NavController = Navigation.findNavController(view)
         val action = MainFragmentDirections.actionMainFragmentToCreateNewListFragment()
+        navController.navigate(action)
+    }
+    private fun navigateToFriends(view: View)
+    {
+        val navController: NavController = Navigation.findNavController(view)
+        val action = MainFragmentDirections.actionMainFragmentToFriendsMainFragment()
         navController.navigate(action)
     }
 

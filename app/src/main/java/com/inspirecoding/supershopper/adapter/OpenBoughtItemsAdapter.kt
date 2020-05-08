@@ -85,7 +85,8 @@ class OpenBoughtItemsAdapter(val context: Context): RecyclerView.Adapter<OpenBou
 
     inner class OpenBoughItemsViewHolder(val binding: ItemOfShoppinglistOpenBoughtBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener
     {
-        init {
+        init
+        {
             binding.cbItemIsBought.setOnClickListener (this)
         }
         fun bindItem(listItem: ListItem)
@@ -103,7 +104,6 @@ class OpenBoughtItemsAdapter(val context: Context): RecyclerView.Adapter<OpenBou
 
             binding.cbItemIsBought.isChecked = listItem.isBought
         }
-
         override fun onClick(v: View?)
         {
             Log.d(TAG, "${binding.cbItemIsBought.isChecked}, $adapterPosition, ${View.generateViewId()}")

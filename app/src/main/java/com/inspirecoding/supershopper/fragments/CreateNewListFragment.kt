@@ -30,7 +30,7 @@ import java.util.*
 import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
-import com.inspirecoding.supershopper.adapter.FriendsListAdapter
+import com.inspirecoding.supershopper.adapter.FriendsListChipAdapter
 import com.inspirecoding.supershopper.enums.Crud
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
@@ -47,7 +47,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     private val createNewListFragmentViewModel: CreateNewListFragmentViewModel by navGraphViewModels(R.id.navigation_graph)
 
     private lateinit var listItemAdapter: ListItemAdapter
-    private lateinit var friendsListAdapter: FriendsListAdapter
+    private lateinit var friendsListChipAdapter: FriendsListChipAdapter
 
     private var selectedShoppingList: ShoppingList? = null
     private var selectedPosition = -1
@@ -96,14 +96,14 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 else
                 {
                     binding.tilCreateNewListThirdItemSearchFreinds.error = null
-                    friendsListAdapter.addFriend(selectedFriend)
+                    friendsListChipAdapter.addFriend(selectedFriend)
                 }
             }
 
-            friendsListAdapter = FriendsListAdapter(context, this)
+            friendsListChipAdapter = FriendsListChipAdapter(context, this)
             binding.rvCreateNewListThirdItemFriends.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = friendsListAdapter
+                adapter = friendsListChipAdapter
             }
             listItemAdapter = ListItemAdapter(context)
             listItemAdapter.removeAllItems()
@@ -152,7 +152,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
 
         firebaseViewModel.usersListLD.observe(viewLifecycleOwner) { usersList ->
             firebaseViewModel.currentUserLD.value?.let { currentUser ->
-                val _usersList = createNewListFragmentViewModel.removeCurrentUserAndAddedFriends(currentUser, friendsListAdapter.getFrindsList(), usersList.toMutableList())
+                val _usersList = createNewListFragmentViewModel.removeCurrentUserAndAddedFriends(currentUser, friendsListChipAdapter.getFrindsList(), usersList.toMutableList())
 
                 userAutoCompleteAdapter.updateUsersList(_usersList)
                 binding.pbCreateNewListThirdItemSearchFriends.visibility = View.GONE
@@ -212,10 +212,10 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             }
         }
 
-        friendsListAdapter.setOnItemClickListener(object: FriendsListAdapter.OnItemClickListener{
+        friendsListChipAdapter.setOnItemClickListener(object: FriendsListChipAdapter.OnItemClickListener{
             override fun onDeleteClick(position: Int)
             {
-                friendsListAdapter.removeFriend(position)
+                friendsListChipAdapter.removeFriend(position)
             }
         })
         listItemAdapter.setOnItemClickListener(object : ListItemAdapter.OnItemClickListener
@@ -250,7 +250,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                     firebaseViewModel.viewModelScope.launch {
                         val friend = firebaseViewModel.getUserFromFirestore(friendId)
                         friend?.let {user ->
-                            friendsListAdapter.addFriend(user)
+                            friendsListChipAdapter.addFriend(user)
                         }
                     }
                 }
@@ -303,7 +303,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         firebaseViewModel.currentUserLD.value?.id?.let {id ->
             idsOfFriends.clear()
             idsOfFriends.add(id)
-            for(friend in friendsListAdapter.getFrindsList())
+            for(friend in friendsListChipAdapter.getFrindsList())
             {
                 idsOfFriends.add(friend.id)
             }

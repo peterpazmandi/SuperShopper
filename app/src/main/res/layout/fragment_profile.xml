@@ -47,7 +47,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/shape_rounded_topleft_corner_white"
-                app:layout_constraintTop_toTopOf="@id/fab_changeProfilePicture">
+                app:layout_constraintTop_toTopOf="@id/fab_changeProfilePicture"
+                app:layout_constraintBottom_toBottomOf="parent">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_content"
                     android:layout_width="match_parent"

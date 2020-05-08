@@ -1,11 +1,10 @@
 package com.inspirecoding.supershopper.repository.firestore
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.storage.UploadTask
-import com.inspirecoding.supershopper.model.ListItem
-import com.inspirecoding.supershopper.model.ShoppingList
-import com.inspirecoding.supershopper.model.User
+import com.inspirecoding.supershopper.model.*
 import com.inspirecoding.supershopper.utilities.Result
 
 interface FirestoreRepository
@@ -23,4 +22,11 @@ interface FirestoreRepository
 
     fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
     fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<ShoppingList>
+
+    suspend fun getFriend(friendshipOwnerId: String, friendId: String): Result<Friend>
+    suspend fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): Result<FriendRequest>
+    suspend fun getListOfFriends(friendshipOwnerId: String): Result<List<Friend>>
+    suspend fun deleteFriendFromFirestore(friendId: String): Result<Void?>
+
+    fun clearLastResultOfFriends()
 }

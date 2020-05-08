@@ -22,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
@@ -30,6 +29,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentChange
 import com.inspirecoding.supershopper.MyApp
 import com.inspirecoding.supershopper.R
+import com.inspirecoding.supershopper.enums.FriendshipStatus
 import com.inspirecoding.supershopper.fragments.*
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.authentication.AuthRepository
@@ -39,6 +39,8 @@ import java.lang.Exception
 import java.util.*
 import com.inspirecoding.supershopper.utilities.Result
 import com.inspirecoding.supershopper.fragments.LoginFragment
+import com.inspirecoding.supershopper.model.Friend
+import com.inspirecoding.supershopper.model.FriendRequest
 import com.inspirecoding.supershopper.model.ShoppingList
 
 private const val TAG = "FirebaseViewModel"
@@ -599,38 +601,6 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
         }
     }
 
-    private fun navigateToMainFragment(fragment: Fragment)
-    {
-        fragment.view?.let { view ->
-            Log.d(TAG, "${fragment}")
-            val navController: NavController = Navigation.findNavController(view)
-            when(fragment)
-            {
-                is RegisterFragment -> {
-                    val action = RegisterFragmentDirections.actionRegisterFragmentToMainFragment()
-                    navController.navigate(action)
-
-                    Log.d(TAG, "actionRegisterFragmentToMainFragment")
-                    _spinner.value = false
-                }
-                is LoginFragment -> {
-                    val action = LoginFragmentDirections.actionLoginFragmentToMainFragment()
-                    navController.navigate(action)
-
-                    Log.d(TAG, "actionLoginFragmentToMainFragment")
-                    _spinner.value = false
-                }
-                is SplashFragment -> {
-                    val action = SplashFragmentDirections.actionSplashFragmentToMainFragment()
-                    navController.navigate(action)
-
-                    Log.d(TAG, "actionSplashFragmentToMainFragment")
-                    _spinner.value = false
-                }
-            }
-        }
-    }
-
 
     fun insertShoppingList(shoppingList: ShoppingList, fragment: Fragment)
     {
@@ -704,6 +674,118 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     {
         return firestoreRepository.getShoppingListRealTime(shoppingListId)
     }
+    fun getFriend(requestOwnerId: String, requestPartnerId: String): LiveData<Friend?>
+    {
+        val friend = MutableLiveData<Friend?>()
+
+        viewModelScope.launch {
+            when(val result = firestoreRepository.getFriend(requestOwnerId, requestPartnerId))
+            {
+                is Result.Success -> {
+                    friend.value = result.data
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                }
+            }
+        }
+
+        return friend
+    }
+    fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): LiveData<FriendRequest?>
+    {
+        val friendRequest = MutableLiveData<FriendRequest?>()
+
+        viewModelScope.launch {
+            when(val result = firestoreRepository.getFriendRequest(requestOwnerId, requestPartnerId))
+            {
+                is Result.Success -> {
+                    friendRequest.value = result.data
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                }
+            }
+        }
+
+        return friendRequest
+    }
+    fun getFriendsFromFirestore(friendshipOwnerId: String): MutableLiveData<MutableList<Pair<Friend, User>>>
+    {
+        _spinner.value = true
+        val listOfFriendsAndUsersLD = MutableLiveData<MutableList<Pair<Friend, User>>>()
+        val listOfFriendsAndUsers = mutableListOf<Pair<Friend, User>>()
+
+        viewModelScope.launch {
+            when (val result = firestoreRepository.getListOfFriends(friendshipOwnerId))
+            {
+                is Result.Success -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.friend_deleted))
+                    for(friend in result.data)
+                    {
+                        val user = getUserFromFirestore(friend.friendId)
+                        user?.let {_user ->
+                            listOfFriendsAndUsers.add(Pair(friend, _user))
+                        }
+                    }
+                    _spinner.value = false
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+                    _spinner.value = false
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    _spinner.value = false
+                }
+            }
+            listOfFriendsAndUsersLD.value = listOfFriendsAndUsers
+        }
+        return listOfFriendsAndUsersLD
+    }
+
+    fun deleteFriendFromFirestore(friendId: String): LiveData<FriendshipStatus>
+    {
+        val friendshipStatus = MutableLiveData<FriendshipStatus>()
+
+        _spinner.value = true
+        viewModelScope.launch {
+            when (val result = firestoreRepository.deleteFriendFromFirestore(friendId))
+            {
+                is Result.Success -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.friend_deleted))
+                    _spinner.value = false
+                    friendshipStatus.value = FriendshipStatus.DELETED
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+                    _spinner.value = false
+                    friendshipStatus.value = FriendshipStatus.ERROR
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    _spinner.value = false
+                    friendshipStatus.value = FriendshipStatus.ERROR
+                }
+            }
+        }
+
+        return friendshipStatus
+    }
 
 
 
@@ -713,6 +795,50 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
 
 
+
+
+    fun clearLastResultOfFriends()
+    {
+        firestoreRepository.clearLastResultOfFriends()
+    }
+
+
+
+
+
+
+
+    private fun navigateToMainFragment(fragment: Fragment)
+    {
+        fragment.view?.let { view ->
+            Log.d(TAG, "${fragment}")
+            val navController: NavController = Navigation.findNavController(view)
+            when(fragment)
+            {
+                is RegisterFragment -> {
+                    val action = RegisterFragmentDirections.actionRegisterFragmentToMainFragment()
+                    navController.navigate(action)
+
+                    Log.d(TAG, "actionRegisterFragmentToMainFragment")
+                    _spinner.value = false
+                }
+                is LoginFragment -> {
+                    val action = LoginFragmentDirections.actionLoginFragmentToMainFragment()
+                    navController.navigate(action)
+
+                    Log.d(TAG, "actionLoginFragmentToMainFragment")
+                    _spinner.value = false
+                }
+                is SplashFragment -> {
+                    val action = SplashFragmentDirections.actionSplashFragmentToMainFragment()
+                    navController.navigate(action)
+
+                    Log.d(TAG, "actionSplashFragmentToMainFragment")
+                    _spinner.value = false
+                }
+            }
+        }
+    }
 
     fun startSecurityCheck(source: String)
     {

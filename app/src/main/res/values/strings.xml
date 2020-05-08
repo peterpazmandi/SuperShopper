@@ -39,6 +39,7 @@
 
     <string name="item_updated">Item updated</string>
     <string name="shopping_list_deleted">Shopping list deleted</string>
+    <string name="friend_deleted">Friend deleted</string>
 
     <string name="facebook_app_id">532612537445839</string>
     <string name="fb_login_protocol_scheme">fb532612537445839</string>
@@ -46,6 +47,7 @@
     <string name="bought_items">Bought Items</string>
     <string name="history">History</string>
     <string name="friends">Friends</string>
+    <string name="requests">Requests</string>
 
     <string name="profile_photo">Profile Photo</string>
 
@@ -119,5 +121,9 @@
     <string name="change_email">Change email</string>
     <string name="please_enter_nyour_new_email">Please enter\nyour new email</string>
     <string name="for_security_reasons_n_you_must_log_in_again">For security reasons,\n you must log in again.</string>
+    <string name="search">Search</string>
+    <string name="accept">Accept</string>
+    <string name="send_friend_request">Send friend request</string>
+    <string name="delete_friend">Delete Friend</string>
 
 </resources>

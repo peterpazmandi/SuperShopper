@@ -1,12 +1,10 @@
 package com.inspirecoding.supershopper.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -61,10 +59,10 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
     }
     fun getPositionOfShoppingListItem(shoppingListItem: ShoppingList): Int
     {
-        val foundToDo = listOfShoppingLists.find {
+        val foundShoppingList = listOfShoppingLists.find {
             it.id.equals(shoppingListItem.id)
         }
-        return listOfShoppingLists.indexOf(foundToDo)
+        return listOfShoppingLists.indexOf(foundShoppingList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListAdapter.ShoppingListViewHolder

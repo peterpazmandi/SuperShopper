@@ -4,9 +4,9 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class User(
+data class Friend (
     var id: String = "",
-    var name: String = "",
-    var numberOfFriends: Int = 0,
-    var profilePicture: String = ""
+    var friendId: String = "",
+    var friendName: String = "",
+    var friendshipOwnerId: String = ""
 ) : Parcelable
