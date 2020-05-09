@@ -27,6 +27,7 @@ interface FirestoreRepository
 
     suspend fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): Result<FriendRequest>
     suspend fun insertFriendRequest(friendRequest: FriendRequest): Result<Void?>
+    suspend fun deleteFriendRequest(friendRequest: FriendRequest): Result<Void?>
 
     suspend fun getListOfFriends(friendshipOwnerId: String): Result<List<Friend>>
     suspend fun deleteFriendFromFirestore(friendId: String): Result<Void?>

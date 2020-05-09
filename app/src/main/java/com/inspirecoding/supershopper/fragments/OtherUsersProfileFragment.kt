@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.FragmentOtherUsersProfileBinding
 import com.inspirecoding.supershopper.enums.FriendshipStatus
+import com.inspirecoding.supershopper.model.FriendRequest
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.utilities.CurrentDateFunctions
@@ -126,45 +128,71 @@ class OtherUsersProfileFragment : Fragment()
 
         }
         binding.btnDelete.setOnClickListener {
-            if (friendsViewModel.friendshipStatus.value == FriendshipStatus.FRIENDS)
+            when (friendsViewModel.friendshipStatus.value)
             {
-                friendsViewModel.friend?.let { _friend ->
-                    if(_friend.id.isNotEmpty())
-                    {
-                        // Delete from the current user the friend status
-                        firebaseViewModel.deleteFriendFromFirestore(_friend.id).observe(viewLifecycleOwner)  { _friendshipStatus ->
-                            if(_friendshipStatus == FriendshipStatus.DELETED)
-                            {
-                                friendsViewModel.setFriendshipStatus(FriendshipStatus.NOFRIENDSHIP)
+                FriendshipStatus.FRIENDS -> {
+                    friendsViewModel.friend?.let { _friend ->
+                        if(_friend.id.isNotEmpty()) {
+                            // Delete from the current user the friend status
+                            firebaseViewModel.deleteFriendFromFirestore(_friend.id).observe(viewLifecycleOwner)  { _friendshipStatus ->
+                                if(_friendshipStatus == FriendshipStatus.DELETED) {
+                                    friendsViewModel.setFriendshipStatus(FriendshipStatus.NOFRIENDSHIP)
+                                }
                             }
-                        }
-                        // Delete from the partner user the friend status
-                        // First we have to fetch this friend object
-                        firebaseViewModel.getFriend(friendsViewModel.openedUser.id, friendsViewModel.currentUser.id).observe(viewLifecycleOwner) { _friend ->
-                            _friend?.let { __friend ->
-                                // Second, delete this friend document also
-                                firebaseViewModel.deleteFriendFromFirestore(__friend.id).observe(viewLifecycleOwner)  { _friendshipStatus ->
-                                    if(_friendshipStatus == FriendshipStatus.DELETED)
-                                    {
-                                        friendsViewModel.setFriendshipStatus(FriendshipStatus.NOFRIENDSHIP)
+                            // Delete from the partner user the friend status
+                            // First we have to fetch this friend object
+                            firebaseViewModel.getFriend(friendsViewModel.openedUser.id, friendsViewModel.currentUser.id).observe(viewLifecycleOwner) { _friend ->
+                                _friend?.let { __friend ->
+                                    // Second, delete this friend document also
+                                    firebaseViewModel.deleteFriendFromFirestore(__friend.id).observe(viewLifecycleOwner)  { _friendshipStatus ->
+                                        if(_friendshipStatus == FriendshipStatus.DELETED) {
+                                            friendsViewModel.setFriendshipStatus(FriendshipStatus.NOFRIENDSHIP)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-            else if (friendsViewModel.friendshipStatus.value == FriendshipStatus.SENDER)
-            {
-                friendsViewModel.friendRequest?.let { _friendRequest ->
+                FriendshipStatus.SENDER -> {
+                    friendsViewModel.friendRequest?.let { _friendRequest ->
+                        /** Get the first part of the friend request pair **/
+                        removeSenderFriendRequest()
+                        /** Get the other part of the friend request pair **/
+                        removeReceiverFriendRequest()
+                    }
 
+                    friendsViewModel.setFriendshipStatus(FriendshipStatus.NOFRIENDSHIP)
                 }
-            }
-            else if (friendsViewModel.friendshipStatus.value == FriendshipStatus.RECEIVER)
-            {
-                friendsViewModel.friendRequest?.let { _friendRequest ->
+                FriendshipStatus.RECEIVER -> {
+                    friendsViewModel.friendRequest?.let { _friendRequest ->
+                        /** Get the other part of the friend request pair **/
+                        removeSenderFriendRequest()
+                        /** Get the other part of the friend request pair **/
+                        removeReceiverFriendRequest()
+                    }
 
+                    friendsViewModel.setFriendshipStatus(FriendshipStatus.NOFRIENDSHIP)
                 }
+                else -> { /** Don't do anything **/ }
+            }
+        }
+    }
+
+    private fun removeReceiverFriendRequest()
+    {
+        firebaseViewModel.getFriendRequest(friendsViewModel.openedUser.id,friendsViewModel.currentUser.id).observe(viewLifecycleOwner) { _recieverFriendRequest ->
+            _recieverFriendRequest?.let { __recieverFriendRequest ->
+                firebaseViewModel.deleteFriendRequest(__recieverFriendRequest)
+            }
+        }
+    }
+
+    private fun removeSenderFriendRequest()
+    {
+        firebaseViewModel.getFriendRequest(friendsViewModel.currentUser.id,friendsViewModel.openedUser.id).observe(viewLifecycleOwner) { _recieverFriendRequest ->
+            _recieverFriendRequest?.let { __recieverFriendRequest ->
+                firebaseViewModel.deleteFriendRequest(__recieverFriendRequest)
             }
         }
     }

@@ -736,6 +736,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             when(val result = firestoreRepository.insertFriendRequest(friendRequest))
             {
                 is Result.Success -> {
+
                     Log.d(TAG, "Success")
 
                     _spinner.value = false
@@ -755,7 +756,32 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             }
         }
     }
+    fun deleteFriendRequest(friendRequest: FriendRequest)
+    {
+        _spinner.value = true
+        viewModelScope.launch {
+            when(val result = firestoreRepository.deleteFriendRequest(friendRequest))
+            {
+                is Result.Success -> {
+                    Log.d(TAG, "Success")
 
+                    _spinner.value = false
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+
+                    _spinner.value = false
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+
+                    _spinner.value = false
+                }
+            }
+        }
+    }
 
     fun getFriendsFromFirestore(friendshipOwnerId: String): MutableLiveData<MutableList<Pair<Friend, User>>>
     {

@@ -301,7 +301,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
         }
     }
 
-
+    // Friend requests
     override suspend fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): Result<FriendRequest>
     {
         Log.d(TAG, "$requestOwnerId, $requestPartnerId")
@@ -331,7 +331,6 @@ class FirestoreRepositoryImpl: FirestoreRepository
             return Result.Error(exception)
         }
     }
-
     override suspend fun insertFriendRequest(friendRequest: FriendRequest): Result<Void?>
     {
         return try
@@ -342,6 +341,11 @@ class FirestoreRepositoryImpl: FirestoreRepository
         {
             Result.Error(exception)
         }
+    }
+
+    override suspend fun deleteFriendRequest(friendRequest: FriendRequest): Result<Void?>
+    {
+        return friendsRequestCollection.document(friendRequest.id).delete().await()
     }
 
     override suspend fun deleteFriendFromFirestore(friendId: String): Result<Void?>
