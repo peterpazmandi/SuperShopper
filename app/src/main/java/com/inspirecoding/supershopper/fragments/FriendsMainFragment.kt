@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -61,6 +63,13 @@ class FriendsMainFragment : Fragment()
         })
     }
 
+    private fun navigateToSearchFriendFragment(view: View)
+    {
+        val navController: NavController = Navigation.findNavController(view)
+        val action = FriendsMainFragmentDirections.actionFriendsMainFragmentToSearchFriendFragment()
+        navController.navigate(action)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
         inflater.inflate(R.menu.menu_search, menu)
@@ -72,7 +81,7 @@ class FriendsMainFragment : Fragment()
         return when(item.itemId)
         {
             R.id.item_search -> {
-
+                navigateToSearchFriendFragment(binding.root)
                 true
             }
             else -> super.onOptionsItemSelected(item)

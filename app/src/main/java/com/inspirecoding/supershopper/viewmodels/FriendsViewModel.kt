@@ -25,7 +25,7 @@ class FriendsViewModel: ViewModel()
     val friendshipStatus: LiveData<FriendshipStatus>
         get() = _friendshipStatus
 
-    private fun setFriendshipStatus (friendshipStatus: FriendshipStatus)
+    fun setFriendshipStatus (friendshipStatus: FriendshipStatus)
     {
         _friendshipStatus.value = friendshipStatus
     }

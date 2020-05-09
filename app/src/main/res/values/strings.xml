@@ -125,5 +125,9 @@
     <string name="accept">Accept</string>
     <string name="send_friend_request">Send friend request</string>
     <string name="delete_friend">Delete Friend</string>
+    <string name="search_friends">Search friends</string>
+    <string name="search_friend">Search Friend</string>
+    <string name="sensitive_data">Sensitive Data</string>
+    <string name="reset_password">Reset Password</string>
 
 </resources>

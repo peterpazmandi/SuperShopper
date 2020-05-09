@@ -301,6 +301,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
         }
     }
 
+
     override suspend fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): Result<FriendRequest>
     {
         Log.d(TAG, "$requestOwnerId, $requestPartnerId")
@@ -328,6 +329,18 @@ class FirestoreRepositoryImpl: FirestoreRepository
         catch (exception: Exception)
         {
             return Result.Error(exception)
+        }
+    }
+
+    override suspend fun insertFriendRequest(friendRequest: FriendRequest): Result<Void?>
+    {
+        return try
+        {
+            friendsRequestCollection.document().set(friendRequest).await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
         }
     }
 

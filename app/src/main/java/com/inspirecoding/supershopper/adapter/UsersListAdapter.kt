@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -12,52 +13,51 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.ItemOfFriendslistBinding
-import com.inspirecoding.supershopper.fragments.FriendsMainFragmentDirections
-import com.inspirecoding.supershopper.model.Friend
+import com.inspirecoding.supershopper.fragments.SearchFriendFragmentDirections
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
-private const val TAG = "FriendsListAdapter"
-class FriendsListAdapter(val context: Context, val firebaseViewModel: FirebaseViewModel): RecyclerView.Adapter<FriendsListAdapter.FriendsListViewHolder>()
+private const val TAG = "UsersListAdapter"
+class UsersListAdapter(val context: Context, val firebaseViewModel: FirebaseViewModel): RecyclerView.Adapter<UsersListAdapter.UsersListViewHolder>()
 {
-    private var listOfFriends = mutableListOf<Pair<Friend, User>>()
+    private val listOfUsers = mutableListOf<User>()
     private var fetchedProfilePicture: HashMap<Int, Boolean> = HashMap()
 
-    fun addFriend(pairOfFriendAndUser: Pair<Friend, User>)
+
+
+    fun addUsers(listOfUsers: MutableList<User>)
     {
-        listOfFriends.add(pairOfFriendAndUser)
-        notifyItemInserted(listOfFriends.size)
-    }
-    fun updateFriend(position: Int, pairOfFriendAndUser: Pair<Friend, User>)
-    {
-        listOfFriends[position] = pairOfFriendAndUser
-        notifyItemChanged(position)
-    }
-    fun removeFriend(position: Int)
-    {
-        listOfFriends.removeAt(position)
-        notifyItemRemoved(position)
-        notifyItemRangeChanged(position, listOfFriends.size)
-    }
-    fun addFriends(listOfFriends: MutableList<Pair<Friend, User>>)
-    {
-        for(i in 0..listOfFriends.lastIndex)
+        for(i in 0..listOfUsers.lastIndex)
         {
-            this.listOfFriends.add(listOfFriends[i])
+            this.listOfUsers.add(listOfUsers[i])
         }
-        notifyItemRangeInserted(this.listOfFriends.size - listOfFriends.size, this.listOfFriends.size)
+        notifyItemRangeInserted(this.listOfUsers.size - listOfUsers.size, this.listOfUsers.size)
     }
-    fun getPositionOfTheFriend(pairOfFriendAndUser: Pair<Friend, User>): Int
+    fun replaceAllUsers(listOfUsers: MutableList<User>)
     {
-        val foundFriend = listOfFriends.find {
-            it.first.id.equals(pairOfFriendAndUser.first.id)
+        this.listOfUsers.clear()
+        notifyDataSetChanged()
+        this.listOfUsers.addAll(listOfUsers)
+        notifyDataSetChanged()
+    }
+    fun updateListOfUsers(listOfUsers: MutableList<User>)
+    {
+        listOfUsers.clear()
+        for(i in 0..listOfUsers.lastIndex)
+        {
+            this.listOfUsers.add(listOfUsers[i])
         }
-        return listOfFriends.indexOf(foundFriend)
+        notifyDataSetChanged()
+    }
+    fun removeAllItems()
+    {
+        listOfUsers.clear()
+        notifyDataSetChanged()
     }
 
-    override fun onViewAttachedToWindow(holder: FriendsListViewHolder)
+    override fun onViewAttachedToWindow(holder: UsersListViewHolder)
     {
         holder.setIsRecyclable(false)
         super.onViewAttachedToWindow(holder)
@@ -70,12 +70,12 @@ class FriendsListAdapter(val context: Context, val firebaseViewModel: FirebaseVi
     {
         return position
     }
-    override fun onViewDetachedFromWindow(holder: FriendsListViewHolder)
+    override fun onViewDetachedFromWindow(holder: UsersListViewHolder)
     {
         holder.setIsRecyclable(true)
         super.onViewDetachedFromWindow(holder)
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendsListViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListViewHolder
     {
         val layoutInflater = LayoutInflater.from(context)
         val binding: ItemOfFriendslistBinding = DataBindingUtil.inflate(
@@ -84,16 +84,16 @@ class FriendsListAdapter(val context: Context, val firebaseViewModel: FirebaseVi
             parent, false
         )
 
-        return FriendsListViewHolder(binding)
+        return UsersListViewHolder(binding)
     }
 
-    override fun getItemCount() = listOfFriends.size
+    override fun getItemCount() = listOfUsers.size
 
-    override fun onBindViewHolder(friendsListViewHolder: FriendsListViewHolder, position: Int)
+    override fun onBindViewHolder(usersListViewHolder: UsersListViewHolder, position: Int)
     {
         if(!fetchedProfilePicture.contains(position))
         {
-            friendsListViewHolder.bindItem(listOfFriends[position].second)
+            usersListViewHolder.bindItem(listOfUsers[position])
             fetchedProfilePicture[position] = true
             Log.d(TAG, "Fetched now")
         }
@@ -103,11 +103,7 @@ class FriendsListAdapter(val context: Context, val firebaseViewModel: FirebaseVi
         }
     }
 
-
-
-
-
-    inner class FriendsListViewHolder (val binding: ItemOfFriendslistBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener
+    inner class UsersListViewHolder (val binding: ItemOfFriendslistBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener
     {
         init
         {
@@ -135,10 +131,22 @@ class FriendsListAdapter(val context: Context, val firebaseViewModel: FirebaseVi
 
         private fun navigateToCreateNewList(view: View)
         {
-            val navController: NavController = Navigation.findNavController(view)
-            val action = FriendsMainFragmentDirections.actionFriendsMainFragmentToOtherUsersProfileFragment(
-                user = listOfFriends[adapterPosition].second)
-            navController.navigate(action)
+            context.hideKeyboard(view)
+            firebaseViewModel.viewModelScope.launch {
+                val navController: NavController = Navigation.findNavController(view)
+                val action = SearchFriendFragmentDirections.actionSearchFriendFragmentToOtherUsersProfileFragment(
+                    user = listOfUsers[adapterPosition])
+                navController.navigate(action)
+            }
+        }
+    }
+
+
+
+    fun Context.hideKeyboard(view: View)
+    {
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.apply {
+            hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }

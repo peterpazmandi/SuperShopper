@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.inspirecoding.supershopper.fragments.LoginFragment"
-        android:label="LoginFragment"
+        android:label="@string/login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.inspirecoding.supershopper.fragments.RegisterFragment"
-        android:label="RegisterFragment"
+        android:label="@string/register"
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_mainFragment"
@@ -114,7 +114,7 @@
     <dialog
         android:id="@+id/addNewItemDialog"
         android:name="com.inspirecoding.supershopper.fragments.AddNewItemDialog"
-        android:label="Add New Item"
+        android:label="@string/add_new_item"
         tools:layout="@layout/fragment_add_new_item_dialog">
         <argument
             android:name="listItem"
@@ -151,7 +151,7 @@
     <dialog
         android:id="@+id/resetPasswordFragment"
         android:name="com.inspirecoding.supershopper.fragments.ResetPasswordFragment"
-        android:label="ResetPasswordFragment"
+        android:label="@string/reset_password"
         tools:layout="@layout/fragment_reset_password"/>
     <fragment
         android:id="@+id/deleteDialog"
@@ -215,12 +215,12 @@
     <dialog
         android:id="@+id/changePasswordFragment"
         android:name="com.inspirecoding.supershopper.fragments.ChangePasswordFragment"
-        android:label="ChangePasswordFragment"
+        android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/sensitiveDataFragment"
         android:name="com.inspirecoding.supershopper.fragments.SensitiveDataFragment"
-        android:label="Sensitive Data"
+        android:label="@string/sensitive_data"
         tools:layout="@layout/fragment_sensitive_data">
         <action
             android:id="@+id/action_sensitiveDataFragment_to_profileFragment"
@@ -247,12 +247,13 @@
     <dialog
         android:id="@+id/changeEmailFragment"
         android:name="com.inspirecoding.supershopper.fragments.ChangeEmailFragment"
-        android:label="ChangeEmailFragment"
+        android:label="@string/change_email"
         tools:layout="@layout/fragment_change_email"/>
     <fragment
         android:id="@+id/friendsMainFragment"
         android:name="com.inspirecoding.supershopper.fragments.FriendsMainFragment"
-        android:label="" >
+        android:label=""
+        tools:layout="@layout/fragment_friends_main">
         <action
             android:id="@+id/action_friendsMainFragment_to_otherUsersProfileFragment"
             app:destination="@id/otherUsersProfileFragment"
@@ -260,11 +261,19 @@
             app:exitAnim="@anim/slide_out_from_right"
             app:popEnterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_from_right"/>
+        <action
+            android:id="@+id/action_friendsMainFragment_to_searchFriendFragment"
+            app:destination="@id/searchFriendFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right" />
     </fragment>
     <fragment
         android:id="@+id/otherUsersProfileFragment"
         android:name="com.inspirecoding.supershopper.fragments.OtherUsersProfileFragment"
-        android:label="Profile" >
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_other_users_profile">
         <argument
             android:name="friend"
             app:argType="com.inspirecoding.supershopper.model.Friend"
@@ -278,5 +287,18 @@
         <argument
             android:name="user"
             app:argType="com.inspirecoding.supershopper.model.User"/>
+    </fragment>
+    <fragment
+        android:id="@+id/searchFriendFragment"
+        android:name="com.inspirecoding.supershopper.fragments.SearchFriendFragment"
+        android:label="@string/search_friend"
+        tools:layout="@layout/fragment_search_friend">
+        <action
+            android:id="@+id/action_searchFriendFragment_to_otherUsersProfileFragment"
+            app:destination="@id/otherUsersProfileFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"  />
     </fragment>
 </navigation>

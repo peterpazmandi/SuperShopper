@@ -42,6 +42,7 @@ import com.inspirecoding.supershopper.fragments.LoginFragment
 import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.FriendRequest
 import com.inspirecoding.supershopper.model.ShoppingList
+import kotlinx.coroutines.delay
 
 private const val TAG = "FirebaseViewModel"
 class FirebaseViewModel(val authRepository: AuthRepository, val firestoreRepository: FirestoreRepository): ViewModel()
@@ -496,18 +497,15 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
                 is Result.Success -> {
                     Log.d(TAG, "2_ ${user}")
                     setToastMessage(MyApp.applicationContext().getString(R.string.your_profile_picture_has_been_updated))
-                    onToastMessageDone()
                     _currentUserMLD.value = user
                 }
                 is Result.Error -> {
                     result.exception.message?.let {  message ->
                         setToastMessage(message)
-                        onToastMessageDone()
                     }
                 }
                 is Result.Canceled -> {
                     setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
-                    onToastMessageDone()
                 }
             }
         }
@@ -515,17 +513,24 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
     fun getListOfFilteredUsersFromFirestore(searchText: String, limit: Long)
     {
+        _spinner.value = true
         viewModelScope.launch {
+            // Set a delay to reduce the number of searches
+            delay(1_000)
+
             when(val result = firestoreRepository.getListOfFilteredUsersFromFirestore(searchText, limit))
             {
                 is Result.Success -> {
                     _usersListMLD.value = result.data
+                    _spinner.value = false
                 }
                 is Result.Error -> {
-
+                    setToastMessage(result.exception.toString())
+                    _spinner.value = false
                 }
                 is Result.Canceled -> {
-
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    _spinner.value = false
                 }
             }
         }
@@ -674,6 +679,8 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     {
         return firestoreRepository.getShoppingListRealTime(shoppingListId)
     }
+
+    // Friend
     fun getFriend(requestOwnerId: String, requestPartnerId: String): LiveData<Friend?>
     {
         val friend = MutableLiveData<Friend?>()
@@ -697,6 +704,8 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
         return friend
     }
+
+    // Friend requests
     fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): LiveData<FriendRequest?>
     {
         val friendRequest = MutableLiveData<FriendRequest?>()
@@ -720,6 +729,34 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
         return friendRequest
     }
+    fun insertFriendRequest(friendRequest: FriendRequest)
+    {
+        _spinner.value = true
+        viewModelScope.launch {
+            when(val result = firestoreRepository.insertFriendRequest(friendRequest))
+            {
+                is Result.Success -> {
+                    Log.d(TAG, "Success")
+
+                    _spinner.value = false
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+
+                    _spinner.value = false
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+
+                    _spinner.value = false
+                }
+            }
+        }
+    }
+
+
     fun getFriendsFromFirestore(friendshipOwnerId: String): MutableLiveData<MutableList<Pair<Friend, User>>>
     {
         _spinner.value = true
@@ -756,7 +793,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
         return listOfFriendsAndUsersLD
     }
 
-    fun deleteFriendFromFirestore(friendId: String): LiveData<FriendshipStatus>
+    fun deleteFriendFromFirestore (friendId: String): LiveData<FriendshipStatus>
     {
         val friendshipStatus = MutableLiveData<FriendshipStatus>()
 
@@ -803,7 +840,12 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     }
 
 
-
+    fun createFriendRequestInstance(date: Date, friendshipStatus: FriendshipStatus, requestOwnerId: String, requestPartnerId: String) = FriendRequest(
+        date = date,
+        friendshipStatus = friendshipStatus,
+        requestOwnerId = requestOwnerId,
+        requestPartnerId = requestPartnerId
+    )
 
 
 
@@ -866,6 +908,12 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
         val pair = Pair(false, "")
         _toast.value = pair
     }
+    fun hideSpinner()
+    {
+        _spinner.value = false
+    }
+
+
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?, fragment: Fragment)
     {
         Log.d(TAG, "data: $data")

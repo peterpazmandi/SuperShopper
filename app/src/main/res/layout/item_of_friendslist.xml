@@ -28,7 +28,7 @@
                 android:id="@+id/civ_profilePicture"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                tools:src="@drawable/profilepicture_blank"
+                android:src="@drawable/profilepicture_blank"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 

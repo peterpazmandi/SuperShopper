@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
@@ -14,14 +13,11 @@ import androidx.navigation.navGraphViewModels
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.FragmentOtherUsersProfileBinding
 import com.inspirecoding.supershopper.enums.FriendshipStatus
-import com.inspirecoding.supershopper.model.Friend
-import com.inspirecoding.supershopper.model.FriendRequest
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
-import com.inspirecoding.supershopper.utilities.CombinedLiveData
+import com.inspirecoding.supershopper.utilities.CurrentDateFunctions
 import com.inspirecoding.supershopper.viewmodels.FriendsViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 
 private const val TAG = "OtherUsersProfileFrag"
@@ -110,23 +106,66 @@ class OtherUsersProfileFragment : Fragment()
 
         firebaseViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinnerLoading.visibility = if (show) View.VISIBLE else View.GONE
+
+            if(show)
+            {
+                setButtonsEnabled(false)
+            }
+            else
+            {
+                setButtonsEnabled(true)
+            }
         }
 
         binding.btnSendRequest.setOnClickListener {
-
+            insertSenderFriendRequest()
+            insertRecieverFriendRequest()
+            friendsViewModel.setFriendshipStatus(FriendshipStatus.SENDER)
         }
         binding.btnAccept.setOnClickListener {
 
         }
         binding.btnDelete.setOnClickListener {
-//            friend?.let { _friend ->
-//                firebaseViewModel.deleteFriendFromFirestore(_friend.id).observe(viewLifecycleOwner)  { _friendshipStatus ->
-//                    if(_friendshipStatus == FriendshipStatus.DELETED)
-//                    {
-//                        setSendRequestButtonToVisible()
-//                    }
-//                }
-//            }
+            if (friendsViewModel.friendshipStatus.value == FriendshipStatus.FRIENDS)
+            {
+                friendsViewModel.friend?.let { _friend ->
+                    if(_friend.id.isNotEmpty())
+                    {
+                        // Delete from the current user the friend status
+                        firebaseViewModel.deleteFriendFromFirestore(_friend.id).observe(viewLifecycleOwner)  { _friendshipStatus ->
+                            if(_friendshipStatus == FriendshipStatus.DELETED)
+                            {
+                                friendsViewModel.setFriendshipStatus(FriendshipStatus.NOFRIENDSHIP)
+                            }
+                        }
+                        // Delete from the partner user the friend status
+                        // First we have to fetch this friend object
+                        firebaseViewModel.getFriend(friendsViewModel.openedUser.id, friendsViewModel.currentUser.id).observe(viewLifecycleOwner) { _friend ->
+                            _friend?.let { __friend ->
+                                // Second, delete this friend document also
+                                firebaseViewModel.deleteFriendFromFirestore(__friend.id).observe(viewLifecycleOwner)  { _friendshipStatus ->
+                                    if(_friendshipStatus == FriendshipStatus.DELETED)
+                                    {
+                                        friendsViewModel.setFriendshipStatus(FriendshipStatus.NOFRIENDSHIP)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (friendsViewModel.friendshipStatus.value == FriendshipStatus.SENDER)
+            {
+                friendsViewModel.friendRequest?.let { _friendRequest ->
+
+                }
+            }
+            else if (friendsViewModel.friendshipStatus.value == FriendshipStatus.RECEIVER)
+            {
+                friendsViewModel.friendRequest?.let { _friendRequest ->
+
+                }
+            }
         }
     }
 
@@ -189,5 +228,33 @@ class OtherUsersProfileFragment : Fragment()
             binding.btnDelete.visibility = View.GONE
             binding.btnSendRequest.visibility = View.GONE
         }
+    }
+
+    private fun setButtonsEnabled(isEnabled: Boolean)
+    {
+        binding.btnAccept.isEnabled = isEnabled
+        binding.btnDelete.isEnabled = isEnabled
+        binding.btnSendRequest.isEnabled = isEnabled
+    }
+
+    private fun insertSenderFriendRequest()
+    {
+        val sender = firebaseViewModel.createFriendRequestInstance(
+            CurrentDateFunctions.getToday().toDate(),
+            FriendshipStatus.SENDER,
+            friendsViewModel.currentUser.id,
+            friendsViewModel.openedUser.id
+        )
+        firebaseViewModel.insertFriendRequest(sender)
+    }
+    private fun insertRecieverFriendRequest()
+    {
+        val reciever = firebaseViewModel.createFriendRequestInstance(
+            CurrentDateFunctions.getToday().toDate(),
+            FriendshipStatus.RECEIVER,
+            friendsViewModel.openedUser.id,
+            friendsViewModel.currentUser.id
+        )
+        firebaseViewModel.insertFriendRequest(reciever)
     }
 }
