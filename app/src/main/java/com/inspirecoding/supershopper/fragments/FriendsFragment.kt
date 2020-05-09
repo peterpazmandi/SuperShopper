@@ -93,7 +93,7 @@ class FriendsFragment : Fragment()
     private fun initRecyclerView()
     {
         context?.let { context ->
-            friendsListAdapter = FriendsListAdapter(context, firebaseViewModel)
+            friendsListAdapter = FriendsListAdapter(context)
             binding.rvListOfFriends.apply {
                 layoutManager = _layoutManager
                 adapter = friendsListAdapter

@@ -31,6 +31,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
     private val friendsRequestCollection = firestoreInstance.collection(FRIENDSREQUEST_COLLECTION_NAME)
 
     private var lastResultOfFriends: DocumentSnapshot? = null
+    private var lastResultOfReceivedFriendsRequests: DocumentSnapshot? = null
 
     override suspend fun getUserFromFirestore(userId: String): Result<User>?
     {
@@ -242,9 +243,10 @@ class FirestoreRepositoryImpl: FirestoreRepository
         return shoppingListLiveData
     }
 
+    // Friend
     override suspend fun getListOfFriends(friendshipOwnerId: String): Result<List<Friend>>
     {
-        var resultsDocumentSnapshot: Result<QuerySnapshot>
+        val resultsDocumentSnapshot: Result<QuerySnapshot>
 
         if (lastResultOfFriends == null)
         {
@@ -286,8 +288,6 @@ class FirestoreRepositoryImpl: FirestoreRepository
             is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
         }
     }
-
-    // Friend
     override suspend fun getFriend(friendshipOwnerId: String, friendId: String): Result<Friend>
     {
         var friend: Friend = Friend()
@@ -368,6 +368,50 @@ class FirestoreRepositoryImpl: FirestoreRepository
             return Result.Error(exception)
         }
     }
+    override suspend fun getReceiverFriendRequest(requestPartnerId: String): Result<List<FriendRequest>>
+    {
+        val resultsDocumentSnapshot: Result<QuerySnapshot>
+
+        if (lastResultOfReceivedFriendsRequests == null)
+        {
+            resultsDocumentSnapshot = friendsRequestCollection
+                .whereEqualTo("requestPartnerId", requestPartnerId)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(10)
+                .get().await()
+        }
+        else
+        {
+            resultsDocumentSnapshot = friendsRequestCollection
+                .whereEqualTo("requestPartnerId", requestPartnerId)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .startAfter(lastResultOfReceivedFriendsRequests as DocumentSnapshot)
+                .limit(10)
+                .get().await()
+        }
+
+        return when (resultsDocumentSnapshot) {
+            is Result.Success -> {
+                val friendRequestsList = mutableListOf<FriendRequest>()
+                for(resultDocumentSnapshot in resultsDocumentSnapshot.data)
+                {
+                    val friend = resultDocumentSnapshot.toObject(FriendRequest::class.java)
+                    friend.id = resultDocumentSnapshot.id
+                    friendRequestsList.add(friend)
+                }
+                Log.d(TAG, "$friendRequestsList")
+
+                if(resultsDocumentSnapshot.data.documents.size != 0)
+                {
+                    lastResultOfReceivedFriendsRequests = resultsDocumentSnapshot.data.documents[resultsDocumentSnapshot.data.documents.size -1]
+                }
+                Result.Success(friendRequestsList)
+            }
+            is Result.Error -> Result.Error(resultsDocumentSnapshot.exception)
+            is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
+        }
+    }
+
     override suspend fun insertFriendRequest(friendRequest: FriendRequest): Result<Void?>
     {
         return try
@@ -379,7 +423,6 @@ class FirestoreRepositoryImpl: FirestoreRepository
             Result.Error(exception)
         }
     }
-
     override suspend fun deleteFriendRequest(friendRequest: FriendRequest): Result<Void?>
     {
         return try
@@ -391,7 +434,6 @@ class FirestoreRepositoryImpl: FirestoreRepository
             Result.Error(exception)
         }
     }
-
     override suspend fun deleteFriendFromFirestore(friendId: String): Result<Void?>
     {
         return try
@@ -412,8 +454,10 @@ class FirestoreRepositoryImpl: FirestoreRepository
         lastResultOfFriends = null
     }
 
-
-
+    override fun clearLastResultOfFriendsRequests()
+    {
+        lastResultOfReceivedFriendsRequests = null
+    }
 
     fun createShoppingList(documentChange: DocumentChange): ShoppingList
     {

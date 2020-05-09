@@ -237,7 +237,7 @@ class OtherUsersProfileFragment : Fragment()
         {
             binding.btnAccept.visibility = View.VISIBLE
             binding.btnDelete.visibility = View.VISIBLE
-            binding.btnDelete.text = getString(R.string.decline_request)
+            binding.btnDelete.text = getString(R.string.decline)
             binding.btnSendRequest.visibility = View.GONE
         }
         // If there aren't any friendship and request between the users

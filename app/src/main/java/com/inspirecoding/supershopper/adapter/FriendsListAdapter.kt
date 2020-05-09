@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
 private const val TAG = "FriendsListAdapter"
-class FriendsListAdapter(val context: Context, val firebaseViewModel: FirebaseViewModel): RecyclerView.Adapter<FriendsListAdapter.FriendsListViewHolder>()
+class FriendsListAdapter(val context: Context): RecyclerView.Adapter<FriendsListAdapter.FriendsListViewHolder>()
 {
     private var listOfFriends = mutableListOf<Pair<Friend, User>>()
     private var fetchedProfilePicture: HashMap<Int, Boolean> = HashMap()
@@ -80,8 +80,7 @@ class FriendsListAdapter(val context: Context, val firebaseViewModel: FirebaseVi
         val layoutInflater = LayoutInflater.from(context)
         val binding: ItemOfFriendslistBinding = DataBindingUtil.inflate(
             layoutInflater,
-            R.layout.item_of_friendslist,
-            parent, false
+            R.layout.item_of_friendslist, parent, false
         )
 
         return FriendsListViewHolder(binding)

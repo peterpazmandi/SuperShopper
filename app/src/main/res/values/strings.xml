@@ -40,9 +40,11 @@
     <string name="item_updated">Item updated</string>
     <string name="shopping_list_deleted">Shopping list deleted</string>
     <string name="accept_request">Accept request</string>
+    <string name="accept">Accept</string>
     <string name="friend_deleted">Friend deleted</string>
     <string name="delete_request">Delete request</string>
     <string name="decline_request">Decline request</string>
+    <string name="decline">Decline</string>
     <string name="delete_friend">Delete friend</string>
 
     <string name="facebook_app_id">532612537445839</string>

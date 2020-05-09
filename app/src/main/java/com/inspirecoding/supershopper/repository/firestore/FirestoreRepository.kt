@@ -28,6 +28,7 @@ interface FirestoreRepository
     suspend fun deleteFriend(friend: Friend): Result<Void?>
 
     suspend fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): Result<FriendRequest>
+    suspend fun getReceiverFriendRequest(requestPartnerId: String): Result<List<FriendRequest>>
     suspend fun insertFriendRequest(friendRequest: FriendRequest): Result<Void?>
     suspend fun deleteFriendRequest(friendRequest: FriendRequest): Result<Void?>
 
@@ -35,4 +36,5 @@ interface FirestoreRepository
     suspend fun deleteFriendFromFirestore(friendId: String): Result<Void?>
 
     fun clearLastResultOfFriends()
+    fun clearLastResultOfFriendsRequests()
 }
