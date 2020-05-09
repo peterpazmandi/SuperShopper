@@ -90,7 +90,7 @@
                         android:id="@+id/btn_accept"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginTop="@dimen/margin_4xlarge"
                         android:layout_marginStart="@dimen/margin_3xlarge"
                         android:layout_marginEnd="@dimen/margin_3xlarge"
@@ -100,13 +100,13 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@+id/btn_delete"
-                        android:text="@string/accept"/>
+                        android:text="@string/accept_request"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_delete"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginTop="@dimen/margin_4xlarge"
                         android:layout_marginStart="@dimen/margin_3xlarge"
                         android:layout_marginEnd="@dimen/margin_3xlarge"
@@ -116,7 +116,7 @@
                         app:layout_constraintLeft_toRightOf="@+id/btn_accept"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:text="@string/delete"/>
+                        android:text="@string/delete_request"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_sendRequest"

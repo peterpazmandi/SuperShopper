@@ -39,12 +39,12 @@ class FriendsViewModel: ViewModel()
             setFriendshipStatus(FriendshipStatus.FRIENDS)
         }
         // If the current user sent a friend request
-        else if (friend?.id == "" && friendRequest?.friendshipStatus == FriendshipStatus.SENDER)
+        else if (friend?.id == "" && friendRequest?.id != "" && friendRequest?.friendshipStatus == FriendshipStatus.SENDER)
         {
             setFriendshipStatus(FriendshipStatus.SENDER)
         }
         // If the current user got a friend request
-        else if (friend?.id == "" && friendRequest?.friendshipStatus == FriendshipStatus.RECEIVER)
+        else if (friend?.id == "" && friendRequest?.id != "" && friendRequest?.friendshipStatus == FriendshipStatus.RECEIVER)
         {
             setFriendshipStatus(FriendshipStatus.RECEIVER)
         }

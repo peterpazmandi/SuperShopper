@@ -148,12 +148,26 @@ class FirestoreRepositoryImpl: FirestoreRepository
 
     override suspend fun updateShoppingList(shoppingList: ShoppingList): Result<Void?>
     {
-        return shoppingListCollection.document(shoppingList.id).set(shoppingList).await()
+        return try
+        {
+            shoppingListCollection.document(shoppingList.id).set(shoppingList).await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
     }
 
     override suspend fun deleteShoppingList(shoppingListId: String): Result<Void?>
     {
-        return shoppingListCollection.document(shoppingListId).delete().await()
+        return try
+        {
+            shoppingListCollection.document(shoppingListId).delete().await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
     }
 
     override fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
@@ -273,6 +287,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
         }
     }
 
+    // Friend
     override suspend fun getFriend(friendshipOwnerId: String, friendId: String): Result<Friend>
     {
         var friend: Friend = Friend()
@@ -298,6 +313,28 @@ class FirestoreRepositoryImpl: FirestoreRepository
         catch (exception: Exception)
         {
             return Result.Error(exception)
+        }
+    }
+    override suspend fun insertFriend(friend: Friend): Result<Void?>
+    {
+        return try
+        {
+            friendsCollection.document().set(friend).await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
+    }
+    override suspend fun deleteFriend(friend: Friend): Result<Void?>
+    {
+        return try
+        {
+            friendsCollection.document(friend.id).delete().await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
         }
     }
 
@@ -345,12 +382,26 @@ class FirestoreRepositoryImpl: FirestoreRepository
 
     override suspend fun deleteFriendRequest(friendRequest: FriendRequest): Result<Void?>
     {
-        return friendsRequestCollection.document(friendRequest.id).delete().await()
+        return try
+        {
+            friendsRequestCollection.document(friendRequest.id).delete().await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
     }
 
     override suspend fun deleteFriendFromFirestore(friendId: String): Result<Void?>
     {
-        return friendsCollection.document(friendId).delete().await()
+        return try
+        {
+             friendsCollection.document(friendId).delete().await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
     }
 
 

@@ -704,6 +704,59 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
         return friend
     }
+    fun insertFriend(friend: Friend)
+    {
+        _spinner.value = true
+        viewModelScope.launch {
+            when(val result = firestoreRepository.insertFriend(friend))
+            {
+                is Result.Success -> {
+
+                    Log.d(TAG, "Success")
+
+                    _spinner.value = false
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+
+                    _spinner.value = false
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+
+                    _spinner.value = false
+                }
+            }
+        }
+    }
+    fun deleteFriend(friend: Friend)
+    {
+        _spinner.value = true
+        viewModelScope.launch {
+            when(val result = firestoreRepository.deleteFriend(friend))
+            {
+                is Result.Success -> {
+                    Log.d(TAG, "Success")
+
+                    _spinner.value = false
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+
+                    _spinner.value = false
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+
+                    _spinner.value = false
+                }
+            }
+        }
+    }
 
     // Friend requests
     fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): LiveData<FriendRequest?>
@@ -866,6 +919,11 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     }
 
 
+    fun createFriendInstance(friendId: String, friendName: String, friendshipOwnerId: String) = Friend(
+        friendId = friendId,
+        friendName = friendName,
+        friendshipOwnerId = friendshipOwnerId
+    )
     fun createFriendRequestInstance(date: Date, friendshipStatus: FriendshipStatus, requestOwnerId: String, requestPartnerId: String) = FriendRequest(
         date = date,
         friendshipStatus = friendshipStatus,

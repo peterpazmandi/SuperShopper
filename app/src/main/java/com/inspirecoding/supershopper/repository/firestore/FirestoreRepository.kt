@@ -24,6 +24,8 @@ interface FirestoreRepository
     fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<ShoppingList>
 
     suspend fun getFriend(friendshipOwnerId: String, friendId: String): Result<Friend>
+    suspend fun insertFriend(friend: Friend): Result<Void?>
+    suspend fun deleteFriend(friend: Friend): Result<Void?>
 
     suspend fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): Result<FriendRequest>
     suspend fun insertFriendRequest(friendRequest: FriendRequest): Result<Void?>

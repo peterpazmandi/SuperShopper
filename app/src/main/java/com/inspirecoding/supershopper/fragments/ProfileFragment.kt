@@ -163,17 +163,19 @@ class ProfileFragment : Fragment()
     {
         super.onActivityResult(requestCode, resultCode, data)
 
-        val result: CropImage.ActivityResult = CropImage.getActivityResult(data)
-        val imageUri: Uri = result.uri
+        CropImage.getActivityResult(data)?.let { activityResult ->
+            val result: CropImage.ActivityResult = CropImage.getActivityResult(data)
+            val imageUri: Uri = result.uri
 
-        binding.civProfilePicture.setImageURI(imageUri)
+            binding.civProfilePicture.setImageURI(imageUri)
 
-        if(result.uri.path != null && firebaseViewModel.currentUserLD.value != null && isImageCropperRunning)
-        {
-            isImageCropperRunning = false
-            currentUser.profilePicture = (result.uri.path as String)
-            Log.d(TAG, "${currentUser.profilePicture}")
-            firebaseViewModel.updateProfilePictureOfUserInFirestore(currentUser)
+            if(result.uri.path != null && firebaseViewModel.currentUserLD.value != null && isImageCropperRunning)
+            {
+                isImageCropperRunning = false
+                currentUser.profilePicture = (result.uri.path as String)
+                Log.d(TAG, "${currentUser.profilePicture}")
+                firebaseViewModel.updateProfilePictureOfUserInFirestore(currentUser)
+            }
         }
     }
 
