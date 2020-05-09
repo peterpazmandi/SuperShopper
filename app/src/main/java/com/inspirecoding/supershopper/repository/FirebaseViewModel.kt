@@ -734,14 +734,14 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             }
         }
     }
-    fun getFriendsFromFirestore(friendshipOwnerId: String): MutableLiveData<MutableList<Pair<Friend, User>>>
+    fun getListOfFriendsAsOwner(friendshipOwnerId: String): MutableLiveData<MutableList<Pair<Friend, User>>>
     {
         _spinner.value = true
         val listOfFriendsAndUsersLD = MutableLiveData<MutableList<Pair<Friend, User>>>()
         val listOfFriendsAndUsers = mutableListOf<Pair<Friend, User>>()
 
         viewModelScope.launch {
-            when (val result = firestoreRepository.getListOfFriends(friendshipOwnerId))
+            when (val result = firestoreRepository.getListOfFriendsAsOwner(friendshipOwnerId))
             {
                 is Result.Success -> {
                     setToastMessage(MyApp.applicationContext().getString(R.string.friend_deleted))
@@ -768,6 +768,52 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             listOfFriendsAndUsersLD.value = listOfFriendsAndUsers
         }
         return listOfFriendsAndUsersLD
+    }
+    fun getAllFriendsAsFriend(friendshipOwnerId: String): MutableLiveData<List<Friend>>
+    {
+        val listOfFriendsAndUsersLD = MutableLiveData<List<Friend>>()
+        val listOfFriendsAndUsers = mutableListOf<Friend>()
+
+        viewModelScope.launch {
+            when (val result = firestoreRepository.getAllFriendsAsFriend(friendshipOwnerId))
+            {
+                is Result.Success -> {
+                    for(friend in result.data)
+                    {
+                        listOfFriendsAndUsers.add(friend)
+                    }
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                }
+            }
+            listOfFriendsAndUsersLD.value = listOfFriendsAndUsers
+        }
+        return listOfFriendsAndUsersLD
+    }
+    fun updateFriendName(friendId: String, newName: String)
+    {
+        viewModelScope.launch {
+            when (val result = firestoreRepository.updateFriendName(friendId, newName))
+            {
+                is Result.Success -> {
+
+                }
+                is Result.Error -> {
+                    result.exception.message?.let { message ->
+                        setToastMessage(message)
+                    }
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                }
+            }
+        }
     }
     fun deleteFriendFromFirestore (friendId: String): LiveData<FriendshipStatus>
     {

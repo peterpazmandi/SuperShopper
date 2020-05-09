@@ -8,21 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.DocumentChange
 
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.adapter.FriendsListAdapter
 import com.inspirecoding.supershopper.databinding.FragmentFriendsBinding
-import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 
 private const val TAG = "FriendsFragment"
@@ -63,7 +56,7 @@ class FriendsFragment : Fragment()
         firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) { _currentUser ->
             currentUser = _currentUser
             Log.d(TAG, "6_ ${_currentUser}")
-            firebaseViewModel.getFriendsFromFirestore(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
+            firebaseViewModel.getListOfFriendsAsOwner(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
                 Log.d(TAG, "7_ ${_listOfFriends}")
                 loadedFriends += _listOfFriends.size
                 friendsListAdapter.addFriends(_listOfFriends)
@@ -79,7 +72,7 @@ class FriendsFragment : Fragment()
                 {
                     if(!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
                     {
-                        firebaseViewModel.getFriendsFromFirestore(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
+                        firebaseViewModel.getListOfFriendsAsOwner(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
                             Log.d(TAG, "2_ ${_listOfFriends}")
                             loadedFriends += _listOfFriends.size
                             friendsListAdapter.addFriends(_listOfFriends)

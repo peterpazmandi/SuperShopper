@@ -93,6 +93,14 @@ class ProfileFragment : Fragment()
             {
                 currentUser.name = binding.etName.text.toString()
                 firebaseViewModel.updateNameOfUserInFirestore(currentUser)
+
+                firebaseViewModel.getAllFriendsAsFriend(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
+                    for(friend in _listOfFriends)
+                    {
+                        Log.d(TAG, "getAllFriendsAsFriend $friend")
+                        firebaseViewModel.updateFriendName(friend.id, currentUser.name)
+                    }
+                }
             }
         }
         binding.fabChangeProfilePicture.setOnClickListener {

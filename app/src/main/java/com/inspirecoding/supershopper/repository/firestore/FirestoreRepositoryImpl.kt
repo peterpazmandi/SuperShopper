@@ -247,7 +247,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
     }
 
     // Friend
-    override suspend fun getListOfFriends(friendshipOwnerId: String): Result<List<Friend>>
+    override suspend fun getListOfFriendsAsOwner(friendshipOwnerId: String): Result<List<Friend>>
     {
         val resultsDocumentSnapshot: Result<QuerySnapshot>
 
@@ -291,6 +291,51 @@ class FirestoreRepositoryImpl: FirestoreRepository
             is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
         }
     }
+
+    override suspend fun getAllFriendsAsFriend(friendshipOwnerId: String): Result<List<Friend>>
+    {
+        val resultsDocumentSnapshot = friendsCollection
+            .whereEqualTo("friendId", friendshipOwnerId)
+            .get().await()
+
+        return when (resultsDocumentSnapshot) {
+            is Result.Success -> {
+                val usersList = mutableListOf<Friend>()
+                for(resultDocumentSnapshot in resultsDocumentSnapshot.data)
+                {
+                    val friend = resultDocumentSnapshot.toObject(Friend::class.java)
+                    friend.id = resultDocumentSnapshot.id
+                    usersList.add(friend)
+                }
+                Log.d(TAG, "$usersList")
+
+                if(resultsDocumentSnapshot.data.documents.size != 0)
+                {
+                    lastResultOfFriends = resultsDocumentSnapshot.data.documents[resultsDocumentSnapshot.data.documents.size -1]
+                }
+                Result.Success(usersList)
+            }
+            is Result.Error -> Result.Error(resultsDocumentSnapshot.exception)
+            is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
+        }
+    }
+
+    override suspend fun updateFriendName(friendId: String, newName: String): Result<Void?>
+    {
+        return try
+        {
+            friendsCollection
+                .document(friendId)
+                .update(mapOf(
+                    "friendName" to newName
+                )).await()
+        }
+        catch (exception: Exception)
+        {
+            Result.Error(exception)
+        }
+    }
+
     override suspend fun getFriend(friendshipOwnerId: String, friendId: String): Result<Friend>
     {
         var friend: Friend = Friend()
