@@ -54,8 +54,10 @@ class FirestoreRepositoryImpl: FirestoreRepository
     }
     override suspend fun getListOfFilteredUsersFromFirestore(searchText: String, limit: Long): Result<List<User>>
     {
+        Log.d(TAG, "$searchText")
         try
         {
+            Log.d(TAG, "$searchText")
             return when(val resultsDocumentSnapshot = userCollection
                 .whereGreaterThanOrEqualTo("name", searchText)
                 .whereLessThanOrEqualTo("name", searchText + '\uf8ff')
@@ -67,8 +69,8 @@ class FirestoreRepositoryImpl: FirestoreRepository
                     val usersList = mutableListOf<User>()
                     for(resultDocumentSnapshot in resultsDocumentSnapshot.data)
                     {
-                        val user = resultDocumentSnapshot.toObject(User::class.java)
-                        usersList.add(user)
+                        val friend = resultDocumentSnapshot.toObject(User::class.java)
+                        usersList.add(friend)
                     }
                     Log.d(TAG, "$usersList")
                     Result.Success(usersList)
@@ -179,6 +181,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
         {
             shoppingListCollection
                 .whereArrayContains("friendsSharedWith", currentUser.id)
+                .orderBy("dueDate", Query.Direction.DESCENDING)
                 .addSnapshotListener { resultDocumentSnapshot, firebaseFirestoreException ->
                     resultDocumentSnapshot?.let {
                         val mapOfResult = mutableMapOf<DocumentChange, ShoppingList>()
@@ -337,6 +340,37 @@ class FirestoreRepositoryImpl: FirestoreRepository
             Result.Error(exception)
         }
     }
+    override suspend fun getListOfFilteredFriendsFromFirestore(friendshipOwnerId: String, searchText: String, limit: Long): Result<List<Friend>>
+    {
+        try
+        {
+            return when(val resultsDocumentSnapshot = friendsCollection
+                .whereGreaterThanOrEqualTo("friendName", searchText)
+                .whereLessThanOrEqualTo("friendName", searchText + '\uf8ff')
+                .orderBy("friendName", Query.Direction.DESCENDING)
+                .limit(limit)
+                .get().await())
+            {
+                is Result.Success -> {
+                    val usersList = mutableListOf<Friend>()
+                    for(resultDocumentSnapshot in resultsDocumentSnapshot.data)
+                    {
+                        val friend = resultDocumentSnapshot.toObject(Friend::class.java)
+                        friend.id = resultDocumentSnapshot.id
+                        usersList.add(friend)
+                    }
+                    Log.d(TAG, "$usersList")
+                    Result.Success(usersList)
+                }
+                is Result.Error -> Result.Error(resultsDocumentSnapshot.exception)
+                is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
+            }
+        }
+        catch (exception: Exception)
+        {
+            return Result.Error(exception)
+        }
+    }
 
     // Friend requests
     override suspend fun getFriendRequest(requestOwnerId: String, requestPartnerId: String): Result<FriendRequest>
@@ -411,7 +445,6 @@ class FirestoreRepositoryImpl: FirestoreRepository
             is Result.Canceled -> Result.Canceled(resultsDocumentSnapshot.exception)
         }
     }
-
     override suspend fun insertFriendRequest(friendRequest: FriendRequest): Result<Void?>
     {
         return try

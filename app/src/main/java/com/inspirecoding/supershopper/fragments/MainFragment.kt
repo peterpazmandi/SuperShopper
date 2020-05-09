@@ -1,8 +1,10 @@
 package com.inspirecoding.supershopper.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -51,6 +53,7 @@ class MainFragment : Fragment()
         toolbar.setNavigationIcon(null)
 
         context?.let { context ->
+            context.hideKeyboard(binding.root)
             shoppingListAdapter = ShoppingListAdapter(context, firebaseViewModel)
             binding.rvShoppingLists.apply {
                 adapter = shoppingListAdapter
@@ -169,7 +172,8 @@ class MainFragment : Fragment()
                 Picasso
                     .get()
                     .load(user.profilePicture)
-                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.profilepicture_blank)
+                    .placeholder(R.drawable.profilepicture_blank)
                     .into(imageView)
             }
         }
@@ -197,5 +201,14 @@ class MainFragment : Fragment()
     {
         inflater.inflate(R.menu.menu_mainfragment_profilepicture, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
+
+    fun Context.hideKeyboard(view: View)
+    {
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.apply {
+            hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }

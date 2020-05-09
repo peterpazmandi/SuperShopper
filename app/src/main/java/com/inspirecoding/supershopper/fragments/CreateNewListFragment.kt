@@ -19,7 +19,6 @@ import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.adapter.ListItemAdapter
 import com.inspirecoding.supershopper.customview.adapter.UserAutoCompleteAdapter
 import com.inspirecoding.supershopper.databinding.FragmentCreateNewListBinding
-import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.utilities.CurrentDateFunctions
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.viewmodels.CreateNewListFragmentViewModel
@@ -32,6 +31,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
 import com.inspirecoding.supershopper.adapter.FriendsListChipAdapter
 import com.inspirecoding.supershopper.enums.Crud
+import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
 import kotlinx.coroutines.launch
@@ -87,16 +87,23 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
 
             binding.actvCreateNewListThirdItemSearchFriends.setOnItemClickListener{ parent, view, position, arg3 ->
                 binding.actvCreateNewListThirdItemSearchFriends.text = null
-                val selectedFriend = parent.getItemAtPosition(position) as User
+                val selectedFriend = parent.getItemAtPosition(position) as Friend
 
-                if(createNewListFragmentViewModel.isUserAlreadySelected(context, binding.actvCreateNewListThirdItemSearchFriends, selectedFriend))
+                if(createNewListFragmentViewModel.isUserAlreadySelected(
+                        context, binding.root, selectedFriend.friendId))
                 {
                     Toast.makeText(context, R.string.you_have_already_added_this_friend, Toast.LENGTH_LONG).show()
                 }
                 else
                 {
-                    binding.tilCreateNewListThirdItemSearchFreinds.error = null
-                    friendsListChipAdapter.addFriend(selectedFriend)
+                    firebaseViewModel.viewModelScope.launch {
+                        val selectedUser = firebaseViewModel.getUserFromFirestore(selectedFriend.friendId)
+                        selectedUser?.let { _selectedUser ->
+                            binding.tilCreateNewListThirdItemSearchFreinds.error = null
+                            createNewListFragmentViewModel.listOfFriendsIds.add(selectedFriend.friendId)
+                            friendsListChipAdapter.addFriend(_selectedUser)
+                        }
+                    }
                 }
             }
 
@@ -150,13 +157,12 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             binding.tilCreateNewListFirstItemName.error = null
         }
 
-        firebaseViewModel.usersListLD.observe(viewLifecycleOwner) { usersList ->
-            firebaseViewModel.currentUserLD.value?.let { currentUser ->
-                val _usersList = createNewListFragmentViewModel.removeCurrentUserAndAddedFriends(currentUser, friendsListChipAdapter.getFrindsList(), usersList.toMutableList())
+        firebaseViewModel.friendsListMLD.observe(viewLifecycleOwner) { friendsList ->
+            val _usersList = createNewListFragmentViewModel
+                .removeAlreadyAddedFriends(friendsList.toMutableList())
 
-                userAutoCompleteAdapter.updateUsersList(_usersList)
-                binding.pbCreateNewListThirdItemSearchFriends.visibility = View.GONE
-            }
+            userAutoCompleteAdapter.updateUsersList(_usersList)
+            binding.pbCreateNewListThirdItemSearchFriends.visibility = View.GONE
         }
 
         createNewListFragmentViewModel.itemsListAction.observe(viewLifecycleOwner) { result ->
@@ -215,6 +221,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         friendsListChipAdapter.setOnItemClickListener(object: FriendsListChipAdapter.OnItemClickListener{
             override fun onDeleteClick(position: Int)
             {
+                createNewListFragmentViewModel.listOfFriendsIds.removeAt(position)
                 friendsListChipAdapter.removeFriend(position)
             }
         })
@@ -239,14 +246,18 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             binding.tvCreateNewListSecondItemDueDate.text = shoppingList.dueDate.toLocaleString().substringBeforeLast(" ")
             binding.tvCreateNewListSecondItemDueDate.setTextColor(ContextCompat.getColor(context, R.color.black))
 
+            /** Remove all users from the list **/
             listItemAdapter.removeAllItems()
-            Log.d(TAG, "${shoppingList.listOfItems}")
             listItemAdapter.addAllItem(shoppingList.listOfItems)
+
+            /** Remove all friends from the list **/
+            createNewListFragmentViewModel.listOfFriendsIds.clear()
 
             for(friendId in shoppingList.friendsSharedWith)
             {
                 if(friendId != firebaseViewModel.currentUserLD.value?.id)
                 {
+                    createNewListFragmentViewModel.listOfFriendsIds.add(friendId)
                     firebaseViewModel.viewModelScope.launch {
                         val friend = firebaseViewModel.getUserFromFirestore(friendId)
                         friend?.let {user ->

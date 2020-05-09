@@ -64,25 +64,6 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
         }
         return listOfShoppingLists.indexOf(foundShoppingList)
     }
-
-    override fun onViewAttachedToWindow(holder: ShoppingListViewHolder)
-    {
-        holder.setIsRecyclable(false)
-        super.onViewAttachedToWindow(holder)
-    }
-    override fun getItemId(position: Int): Long
-    {
-        return position.toLong()
-    }
-    override fun getItemViewType(position: Int): Int
-    {
-        return position
-    }
-    override fun onViewDetachedFromWindow(holder: ShoppingListViewHolder)
-    {
-        holder.setIsRecyclable(true)
-        super.onViewDetachedFromWindow(holder)
-    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListAdapter.ShoppingListViewHolder
     {
         val layoutInflater = LayoutInflater.from(context)

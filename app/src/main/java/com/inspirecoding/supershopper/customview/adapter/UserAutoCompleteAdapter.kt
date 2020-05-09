@@ -11,6 +11,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -24,12 +25,12 @@ class UserAutoCompleteAdapter(
 {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    private var resultList = mutableListOf<User>()
+    private var resultList = mutableListOf<Friend>()
     override fun getCount(): Int {
         return resultList.size
     }
 
-    override fun getItem(index: Int): User
+    override fun getItem(index: Int): Friend
     {
         return resultList[index]
     }
@@ -47,7 +48,7 @@ class UserAutoCompleteAdapter(
             val inflater = fragment.context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView = inflater.inflate(R.layout.simple_dropdown_item_1line, parent, false)
         }
-        (convertView?.findViewById(R.id.text1) as TextView).setText(getItem(position).name)
+        (convertView?.findViewById(R.id.text1) as TextView).setText(getItem(position).friendName)
         return convertView
     }
 
@@ -62,6 +63,7 @@ class UserAutoCompleteAdapter(
                 {
                     val users: List<String> = foundUsers(constraint.toString())
 
+                    Log.d(TAG, "5_ $users")
                     // Assign the data to the FilterResults
                     filterResults.values = users
                     filterResults.count = users.size
@@ -75,7 +77,7 @@ class UserAutoCompleteAdapter(
                 Log.d(TAG, "2_ ${results?.count}")
                 if (results != null && results.count > 0)
                 {
-                    resultList = results.values as MutableList<User>
+                    resultList = results.values as MutableList<Friend>
                     Log.d(TAG, "3_ $resultList")
                     notifyDataSetChanged()
                 }
@@ -91,12 +93,14 @@ class UserAutoCompleteAdapter(
     {
         val protocol = mutableListOf<String>()
 
-        firebaseViewModel.getListOfFilteredUsersFromFirestore(searchText, 5)
+        firebaseViewModel.currentUserLD.value?.id?.let { currentUserId ->
+            firebaseViewModel.getListOfFilteredFriendsFromFirestore(currentUserId, searchText, 5)
+        }
 
         return protocol
     }
 
-    fun updateUsersList(usersList: List<User>)
+    fun updateUsersList(usersList: List<Friend>)
     {
         resultList.clear()
         resultList.addAll(usersList)

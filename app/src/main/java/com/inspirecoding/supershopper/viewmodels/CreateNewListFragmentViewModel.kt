@@ -1,12 +1,14 @@
 package com.inspirecoding.supershopper.viewmodels
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.inspirecoding.supershopper.enums.Crud
+import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.User
 import java.util.*
@@ -14,7 +16,7 @@ import java.util.*
 private const val TAG = "CreateNewListViewModel"
 class CreateNewListFragmentViewModel: ViewModel()
 {
-    val listOfFriends = mutableListOf<User>()
+    val listOfFriendsIds = mutableListOf<String>()
     var selectedDueDate: Date? = null
 
 
@@ -22,22 +24,24 @@ class CreateNewListFragmentViewModel: ViewModel()
     val itemsListAction: LiveData<Triple<Crud, Int?, ListItem?>>
         get() = _itemsListAction
 
-    fun isUserAlreadySelected(context: Context, view: View, selectedUser: User): Boolean
+    fun isUserAlreadySelected(context: Context, view: View, selectedUserId: String): Boolean
     {
         context.hideKeyboard(view)
 
-        val userOnTheList = listOfFriends.filter {
-            it.id == selectedUser.id
+        val userOnTheList = listOfFriendsIds.filter {
+            it == selectedUserId
         }
+        Log.d(TAG, "3_ $userOnTheList")
 
         return userOnTheList.count() != 0
     }
-    fun removeCurrentUserAndAddedFriends(currentUser: User, alreadySelectedUsers: MutableList<User>, resultList: MutableList<User>): MutableList<User>
+    fun removeAlreadyAddedFriends(resultList: MutableList<Friend>): MutableList<Friend>
     {
         val _usersList = resultList.toMutableList()
-        _usersList.remove(currentUser)
-        _usersList.removeAll(alreadySelectedUsers)
-        return _usersList
+        val filteredList = _usersList.filter {
+            !listOfFriendsIds.contains(it.friendId)
+        }
+        return filteredList.toMutableList()
     }
 
     fun addItem(listItem: ListItem)

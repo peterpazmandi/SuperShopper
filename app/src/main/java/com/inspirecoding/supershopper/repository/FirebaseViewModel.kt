@@ -73,6 +73,10 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     val usersListLD: LiveData<List<User>>
         get() = _usersListMLD
 
+    private val _friendsListMLD = MutableLiveData<List<Friend>>()
+    val friendsListMLD: LiveData<List<Friend>>
+        get() = _friendsListMLD
+
 
     //Email
     fun registerUserFromAuthWithEmailAndPassword(name: String, email: String, password: String, fragment: Fragment)
@@ -513,24 +517,26 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
     fun getListOfFilteredUsersFromFirestore(searchText: String, limit: Long)
     {
-        _spinner.value = true
+        _spinner.postValue(true)
+        Log.d(TAG, "1_ $searchText")
         viewModelScope.launch {
             // Set a delay to reduce the number of searches
-            delay(1_000)
+//            delay(1_000)
+            Log.d(TAG, "2_ $searchText")
 
             when(val result = firestoreRepository.getListOfFilteredUsersFromFirestore(searchText, limit))
             {
                 is Result.Success -> {
-                    _usersListMLD.value = result.data
-                    _spinner.value = false
+                    _usersListMLD.postValue(result.data)
+                    _spinner.postValue(false)
                 }
                 is Result.Error -> {
                     setToastMessage(result.exception.toString())
-                    _spinner.value = false
+                    _spinner.postValue(false)
                 }
                 is Result.Canceled -> {
                     setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
-                    _spinner.value = false
+                    _spinner.postValue(false)
                 }
             }
         }
@@ -703,6 +709,30 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
         }
 
         return friend
+    }
+    fun getListOfFilteredFriendsFromFirestore(friendshipOwnerId: String, searchText: String, limit: Long)
+    {
+        _spinner.postValue(true)
+        viewModelScope.launch {
+            // Set a delay to reduce the number of searches
+            delay(1_000)
+
+            when(val result = firestoreRepository.getListOfFilteredFriendsFromFirestore(friendshipOwnerId, searchText, limit))
+            {
+                is Result.Success -> {
+                    _friendsListMLD.postValue(result.data)
+                    _spinner.postValue(false)
+                }
+                is Result.Error -> {
+                    setToastMessage(result.exception.toString())
+                    _spinner.postValue(false)
+                }
+                is Result.Canceled -> {
+                    setToastMessage(MyApp.applicationContext().getString(R.string.request_canceled))
+                    _spinner.postValue(false)
+                }
+            }
+        }
     }
     fun getFriendsFromFirestore(friendshipOwnerId: String): MutableLiveData<MutableList<Pair<Friend, User>>>
     {
