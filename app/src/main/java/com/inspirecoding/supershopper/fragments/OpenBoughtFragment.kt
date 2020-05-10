@@ -78,9 +78,10 @@ class OpenBoughtFragment : Fragment()
         Log.d(TAG, "1_ ${shoppingListFragmentViewModel.openedShoppingList}")
 
 
-        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { shoppingList ->
-            Log.d(TAG, "$shoppingList")
-            updateSelectedShoppingListItems(shoppingList.listOfItems)
+        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { _shoppingList ->
+            shoppingListFragmentViewModel.openedShoppingList = _shoppingList
+            Log.d(TAG, "$_shoppingList")
+            updateSelectedShoppingListItems(_shoppingList.listOfItems)
         }
 
         return binding.root
@@ -94,8 +95,9 @@ class OpenBoughtFragment : Fragment()
         openItemsAdapter.setOnItemClickListener(object : OpenBoughtItemsAdapter.OnItemClickListener {
             override fun onItemSelected(listItem: ListItem, isChecked: Boolean)
             {
-                Log.d(TAG, "$listItem, $isChecked")
+                Log.d(TAG, "1_ ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
                 val indexOfItem = shoppingListFragmentViewModel.openedShoppingList.listOfItems.indexOf(listItem)
+                Log.d(TAG, "2_ $indexOfItem, ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
                 listItem.isBought = isChecked
                 shoppingListFragmentViewModel.openedShoppingList.listOfItems[indexOfItem] = listItem
                 firebaseViewModel.updateShoppingList(shoppingListFragmentViewModel.openedShoppingList, this@OpenBoughtFragment)
@@ -104,9 +106,10 @@ class OpenBoughtFragment : Fragment()
         boughtItemsAdapter.setOnItemClickListener(object : OpenBoughtItemsAdapter.OnItemClickListener {
             override fun onItemSelected(listItem: ListItem, isChecked: Boolean)
             {
+                Log.d(TAG, "3_ ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
                 val indexOfItem = shoppingListFragmentViewModel.openedShoppingList.listOfItems.indexOf(listItem)
                 listItem.isBought = isChecked
-                Log.d(TAG, "$indexOfItem, ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
+                Log.d(TAG, "4_ $indexOfItem, ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
                 shoppingListFragmentViewModel.openedShoppingList.listOfItems[indexOfItem] = listItem
                 firebaseViewModel.updateShoppingList(shoppingListFragmentViewModel.openedShoppingList, this@OpenBoughtFragment)
             }

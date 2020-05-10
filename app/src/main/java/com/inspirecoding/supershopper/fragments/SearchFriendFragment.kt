@@ -34,13 +34,15 @@ class SearchFriendFragment : Fragment()
     {
         super.onViewCreated(view, savedInstanceState)
 
-//        initRecyclerView()
-
         binding.etSearch.addTextChangedListener { _searchText ->
             _searchText?.let { __searchText ->
                 if (__searchText.length > 3)
                 {
                     firebaseViewModel.getListOfFilteredUsersFromFirestore(__searchText.toString(), 15)
+                }
+                else
+                {
+                    usersListAdapter.removeAllItems()
                 }
             }
         }
@@ -63,5 +65,12 @@ class SearchFriendFragment : Fragment()
                 adapter = usersListAdapter
             }
         }
+    }
+
+    override fun onResume()
+    {
+        super.onResume()
+        initRecyclerView()
+        usersListAdapter.removeAllItems()
     }
 }

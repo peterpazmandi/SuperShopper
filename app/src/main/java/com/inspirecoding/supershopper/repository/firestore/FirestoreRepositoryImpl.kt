@@ -181,7 +181,6 @@ class FirestoreRepositoryImpl: FirestoreRepository
         {
             shoppingListCollection
                 .whereArrayContains("friendsSharedWith", currentUser.id)
-                .orderBy("dueDate", Query.Direction.DESCENDING)
                 .addSnapshotListener { resultDocumentSnapshot, firebaseFirestoreException ->
                     resultDocumentSnapshot?.let {
                         val mapOfResult = mutableMapOf<DocumentChange, ShoppingList>()
