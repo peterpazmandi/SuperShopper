@@ -206,7 +206,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                     }
                     else
                     {
-                        newShoppingList.id = (selectedShoppingList as ShoppingList).id
+                        newShoppingList.shoppingListId = (selectedShoppingList as ShoppingList).shoppingListId
                         firebaseViewModel.updateShoppingList(newShoppingList, this)
                         findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
                     }

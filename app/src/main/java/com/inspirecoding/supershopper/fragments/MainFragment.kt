@@ -97,7 +97,7 @@ class MainFragment : Fragment()
                             shoppingList?.let { shoppingList ->
                                 shoppingListAdapter.addShoppingListItem(shoppingList)
 
-                                if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
+                                if(shoppingList.shoppingListId  == mainFragmentViewModel.selectedShoppingList.shoppingListId)
                                 {
                                     val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
                                     openShoppingList(shoppingList, position)
@@ -112,7 +112,7 @@ class MainFragment : Fragment()
                                 val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
                                 shoppingListAdapter.updateShoppingListItem(position, shoppingList)
 
-                                if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
+                                if(shoppingList.shoppingListId  == mainFragmentViewModel.selectedShoppingList.shoppingListId)
                                 {
                                     openShoppingList(shoppingList, position)
                                 }
@@ -126,7 +126,7 @@ class MainFragment : Fragment()
                                 val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
                                 shoppingListAdapter.removeShoppingListItem(position)
 
-                                if(shoppingList.id  == mainFragmentViewModel.selectedShoppingList.id)
+                                if(shoppingList.shoppingListId  == mainFragmentViewModel.selectedShoppingList.shoppingListId)
                                 {
                                     openShoppingList(shoppingList, position)
                                 }

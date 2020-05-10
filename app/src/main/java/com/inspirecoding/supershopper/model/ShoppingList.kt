@@ -6,7 +6,7 @@ import java.util.*
 
 @Parcelize
 data class ShoppingList (
-    var id: String = "",
+    var shoppingListId: String = "",
     var timeStamp: Long = 0,
     var name: String = "",
     var dueDate: Date = Calendar.getInstance().time,

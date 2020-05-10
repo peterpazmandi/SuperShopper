@@ -41,12 +41,18 @@ class DetailsFragment() : Fragment()
             }
         }
 
-        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { shoppingList ->
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
+
+        Log.d(TAG, "opened shoppingList: ${shoppingListFragmentViewModel.openedShoppingList}")
+        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.shoppingListId).observe(viewLifecycleOwner) { shoppingList ->
             Log.d(TAG, "$shoppingList")
             populateDetailsForm(shoppingList)
         }
-
-        return binding.root
     }
 
     private fun populateDetailsForm(shoppingList: ShoppingList)

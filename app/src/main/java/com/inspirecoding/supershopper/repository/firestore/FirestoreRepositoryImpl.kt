@@ -153,7 +153,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
     {
         return try
         {
-            shoppingListCollection.document(shoppingList.id).set(shoppingList).await()
+            shoppingListCollection.document(shoppingList.shoppingListId).set(shoppingList).await()
         }
         catch (exception: Exception)
         {
@@ -222,6 +222,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
     override fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<ShoppingList>
     {
         val shoppingListLiveData = MutableLiveData<ShoppingList>()
+        Log.d(TAG, "1_ ${shoppingListId}")
 
         try
         {
@@ -229,9 +230,10 @@ class FirestoreRepositoryImpl: FirestoreRepository
                 .addSnapshotListener { resultDocumentSnapshot, firebaseFirestoreException ->
                     resultDocumentSnapshot?.let {document ->
                         val shoppingList = document.toObject(ShoppingList::class.java)
-                        Log.d(TAG, "1_ ${shoppingList}")
+                        Log.d(TAG, "getShoppingListRealTime_ ${shoppingList}")
                         shoppingList?.let { _shoppingList ->
-                            shoppingListLiveData.value = shoppingList
+                            _shoppingList.shoppingListId = document.id
+                            shoppingListLiveData.value = _shoppingList
                         }
                     }
                 }
@@ -539,7 +541,7 @@ class FirestoreRepositoryImpl: FirestoreRepository
     fun createShoppingList(documentChange: DocumentChange): ShoppingList
     {
         val shoppingList = documentChange.document.toObject(ShoppingList::class.java)
-        shoppingList.id = documentChange.document.id
+        shoppingList.shoppingListId = documentChange.document.id
 
         Log.d(TAG, "${documentChange.type}: ${shoppingList}")
 

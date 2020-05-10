@@ -60,7 +60,7 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
     fun getPositionOfShoppingListItem(shoppingListItem: ShoppingList): Int
     {
         val foundShoppingList = listOfShoppingLists.find {
-            it.id.equals(shoppingListItem.id)
+            it.shoppingListId.equals(shoppingListItem.shoppingListId)
         }
         return listOfShoppingLists.indexOf(foundShoppingList)
     }

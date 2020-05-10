@@ -1,18 +1,13 @@
 package com.inspirecoding.supershopper.fragments
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 
@@ -40,8 +35,8 @@ class DeleteDialog : Fragment()
             navigateToShoppingListFragment(view, shoppingList)
         }
         binding.btnDelete.setOnClickListener { view ->
-            firebaseViewModel.deleteShoppingList(shoppingList.id)
-            shoppingListFragmentViewModel.openedShoppingList.id = ""
+            firebaseViewModel.deleteShoppingList(shoppingList.shoppingListId)
+            shoppingListFragmentViewModel.openedShoppingList.shoppingListId = ""
             navigateToMainFragment(view)
         }
 

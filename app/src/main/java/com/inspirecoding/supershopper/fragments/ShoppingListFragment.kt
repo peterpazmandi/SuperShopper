@@ -66,7 +66,9 @@ class ShoppingListFragment : Fragment()
         val safeArgs: ShoppingListFragmentArgs by navArgs()
         shoppingList = safeArgs.shoppingList
         (activity as AppCompatActivity).supportActionBar?.title = shoppingList.name
+        Log.d(TAG, "shoppingList: $shoppingList")
         shoppingListFragmentViewModel.openedShoppingList = shoppingList
+        Log.d(TAG, "openedShoppingList: ${shoppingListFragmentViewModel.openedShoppingList}")
 
         binding.tlItemsDetails.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener
         {

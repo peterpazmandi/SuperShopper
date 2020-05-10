@@ -77,13 +77,6 @@ class OpenBoughtFragment : Fragment()
         }
         Log.d(TAG, "1_ ${shoppingListFragmentViewModel.openedShoppingList}")
 
-
-        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.id).observe(viewLifecycleOwner) { _shoppingList ->
-            shoppingListFragmentViewModel.openedShoppingList = _shoppingList
-            Log.d(TAG, "$_shoppingList")
-            updateSelectedShoppingListItems(_shoppingList.listOfItems)
-        }
-
         return binding.root
     }
 
@@ -91,6 +84,12 @@ class OpenBoughtFragment : Fragment()
     {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(TAG, "opened shoppingList: ${shoppingListFragmentViewModel.openedShoppingList}")
+        firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.shoppingListId).observe(viewLifecycleOwner) { _shoppingList ->
+            shoppingListFragmentViewModel.openedShoppingList = _shoppingList
+            Log.d(TAG, "$_shoppingList")
+            updateSelectedShoppingListItems(_shoppingList.listOfItems)
+        }
 
         openItemsAdapter.setOnItemClickListener(object : OpenBoughtItemsAdapter.OnItemClickListener {
             override fun onItemSelected(listItem: ListItem, isChecked: Boolean)
