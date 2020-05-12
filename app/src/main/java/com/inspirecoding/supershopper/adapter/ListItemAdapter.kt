@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.ItemOfCreateNewListBinding
 import com.inspirecoding.supershopper.enums.Prioirities
+import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.fragments.CreateNewListFragmentDirections
 import com.inspirecoding.supershopper.model.ListItem
 
@@ -64,13 +65,6 @@ class ListItemAdapter(val context: Context): RecyclerView.Adapter<ListItemAdapte
     {
         return listOfItems[position]
     }
-//    fun getPositionOfItem(listItem: ListItem): Int
-//    {
-//        val foundToDo = listOfItems.find {
-//            it.id.equals(listItem.id)
-//        }
-//        return listOfItems.indexOf(foundToDo)
-//    }
 
     fun getItemsList() = listOfItems
 

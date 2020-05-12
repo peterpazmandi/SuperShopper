@@ -1,10 +1,12 @@
 package com.inspirecoding.supershopper.fragments
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.DatePicker
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,9 +31,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.inspirecoding.supershopper.adapter.FriendsListChipAdapter
 import com.inspirecoding.supershopper.enums.Crud
+import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
@@ -52,6 +58,8 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     private var selectedShoppingList: ShoppingList? = null
     private var selectedPosition = -1
 
+    private var shoppingListMLD = MutableLiveData<ShoppingList>()
+
     override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_create_new_list, container, false)
@@ -59,8 +67,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
 
-        binding.rvCreateNewListFourthItem.invalidate()
-        binding.rvCreateNewListFourthItem.postInvalidate()
+        createNewListFragmentViewModel.clearItemsListActionLD()
 
         userAutoCompleteAdapter = UserAutoCompleteAdapter(this, firebaseViewModel)
         binding.actvCreateNewListThirdItemSearchFriends.threshold = 3
@@ -107,17 +114,8 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 }
             }
 
-            friendsListChipAdapter = FriendsListChipAdapter(context, this)
-            binding.rvCreateNewListThirdItemFriends.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = friendsListChipAdapter
-            }
-            listItemAdapter = ListItemAdapter(context)
-            listItemAdapter.removeAllItems()
-            binding.rvCreateNewListFourthItem.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = listItemAdapter
-            }
+            initFriendListRecyclerView(context)
+            initListItemRecyclerView(context)
         }
 
         binding.tvCreateNewListSecondItemDueDate.setOnClickListener {
@@ -137,6 +135,9 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
 
         val safeArgs: CreateNewListFragmentArgs by navArgs()
         selectedShoppingList = safeArgs.shoppingList
+
+        shoppingListMLD.postValue(selectedShoppingList)
+
         Log.i(TAG, "$selectedShoppingList")
         Log.i(TAG, "$selectedPosition")
 
@@ -149,6 +150,8 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         {
             (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.edit_list)
             binding.btnSaveList.text = getString(R.string.edit_list)
+
+            setHasOptionsMenu(true)
 
             populateForm(selectedShoppingList as ShoppingList)
         }
@@ -165,31 +168,33 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             binding.pbCreateNewListThirdItemSearchFriends.visibility = View.GONE
         }
 
-        createNewListFragmentViewModel.itemsListAction.observe(viewLifecycleOwner) { result ->
-            val (crud, position, listItem) = result
-            when(crud)
-            {
-                Crud.CREATE -> {
-                    listItem?.let {
-                        listItemAdapter.addItem(listItem)
-                        binding.tvCreateNewListItemsError.visibility = View.INVISIBLE
-                    }
-                }
-                Crud.UPDATE -> {
-                    position?.let {
+        createNewListFragmentViewModel.itemsListActionLD.observe(viewLifecycleOwner) { result ->
+            result?.let { _result ->
+                val (crud, position, listItem) = _result
+                when(crud)
+                {
+                    Crud.CREATE -> {
                         listItem?.let {
-                            listItemAdapter.updateItem(position, listItem)
+                            listItemAdapter.addItem(listItem)
+                            binding.tvCreateNewListItemsError.visibility = View.INVISIBLE
                         }
                     }
+                    Crud.UPDATE -> {
+                        position?.let {
+                            listItem?.let {
+                                listItemAdapter.updateItem(position, listItem)
+                            }
+                        }
 
-                }
-                Crud.DELETE -> {
-                    position?.let {
-                        listItemAdapter.removeItem(position)
                     }
+                    Crud.DELETE -> {
+                        position?.let {
+                            listItemAdapter.removeItem(position)
+                        }
 
+                    }
+                    else -> null
                 }
-                else -> null
             }
         }
 
@@ -207,7 +212,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                     else
                     {
                         newShoppingList.shoppingListId = (selectedShoppingList as ShoppingList).shoppingListId
-                        firebaseViewModel.updateShoppingList(newShoppingList, this)
+                        firebaseViewModel.updateShoppingList(newShoppingList)
                         findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
                     }
                 }
@@ -237,6 +242,23 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 listItemAdapter.removeItem(position)
             }
         })
+    }
+
+    private fun initFriendListRecyclerView(context: Context)
+    {
+        friendsListChipAdapter = FriendsListChipAdapter(context, this)
+        binding.rvCreateNewListThirdItemFriends.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = friendsListChipAdapter
+        }
+    }
+    private fun initListItemRecyclerView(context: Context)
+    {
+        listItemAdapter = ListItemAdapter(context)
+        binding.rvCreateNewListFourthItem.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = listItemAdapter
+        }
     }
 
     private fun populateForm(shoppingList: ShoppingList)
@@ -286,6 +308,12 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
             )
             datePickerDialog.datePicker.minDate = DateTime.now().millis
+            datePickerDialog.setOnShowListener {  _datePickerDialog ->
+                /** Set the color of the action buttons, otherwise it will get it form the primary color! **/
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
+            }
             datePickerDialog.show()
         }
     }
@@ -323,6 +351,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 "",
                 System.currentTimeMillis(),
                 binding.etCreateNewListFirstItemName.text.toString(),
+                ShoppingListStatus.OPEN,
                 createNewListFragmentViewModel.selectedDueDate ?: CurrentDateFunctions.getToday().toDate(),
                 idsOfFriends,
                 listItemAdapter.getItemsList()
@@ -374,12 +403,78 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         }
     }
 
+    private fun navigateCloseDeleteFragment(view: View, shoppingList: ShoppingList, closeDelete: String)
+    {
+        val navController: NavController = Navigation.findNavController(view)
+        val action = CreateNewListFragmentDirections.actionCreateNewListFragmentToCloseDeleteDialog(shoppingList, closeDelete)
+        navController.navigate(action)
+    }
 
 
+    override fun onPrepareOptionsMenu(menu: Menu)
+    {
+        val alertMenuItem = menu.findItem(R.id.item_open_close)
+        val rootView = alertMenuItem.actionView
+        val ivOpenClose = rootView.findViewById(R.id.iv_openClose) as ImageView
 
+        shoppingListMLD.observe(this) { _shoppingList ->
+            Log.d(TAG, "1_shoppingList: $_shoppingList")
+            when(_shoppingList.shoppingListStatus)
+            {
+                ShoppingListStatus.OPEN -> {
+                    ivOpenClose.setImageResource(R.drawable.ic_close_orange)
+                    ivOpenClose.visibility = View.VISIBLE
+                }
+                ShoppingListStatus.DONE -> {
+                    ivOpenClose.visibility = View.INVISIBLE
+                }
+                ShoppingListStatus.CLOSED -> {
+                    ivOpenClose.setImageResource(R.drawable.ic_open_green)
+                    ivOpenClose.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        ivOpenClose.setOnClickListener {
+            selectedShoppingList?.let { _selectedShoppingList ->
+                when(_selectedShoppingList.shoppingListStatus)
+                {
+                    ShoppingListStatus.OPEN -> {
+                        navigateCloseDeleteFragment(binding.root, _selectedShoppingList, CloseDeleteFragment.CLOSED)
+                    }
+                    ShoppingListStatus.DONE -> {
+                        /** Don't do anything **/
+                    }
+                    ShoppingListStatus.CLOSED -> {
+                        (selectedShoppingList as ShoppingList).shoppingListStatus = ShoppingListStatus.OPEN
+                        shoppingListMLD.postValue(selectedShoppingList)
+                        firebaseViewModel.updateShoppingList(selectedShoppingList as ShoppingList)
+                    }
+                }
+            }
+        }
+
+        super.onPrepareOptionsMenu(menu)
+    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
-        inflater.inflate(R.menu.menu_nav_drawer, menu)
+        inflater.inflate(R.menu.menu_close_delete_shoppinglist, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        return when(item.itemId)
+        {
+            R.id.item_open_close -> {
+                true
+            }
+            R.id.item_delete -> {
+                selectedShoppingList?.let { _selectedShoppingList ->
+                    navigateCloseDeleteFragment(binding.root, _selectedShoppingList, CloseDeleteFragment.DELETE)
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_edit"
-        android:title="@string/edit"
-        android:icon="@drawable/ic_edit_white_70dp"
+        android:id="@+id/item_open_close"
+        android:title="@string/profile_picture"
+        app:actionLayout="@layout/menuitem_open_close_list"
         app:showAsAction="always"/>
     <item
         android:id="@+id/item_delete"

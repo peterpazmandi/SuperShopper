@@ -3,6 +3,7 @@ package com.inspirecoding.supershopper.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -18,7 +19,6 @@ import com.inspirecoding.supershopper.adapter.OpenedShoppingListAdapter
 import com.inspirecoding.supershopper.databinding.FragmentShoppingListBinding
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.viewmodels.ShoppingListFragmentViewModel
-import org.koin.android.ext.android.bind
 
 
 private const val TAG = "ShoppingListFragment"
@@ -86,27 +86,18 @@ class ShoppingListFragment : Fragment()
         val action = ShoppingListFragmentDirections.actionShoppingListFragmentToAddNewItemDialog(shoppingList)
         navController.navigate(action)
     }
-    private fun navigateToDeleteListDialog(view: View, shoppingList: ShoppingList)
-    {
-        val navController: NavController = Navigation.findNavController(view)
-        val action = ShoppingListFragmentDirections.actionShoppingListFragmentToDeleteDialog(shoppingList)
-        navController.navigate(action)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
     {
-        inflater.inflate(R.menu.menu_edit_delete_shoppinglist, menu)
+        inflater.inflate(R.menu.menu_edit_shoppinglist, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
         return when(item.itemId)
         {
-            R.id.item_delete -> {
-                navigateToDeleteListDialog(binding.root, shoppingListFragmentViewModel.openedShoppingList)
-                true
-            }
             R.id.item_edit -> {
                 navigateToCreateNewList(binding.root, shoppingListFragmentViewModel.openedShoppingList)
                 true

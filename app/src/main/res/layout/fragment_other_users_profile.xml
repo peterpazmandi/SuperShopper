@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:fillViewport="true"
         android:scrollbars="none"
         tools:context=".fragments.OtherUsersProfileFragment">
@@ -26,7 +26,7 @@
                 android:layout_marginTop="@dimen/margin_xlarge"
                 android:elevation="6dp"
                 android:src="@drawable/profilepicture_blank"
-                app:civ_border_color="@color/colorPrimaryDark"
+                app:civ_border_color="@color/colorPrimary"
                 app:civ_border_width="@dimen/margin_small"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -58,7 +58,7 @@
                         android:paddingStart="@dimen/margin_medium"
                         android:paddingEnd="@dimen/margin_medium"
                         android:text="@string/name"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/light_brown"
                         android:textSize="@dimen/textsize_large"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"

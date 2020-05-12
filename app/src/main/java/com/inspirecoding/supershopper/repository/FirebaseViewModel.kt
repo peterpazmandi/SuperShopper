@@ -636,7 +636,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             }
         }
     }
-    fun updateShoppingList(shoppingList: ShoppingList, fragment: Fragment)
+    fun updateShoppingList(shoppingList: ShoppingList)
     {
         viewModelScope.launch {
             Log.d(TAG, "$shoppingList")

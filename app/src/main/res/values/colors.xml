@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F9F4EA</color>
-    <color name="colorPrimaryDark">#5F4C3F</color>
+    <color name="colorPrimary">@color/brown</color>
+    <color name="colorPrimaryDark">@color/dark_brown</color>
     <color name="colorAccent">#F68054</color>
 
     <color name="lightGreen">#CEEDE4</color>
@@ -12,7 +12,7 @@
     <color name="red">#D54939</color>
     <color name="darkRed">#FF1A00</color>
 
-    <color name="light_brown">#F1E9DC</color>
+    <color name="light_brown">#F9F4EA</color>
     <color name="middle_brown">#C8B9A8</color>
     <color name="brown">#5F4C3F</color>
     <color name="dark_brown">#2D1F14</color>

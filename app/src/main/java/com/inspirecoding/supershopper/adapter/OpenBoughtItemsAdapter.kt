@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.ItemOfShoppinglistOpenBoughtBinding
 import com.inspirecoding.supershopper.enums.Prioirities
+import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
 
@@ -18,7 +19,7 @@ private val TAG = "OpenBoughtItemsAdapter"
 class OpenBoughtItemsAdapter(val context: Context): RecyclerView.Adapter<OpenBoughtItemsAdapter.OpenBoughItemsViewHolder>()
 {
     private var listOfItems: MutableList<ListItem> = mutableListOf()
-
+    private var shoppingListStatus: ShoppingListStatus = ShoppingListStatus.OPEN
 
     private var onItemClickListener: OnItemClickListener? = null
     interface OnItemClickListener
@@ -66,6 +67,13 @@ class OpenBoughtItemsAdapter(val context: Context): RecyclerView.Adapter<OpenBou
 
     fun getItemsList() = listOfItems
 
+    fun getShoppingListStatus() = this.shoppingListStatus
+    fun setShoppingListStatus(shoppingListStatus: ShoppingListStatus)
+    {
+        this.shoppingListStatus = shoppingListStatus
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OpenBoughItemsViewHolder
     {
         val layoutInflater = LayoutInflater.from(context)
@@ -100,6 +108,13 @@ class OpenBoughtItemsAdapter(val context: Context): RecyclerView.Adapter<OpenBou
                 Prioirities.LOW -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_green)
                 Prioirities.MEDIUM -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_orange)
                 Prioirities.HIGH -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_red)
+            }
+
+            when(shoppingListStatus)
+            {
+                ShoppingListStatus.OPEN -> binding.cbItemIsBought.visibility = View.VISIBLE
+                ShoppingListStatus.CLOSED -> binding.cbItemIsBought.visibility = View.INVISIBLE
+                ShoppingListStatus.DONE -> binding.cbItemIsBought.visibility = View.VISIBLE
             }
 
             binding.cbItemIsBought.isChecked = listItem.isBought

@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimary">
 
         <!--guideline_horizontal-->
         <androidx.constraintlayout.widget.Guideline
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/welcome_to"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/light_brown"
             android:textSize="@dimen/textsize_4xlarge"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_xxlarge"
             android:gravity="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/light_brown"
             android:textSize="@dimen/textsize_xlarge"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

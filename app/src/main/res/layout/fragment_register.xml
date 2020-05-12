@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimary">
 
         <!--guideline_horizontal-->
         <androidx.constraintlayout.widget.Guideline
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/create_account"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/light_brown"
             android:textSize="@dimen/textsize_xlarge"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -71,7 +71,7 @@
                 android:drawableStart="@drawable/ic_person"
                 android:drawableLeft="@drawable/ic_person"
                 android:textColorHint="@color/dark_gray"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorPrimary"
                 android:textCursorDrawable="@null"
                 android:textColor="@color/white"
                 android:drawablePadding="@dimen/margin_small"
@@ -101,7 +101,7 @@
                 android:drawableLeft="@drawable/ic_email"
                 android:textColorHint="@color/dark_gray"
                 android:textColor="@color/white"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorPrimary"
                 android:textCursorDrawable="@null"
                 android:drawablePadding="@dimen/margin_small"
                 android:hint="@string/email"
@@ -122,7 +122,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_register_email"
             app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorPrimary">
+            app:passwordToggleTint="@color/light_brown">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tiet_register_password"
@@ -132,7 +132,7 @@
                 android:drawableLeft="@drawable/ic_lock"
                 android:textColorHint="@color/dark_gray"
                 android:textColor="@color/white"
-                android:background="@color/colorPrimaryDark"
+                android:background="@color/colorPrimary"
                 android:textCursorDrawable="@null"
                 android:drawablePadding="@dimen/margin_medium"
                 android:hint="@string/password"
@@ -163,7 +163,7 @@
             android:layout_marginTop="@dimen/margin_small"
             android:gravity="center"
             android:text="@string/or_register_with"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/light_brown"
             android:textSize="@dimen/textsize_medium"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -198,7 +198,7 @@
             android:layout_marginTop="@dimen/margin_large"
             android:gravity="center"
             android:text="@string/already_have_an_account"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/light_brown"
             android:textSize="@dimen/textsize_medium"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

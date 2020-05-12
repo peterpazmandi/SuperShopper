@@ -113,7 +113,7 @@
     <string name="get_new_password">Get new password</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="delete_shopping_list">Delete shopping list</string>
-    <string name="do_you_really_want_to_delete_these_shopping_list_nthis_process_cannot_be_undone">Do you really want to delete these shopping list?\nThis process cannot be undone.</string>
+    <string name="do_you_really_want_to_delete_these_shopping_list_nthis_process_cannot_be_undone">Do you really want\nto delete these shopping list?\n\nThis process cannot be undone.</string>
     <string name="yes_delete">Yes, Delete</string>
     <string name="no_cancel">No, Cancel</string>
     <string name="profile">Profile</string>
@@ -133,5 +133,16 @@
     <string name="search_friend">Search Friend</string>
     <string name="sensitive_data">Sensitive Data</string>
     <string name="reset_password">Reset Password</string>
+    <string name="clear_filter">Clear filter</string>
+    <string name="filter_shopping_lists">Filter shopping lists</string>
+    <string name="status">Status</string>
+    <string name="range_of_due_date">Range of due date</string>
+    <string name="select_a_date_range">Select a date range</string>
+    <string name="apply_filter">Apply filter</string>
+    <string name="close_shopping_list">Close shopping list</string>
+    <string name="do_you_really_want_nto_close_this_shopping_list_n_nlater_on_you_can_reopen_it_again">Do you really want\nto close this shopping list?\n\nLater on you can reopen it again.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="close">Close</string>
 
 </resources>

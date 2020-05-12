@@ -191,7 +191,7 @@ class AddNewItemDialog : BottomSheetDialogFragment()
             UUID.randomUUID().toString(),
             binding.etCreateNewItemFirstItemName.text.toString(),
             validateSelectedUnit(),
-            binding.etCreateNewItemThirdItemQuantity.text.toString().toFloat(),
+            binding.etCreateNewItemThirdItemQuantity.text.toString().toInt(),
             validateSelectedPriority()
         )
     }

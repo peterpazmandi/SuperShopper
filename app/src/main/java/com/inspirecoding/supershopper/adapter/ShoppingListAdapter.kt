@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -12,6 +13,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.ItemOfShoppinglistBinding
+import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.fragments.MainFragmentDirections
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
@@ -20,15 +22,18 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
 private const val TAG = "ShoppingListAdapter"
-class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseViewModel): RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>()
+class ShoppingListAdapter(
+    val context: Context,
+    val firebaseViewModel: FirebaseViewModel
+): RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>()
 {
     var listOfShoppingLists: MutableList<ShoppingList> = mutableListOf()
 
 
-    fun addShoppingListItem(shoppingListItem: ShoppingList)
+    fun addShoppingListItem(shoppingListItem: ShoppingList, intoPosition: Int)
     {
-        listOfShoppingLists.add(shoppingListItem)
-        notifyItemInserted(listOfShoppingLists.size)
+        listOfShoppingLists.add(intoPosition, shoppingListItem)
+        notifyItemInserted(intoPosition)
     }
     fun updateShoppingListItem(position: Int, shoppingListItem: ShoppingList)
     {
@@ -53,6 +58,7 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
         this.listOfShoppingLists.addAll(listOfItems)
         notifyDataSetChanged()
     }
+    fun getAllShoppingList() = listOfShoppingLists
     fun getShoppingListItemFromPosition(position: Int): ShoppingList
     {
         return listOfShoppingLists[position]
@@ -98,23 +104,14 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
             val boughtItemsCount = shoppingList.listOfItems.filter { it.isBought }.size
             binding.pbItemProgress.progress = calculateRatio(boughtItemsCount, itemsCount)
 
-            if(itemsCount != boughtItemsCount)
-            {
-                binding.tvOpenBoughtItemsCount.text = getItemRateCountString(boughtItemsCount, itemsCount)
+            setShoppingListBackColorRegardingStatus(shoppingList.shoppingListStatus)
 
-                binding.tvOpenBoughtItemsCount.visibility = View.VISIBLE
-                binding.ivShoppingListsDoneMark.visibility = View.INVISIBLE
-            }
-            else
-            {
-                binding.tvOpenBoughtItemsCount.visibility = View.INVISIBLE
-                binding.ivShoppingListsDoneMark.visibility = View.VISIBLE
-            }
+            setCheckMarkPrograssbarVisibility(itemsCount, boughtItemsCount)
 
             val sharedWith = shoppingList.friendsSharedWith.size
 
             // First, Remove the ID of the currently logged in user
-            val removeCurrentUser = shoppingList.friendsSharedWith.filter { it != firebaseViewModel.currentUserLD.value?.id }
+            val removedCurrentUser = shoppingList.friendsSharedWith.filter { it != firebaseViewModel.currentUserLD.value?.id }
             when(sharedWith)
             {
                 1 -> { // The creator user of the list
@@ -130,10 +127,13 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
                     binding.tvShoppingListSharedWithMore.visibility = View.INVISIBLE
 
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[0]),
-                            binding.ivShoppingListSharedWith1
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[0]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
                 }
                 3 -> {
@@ -143,16 +143,22 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
                     binding.tvShoppingListSharedWithMore.visibility = View.INVISIBLE
 
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[0]),
-                            binding.ivShoppingListSharedWith1
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[0]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[1]),
-                            binding.ivShoppingListSharedWith2
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[1]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
                 }
                 4 -> {
@@ -162,22 +168,31 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
                     binding.tvShoppingListSharedWithMore.visibility = View.INVISIBLE
 
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[0]),
-                            binding.ivShoppingListSharedWith1
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[0]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[1]),
-                            binding.ivShoppingListSharedWith2
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[1]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[2]),
-                            binding.ivShoppingListSharedWith3
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[2]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
                 }
                 else -> {
@@ -188,23 +203,51 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
                     binding.tvShoppingListSharedWithMore.text = context.getString(R.string.plus_number, (sharedWith-4).toString())
 
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[0]),
-                            binding.ivShoppingListSharedWith1
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[0]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[1]),
-                            binding.ivShoppingListSharedWith2
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[1]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
                     firebaseViewModel.viewModelScope.launch {
-                        setProfilePictures(
-                            firebaseViewModel.getUserFromFirestore(removeCurrentUser[2]),
-                            binding.ivShoppingListSharedWith3
-                        )
+                        if (removedCurrentUser.isNotEmpty())
+                        {
+                            setProfilePictures(
+                                firebaseViewModel.getUserFromFirestore(removedCurrentUser[2]),
+                                binding.ivShoppingListSharedWith1
+                            )
+                        }
                     }
+                }
+            }
+        }
+
+        private fun setShoppingListBackColorRegardingStatus(shoppingListStatus: ShoppingListStatus)
+        {
+            when (shoppingListStatus)
+            {
+                ShoppingListStatus.OPEN -> {
+                    binding.mcvItem.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                    binding.clShoppingList.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                }
+                ShoppingListStatus.DONE -> {
+                    binding.mcvItem.setCardBackgroundColor(ContextCompat.getColor(context, R.color.lightGreen))
+                    binding.clShoppingList.setBackgroundColor(ContextCompat.getColor(context, R.color.lightGreen))
+                }
+                ShoppingListStatus.CLOSED -> {
+                    binding.mcvItem.setCardBackgroundColor(ContextCompat.getColor(context, R.color.lightOrange))
+                    binding.clShoppingList.setBackgroundColor(ContextCompat.getColor(context, R.color.lightOrange))
                 }
             }
         }
@@ -223,6 +266,21 @@ class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseV
                 {
                     imageView.setImageResource(R.drawable.profilepicture_blank)
                 }
+            }
+        }
+        private fun setCheckMarkPrograssbarVisibility(itemsCount: Int, boughtItemsCount: Int)
+        {
+            if(itemsCount != boughtItemsCount)
+            {
+                binding.tvOpenBoughtItemsCount.text = getItemRateCountString(boughtItemsCount, itemsCount)
+
+                binding.tvOpenBoughtItemsCount.visibility = View.VISIBLE
+                binding.ivShoppingListsDoneMark.visibility = View.INVISIBLE
+            }
+            else
+            {
+                binding.tvOpenBoughtItemsCount.visibility = View.INVISIBLE
+                binding.ivShoppingListsDoneMark.visibility = View.VISIBLE
             }
         }
         private fun calculateRatio(subset: Int, completeSet: Int): Int

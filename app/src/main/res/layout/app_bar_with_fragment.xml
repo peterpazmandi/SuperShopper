@@ -25,7 +25,7 @@
             android:layout_gravity="end"
             app:elevation="0dp"
             android:translationZ="0dp"
-            android:background="?attr/colorPrimaryDark" />
+            android:background="?attr/colorPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <fragment

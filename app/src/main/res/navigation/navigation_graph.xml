@@ -90,6 +90,13 @@
             app:exitAnim="@anim/slide_out_from_right"
             app:popEnterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_from_right"/>
+        <action
+            android:id="@+id/action_mainFragment_to_filterShoppingListFragment"
+            app:destination="@id/filterShoppingListFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right" />
     </fragment>
     <fragment
         android:id="@+id/createNewListFragment"
@@ -108,6 +115,15 @@
             app:destination="@id/mainFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_from_right"
+            app:popUpTo="@id/createNewListFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_createNewListFragment_to_closeDeleteDialog"
+            app:destination="@id/closeDeleteDialog"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right"
             app:popUpTo="@id/createNewListFragment"
             app:popUpToInclusive="true"/>
     </fragment>
@@ -142,7 +158,7 @@
             app:popExitAnim="@anim/slide_out_from_right"/>
         <action
             android:id="@+id/action_shoppingListFragment_to_deleteDialog"
-            app:destination="@id/deleteDialog"
+            app:destination="@id/closeDeleteDialog"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_from_right"
             app:popEnterAnim="@anim/slide_in_from_right"
@@ -154,13 +170,16 @@
         android:label="@string/reset_password"
         tools:layout="@layout/fragment_reset_password"/>
     <fragment
-        android:id="@+id/deleteDialog"
-        android:name="com.inspirecoding.supershopper.fragments.DeleteDialog"
-        android:label="@string/delete_shopping_list"
-        tools:layout="@layout/fragment_delete_dialog" >
+        android:id="@+id/closeDeleteDialog"
+        android:name="com.inspirecoding.supershopper.fragments.CloseDeleteFragment"
+        tools:layout="@layout/fragment_close_delete" >
         <argument
             android:name="shoppingList"
             app:argType="com.inspirecoding.supershopper.model.ShoppingList"/>
+        <argument
+            android:name="closeDelete"
+            android:defaultValue=""
+            app:argType="string"/>
         <action
             android:id="@+id/action_deleteDialog_to_mainFragment"
             app:destination="@id/mainFragment"
@@ -168,17 +187,17 @@
             app:exitAnim="@anim/slide_out_from_right"
             app:popEnterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_from_right"
-            app:popUpTo="@id/deleteDialog"
+            app:popUpTo="@id/closeDeleteDialog"
             app:popUpToInclusive="true"/>
         <action
-            android:id="@+id/action_deleteDialog_to_shoppingListFragment"
-            app:destination="@id/shoppingListFragment"
+            android:id="@+id/action_closeDeleteDialog_to_createNewListFragment"
+            app:destination="@id/createNewListFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_from_right"
             app:popEnterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_from_right"
-            app:popUpTo="@id/deleteDialog"
-            app:popUpToInclusive="true"/>
+            app:popUpTo="@id/closeDeleteDialog"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -301,4 +320,9 @@
             app:popEnterAnim="@anim/slide_in_from_right"
             app:popExitAnim="@anim/slide_out_from_right"  />
     </fragment>
+    <fragment
+        android:id="@+id/filterShoppingListFragment"
+        android:name="com.inspirecoding.supershopper.fragments.FilterShoppingListFragment"
+        android:label="@string/filter_shopping_lists"
+        tools:layout="@layout/fragment_filter_shopping_list"/>
 </navigation>

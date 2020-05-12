@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:scrollbars="none"
         android:fillViewport="true"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimary">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,10 +60,10 @@
                 android:layout_marginStart="@dimen/margin_xxlarge"
                 android:layout_marginTop="@dimen/margin_xxlarge"
                 android:layout_marginEnd="@dimen/margin_xxlarge"
-                android:background="@drawable/shape_roundedallcorners_darkbrown"
+                android:background="@drawable/shape_roundedallcorners_brown"
                 android:text="@string/sign_out"
                 android:padding="0dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/light_brown"
                 android:textSize="@dimen/textsize_large"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.adapter.OpenBoughtItemsAdapter
 import com.inspirecoding.supershopper.databinding.FragmentOpenBoughtBinding
+import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.viewmodels.ShoppingListFragmentViewModel
@@ -84,38 +85,63 @@ class OpenBoughtFragment : Fragment()
     {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(TAG, "opened shoppingList: ${shoppingListFragmentViewModel.openedShoppingList}")
         firebaseViewModel.getShoppingListRealTime(shoppingListFragmentViewModel.openedShoppingList.shoppingListId).observe(viewLifecycleOwner) { _shoppingList ->
             shoppingListFragmentViewModel.openedShoppingList = _shoppingList
             Log.d(TAG, "$_shoppingList")
             updateSelectedShoppingListItems(_shoppingList.listOfItems)
+
+            setListEnabledRegardingStatus(_shoppingList.shoppingListStatus)
         }
 
         openItemsAdapter.setOnItemClickListener(object : OpenBoughtItemsAdapter.OnItemClickListener {
             override fun onItemSelected(listItem: ListItem, isChecked: Boolean)
             {
-                Log.d(TAG, "1_ ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
-                val indexOfItem = shoppingListFragmentViewModel.openedShoppingList.listOfItems.indexOf(listItem)
-                Log.d(TAG, "2_ $indexOfItem, ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
-                listItem.isBought = isChecked
-                shoppingListFragmentViewModel.openedShoppingList.listOfItems[indexOfItem] = listItem
-                firebaseViewModel.updateShoppingList(shoppingListFragmentViewModel.openedShoppingList, this@OpenBoughtFragment)
+                val indexOfItem = getIndexOfItem(listItem, shoppingListFragmentViewModel.openedShoppingList.listOfItems)
+                shoppingListFragmentViewModel.openedShoppingList.listOfItems[indexOfItem].isBought = isChecked
+
+                shoppingListFragmentViewModel.openedShoppingList.shoppingListStatus = setShoppingListStatus(shoppingListFragmentViewModel.openedShoppingList.listOfItems)
+                firebaseViewModel.updateShoppingList(shoppingListFragmentViewModel.openedShoppingList)
             }
         })
         boughtItemsAdapter.setOnItemClickListener(object : OpenBoughtItemsAdapter.OnItemClickListener {
             override fun onItemSelected(listItem: ListItem, isChecked: Boolean)
             {
-                Log.d(TAG, "3_ ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
-                val indexOfItem = shoppingListFragmentViewModel.openedShoppingList.listOfItems.indexOf(listItem)
-                listItem.isBought = isChecked
-                Log.d(TAG, "4_ $indexOfItem, ${shoppingListFragmentViewModel.openedShoppingList}, $listItem")
-                shoppingListFragmentViewModel.openedShoppingList.listOfItems[indexOfItem] = listItem
-                firebaseViewModel.updateShoppingList(shoppingListFragmentViewModel.openedShoppingList, this@OpenBoughtFragment)
+                val indexOfItem = getIndexOfItem(listItem, shoppingListFragmentViewModel.openedShoppingList.listOfItems)
+                shoppingListFragmentViewModel.openedShoppingList.listOfItems[indexOfItem].isBought = isChecked
+
+                shoppingListFragmentViewModel.openedShoppingList.shoppingListStatus = setShoppingListStatus(shoppingListFragmentViewModel.openedShoppingList.listOfItems)
+                firebaseViewModel.updateShoppingList(shoppingListFragmentViewModel.openedShoppingList)
             }
         })
     }
 
-
+    private fun getIndexOfItem(listItem: ListItem, listOfItems: MutableList<ListItem>) = listOfItems.indexOfFirst { it.id == listItem.id }
+    private fun setShoppingListStatus(listOfItems: MutableList<ListItem>): ShoppingListStatus
+    {
+        return when(listOfItems.filter { !it.isBought }.count())
+        {
+            0 -> ShoppingListStatus.DONE
+            else -> ShoppingListStatus.OPEN
+        }
+    }
+    private fun setListEnabledRegardingStatus(shoppingListStatus: ShoppingListStatus)
+    {
+        when(shoppingListStatus)
+        {
+            ShoppingListStatus.OPEN -> {
+                openItemsAdapter.setShoppingListStatus(ShoppingListStatus.OPEN)
+                boughtItemsAdapter.setShoppingListStatus(ShoppingListStatus.OPEN)
+            }
+            ShoppingListStatus.DONE -> {
+                openItemsAdapter.setShoppingListStatus(ShoppingListStatus.DONE)
+                boughtItemsAdapter.setShoppingListStatus(ShoppingListStatus.DONE)
+            }
+            ShoppingListStatus.CLOSED -> {
+                openItemsAdapter.setShoppingListStatus(ShoppingListStatus.CLOSED)
+                boughtItemsAdapter.setShoppingListStatus(ShoppingListStatus.CLOSED)
+            }
+        }
+    }
     private fun updateSelectedShoppingListItems(listOfItems: MutableList<ListItem>)
     {
         val openItems = listOfItems.filter { !it.isBought }

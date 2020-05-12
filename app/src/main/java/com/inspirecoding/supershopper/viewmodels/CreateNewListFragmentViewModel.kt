@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel
 import com.inspirecoding.supershopper.enums.Crud
 import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.ListItem
-import com.inspirecoding.supershopper.model.User
 import java.util.*
 
 private const val TAG = "CreateNewListViewModel"
@@ -20,9 +19,9 @@ class CreateNewListFragmentViewModel: ViewModel()
     var selectedDueDate: Date? = null
 
 
-    private val _itemsListAction = MutableLiveData<Triple<Crud, Int?, ListItem?>>()
-    val itemsListAction: LiveData<Triple<Crud, Int?, ListItem?>>
-        get() = _itemsListAction
+    private val _itemsListActionLD = MutableLiveData<Triple<Crud, Int?, ListItem?>?>()
+    val itemsListActionLD: LiveData<Triple<Crud, Int?, ListItem?>?>
+        get() = _itemsListActionLD
 
     fun isUserAlreadySelected(context: Context, view: View, selectedUserId: String): Boolean
     {
@@ -47,12 +46,16 @@ class CreateNewListFragmentViewModel: ViewModel()
     fun addItem(listItem: ListItem)
     {
         val action: Triple<Crud, Int?, ListItem?> = Triple(Crud.CREATE, null, listItem)
-        _itemsListAction.value = action
+        _itemsListActionLD.value = action
     }
     fun updateItem(position: Int, listItem: ListItem)
     {
         val action: Triple<Crud, Int?, ListItem?> = Triple(Crud.UPDATE, position, listItem)
-        _itemsListAction.value = action
+        _itemsListActionLD.value = action
+    }
+    fun clearItemsListActionLD()
+    {
+        _itemsListActionLD.value = null
     }
 
     fun Context.hideKeyboard(view: View)

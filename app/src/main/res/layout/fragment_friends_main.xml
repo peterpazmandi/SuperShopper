@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         tools:context=".fragments.FriendsMainFragment">
 
         <com.google.android.material.tabs.TabLayout
@@ -22,7 +22,8 @@
             android:layout_marginStart="@dimen/margin_xxlarge"
             android:layout_marginEnd="@dimen/margin_xxlarge"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabGravity="fill"
+            app:tabSelectedTextColor="@color/light_brown"
             app:tabTextColor="@color/colorPrimaryDark"
             app:tabBackground="@drawable/tab_layout_selector"
             app:tabPaddingStart="10dp"

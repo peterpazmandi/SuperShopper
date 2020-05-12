@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentChange
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.adapter.ShoppingListAdapter
@@ -24,6 +25,7 @@ import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.viewmodels.MainFragmentViewModel
+import com.inspirecoding.supershopper.viewmodels.SortShoppingListViewModel
 import com.squareup.picasso.Picasso
 import org.koin.android.ext.android.inject
 
@@ -35,6 +37,7 @@ class MainFragment : Fragment()
 
     private val firebaseViewModel: FirebaseViewModel by inject()
     private val mainFragmentViewModel by navGraphViewModels<MainFragmentViewModel>(R.id.navigation_graph)
+    private val filterAndSortShoppingListViewModel by navGraphViewModels<SortShoppingListViewModel>(R.id.navigation_graph)
 
     private lateinit var shoppingListAdapter: ShoppingListAdapter
 
@@ -51,6 +54,8 @@ class MainFragment : Fragment()
 
         val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)
         toolbar.setNavigationIcon(null)
+
+        Log.d(TAG, "isOpen: ${filterAndSortShoppingListViewModel.isOpen}")
 
         context?.let { context ->
             context.hideKeyboard(binding.root)
@@ -77,6 +82,9 @@ class MainFragment : Fragment()
         setHasOptionsMenu(true)
 
         // Create new item
+        binding.fabFilterList.setOnClickListener { _view ->
+            navigateToFilterShoppingList(_view)
+        }
         binding.fabCreateNewList.setOnClickListener { _view ->
             navigateToCreateNewList(_view)
         }
@@ -92,63 +100,56 @@ class MainFragment : Fragment()
                     when(key.type)
                     {
                         DocumentChange.Type.ADDED -> {
-                            Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
                             val shoppingList = listOfShoppingLists.get(key)
-                            shoppingList?.let { shoppingList ->
-                                shoppingListAdapter.addShoppingListItem(shoppingList)
-
-                                if(shoppingList.shoppingListId  == mainFragmentViewModel.selectedShoppingList.shoppingListId)
-                                {
-                                    val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
-                                    openShoppingList(shoppingList, position)
-                                }
+                            shoppingList?.let { _shoppingList ->
+                                val intoPosition = filterAndSortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(_shoppingList, shoppingListAdapter.getAllShoppingList())
+                                shoppingListAdapter.addShoppingListItem(_shoppingList, intoPosition)
                             }
                         }
 
                         DocumentChange.Type.MODIFIED -> {
-                            Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
                             val shoppingList = listOfShoppingLists.get(key)
-                            shoppingList?.let { shoppingList ->
-                                val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
-                                shoppingListAdapter.updateShoppingListItem(position, shoppingList)
-
-                                if(shoppingList.shoppingListId  == mainFragmentViewModel.selectedShoppingList.shoppingListId)
-                                {
-                                    openShoppingList(shoppingList, position)
-                                }
+                            shoppingList?.let { _shoppingList ->
+                                val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
+                                shoppingListAdapter.updateShoppingListItem(position, _shoppingList)
                             }
                         }
 
                         DocumentChange.Type.REMOVED -> {
-                            Log.d(TAG, "${key.type}: ${listOfShoppingLists.get(key)}")
                             val shoppingList = listOfShoppingLists.get(key)
-                            shoppingList?.let { shoppingList ->
-                                val position = shoppingListAdapter.getPositionOfShoppingListItem(shoppingList)
+                            shoppingList?.let { _shoppingList ->
+                                val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
                                 shoppingListAdapter.removeShoppingListItem(position)
-
-                                if(shoppingList.shoppingListId  == mainFragmentViewModel.selectedShoppingList.shoppingListId)
-                                {
-                                    openShoppingList(shoppingList, position)
-                                }
                             }
                         }
                     }
                 }
-
-                if(shoppingListAdapter.itemCount > 0)
-                {
-                    openShoppingList(shoppingListAdapter.getShoppingListItemFromPosition(0), 0)
-                }
             }
         }
+
+        binding.rvShoppingLists.addOnScrollListener(object: RecyclerView.OnScrollListener()
+        {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int)
+            {
+                if(dy > 0)
+                {
+                    hideFabs()
+                }
+                else
+                {
+                    showFabs()
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
     }
 
-    private fun openShoppingList(shoppingList: ShoppingList, position: Int)
+    private fun navigateToFilterShoppingList(view: View)
     {
-        mainFragmentViewModel.selectedShoppingList = shoppingList
-        mainFragmentViewModel.selectedPosition = position
+        val navController: NavController = Navigation.findNavController(view)
+        val action = MainFragmentDirections.actionMainFragmentToFilterShoppingListFragment()
+        navController.navigate(action)
     }
-
     private fun navigateToCreateNewList(view: View)
     {
         val navController: NavController = Navigation.findNavController(view)
@@ -210,5 +211,17 @@ class MainFragment : Fragment()
         (getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.apply {
             hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+    private fun showFabs()
+    {
+        binding.fabFilterList.show()
+        binding.fabCreateNewList.show()
+        binding.fabFriends.show()
+    }
+    private fun hideFabs()
+    {
+        binding.fabFilterList.hide()
+        binding.fabCreateNewList.hide()
+        binding.fabFriends.hide()
     }
 }

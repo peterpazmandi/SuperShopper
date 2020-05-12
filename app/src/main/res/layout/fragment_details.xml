@@ -10,10 +10,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:scrollbars="none"
-        android:fillViewport="true"
-        tools:context=".fragments.CreateNewListFragment">
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_createNewItem"
@@ -43,7 +42,7 @@
                     android:paddingEnd="@dimen/margin_medium"
                     android:gravity="center"
                     android:text="@string/name"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/light_brown"
                     android:textSize="@dimen/textsize_large"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -92,7 +91,7 @@
                     android:paddingEnd="@dimen/margin_medium"
                     android:gravity="center"
                     android:text="@string/creator"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/light_brown"
                     android:textSize="@dimen/textsize_large"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -141,7 +140,7 @@
                     android:paddingEnd="@dimen/margin_medium"
                     android:gravity="center"
                     android:text="@string/due_date"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/light_brown"
                     android:textSize="@dimen/textsize_large"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -190,7 +189,7 @@
                     android:paddingEnd="@dimen/margin_medium"
                     android:gravity="center"
                     android:text="@string/friends_shared_with"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/light_brown"
                     android:textSize="@dimen/textsize_large"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"

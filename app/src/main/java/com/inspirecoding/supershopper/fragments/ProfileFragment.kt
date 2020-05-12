@@ -147,7 +147,8 @@ class ProfileFragment : Fragment()
                 Picasso
                     .get()
                     .load(user.profilePicture)
-                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.profilepicture_blank)
+                    .placeholder(R.drawable.profilepicture_blank)
                     .into(imageView)
             }
         }

@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:fillViewport="true"
         android:scrollbars="none"
         tools:context=".fragments.ProfileFragment">
@@ -26,7 +26,7 @@
                 android:layout_marginTop="@dimen/margin_xlarge"
                 android:elevation="6dp"
                 android:src="@drawable/profilepicture_blank"
-                app:civ_border_color="@color/colorPrimaryDark"
+                app:civ_border_color="@color/colorPrimary"
                 app:civ_border_width="@dimen/margin_small"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -66,7 +66,7 @@
                         android:paddingStart="@dimen/margin_medium"
                         android:paddingEnd="@dimen/margin_medium"
                         android:text="@string/name"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/light_brown"
                         android:textSize="@dimen/textsize_large"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -89,7 +89,7 @@
                             android:id="@+id/et_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorPrimary"
+                            android:background="@color/light_brown"
                             android:textCursorDrawable="@null"
                             android:textSize="@dimen/textsize_xlarge"
                             android:hint="@string/name" />
@@ -99,9 +99,9 @@
                         android:id="@+id/btn_saveName"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
-                        android:background="@drawable/shape_roundedallcorners_darkbrown"
+                        android:background="@drawable/shape_roundedallcorners_brown"
                         android:text="@string/save"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/light_brown"
                         android:layout_marginBottom="@dimen/margin_medium"
                         app:layout_constraintRight_toRightOf="@+id/til_name"
                         app:layout_constraintTop_toBottomOf="@+id/til_name"
@@ -137,8 +137,8 @@
                     android:layout_marginStart="@dimen/margin_3xlarge"
                     android:layout_marginEnd="@dimen/margin_3xlarge"
                     android:layout_marginBottom="@dimen/margin_3xlarge"
-                    android:textColor="@color/colorPrimary"
-                    android:background="@drawable/shape_roundedallcorners_darkbrown"
+                    android:textColor="@color/light_brown"
+                    android:background="@drawable/shape_roundedallcorners_brown"
                     android:text="@string/sign_out"/>
             </LinearLayout>
 
