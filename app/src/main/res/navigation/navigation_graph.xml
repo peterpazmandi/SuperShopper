@@ -324,5 +324,13 @@
         android:id="@+id/filterShoppingListFragment"
         android:name="com.inspirecoding.supershopper.fragments.FilterShoppingListFragment"
         android:label="@string/filter_shopping_lists"
-        tools:layout="@layout/fragment_filter_shopping_list"/>
+        tools:layout="@layout/fragment_filter_shopping_list">
+        <action
+            android:id="@+id/action_filterShoppingListFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_right"
+            app:popEnterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_from_right" />
+    </fragment>
 </navigation>

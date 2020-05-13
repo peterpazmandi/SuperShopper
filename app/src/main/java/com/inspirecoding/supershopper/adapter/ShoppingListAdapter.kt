@@ -1,6 +1,7 @@
 package com.inspirecoding.supershopper.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +23,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
 private const val TAG = "ShoppingListAdapter"
-class ShoppingListAdapter(
-    val context: Context,
-    val firebaseViewModel: FirebaseViewModel
-): RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>()
+class ShoppingListAdapter(val context: Context, val firebaseViewModel: FirebaseViewModel): RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>()
 {
     var listOfShoppingLists: MutableList<ShoppingList> = mutableListOf()
 
@@ -50,12 +48,18 @@ class ShoppingListAdapter(
     {
         val size = listOfShoppingLists.size
         listOfShoppingLists.clear()
-        notifyItemRangeRemoved(0, size)
+        notifyDataSetChanged()
+//        notifyItemRangeRemoved(0, size)
     }
     fun addAllShoppingListItem(listOfItems: MutableList<ShoppingList>)
     {
-        this.listOfShoppingLists.clear()
+//        this.listOfShoppingLists.clear()
+        Log.d(TAG, "1_ list: ${listOfItems}")
+        Log.d(TAG, "1_ all list: ${getAllShoppingList()}")
+        removeAllShoppingListItem()
         this.listOfShoppingLists.addAll(listOfItems)
+        Log.d(TAG, "2_ list: ${listOfItems}")
+        Log.d(TAG, "2_ all list: ${getAllShoppingList()}")
         notifyDataSetChanged()
     }
     fun getAllShoppingList() = listOfShoppingLists

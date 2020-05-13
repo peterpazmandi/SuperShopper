@@ -67,6 +67,7 @@
     <string name="share_with_your_friends">Share with your friends</string>
     <string name="friends_shared_with">Friends shared with</string>
     <string name="due_date">Due date</string>
+    <string name="from_to">From: %1$s\nTo: %2$s</string>
     <string name="add_new_item">Add new item</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -144,5 +145,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="close">Close</string>
+    <string name="open">Open</string>
+    <string name="done">Done</string>
+    <string name="closed">Closed</string>
 
 </resources>

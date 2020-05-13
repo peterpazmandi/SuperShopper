@@ -21,9 +21,9 @@ import com.google.firebase.firestore.DocumentChange
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.adapter.ShoppingListAdapter
 import com.inspirecoding.supershopper.databinding.FragmentMainBinding
-import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
+import com.inspirecoding.supershopper.viewmodels.FilterShoppingListViewModel
 import com.inspirecoding.supershopper.viewmodels.MainFragmentViewModel
 import com.inspirecoding.supershopper.viewmodels.SortShoppingListViewModel
 import com.squareup.picasso.Picasso
@@ -37,7 +37,8 @@ class MainFragment : Fragment()
 
     private val firebaseViewModel: FirebaseViewModel by inject()
     private val mainFragmentViewModel by navGraphViewModels<MainFragmentViewModel>(R.id.navigation_graph)
-    private val filterAndSortShoppingListViewModel by navGraphViewModels<SortShoppingListViewModel>(R.id.navigation_graph)
+    private val sortShoppingListViewModel by navGraphViewModels<SortShoppingListViewModel>(R.id.navigation_graph)
+    private val filterShoppingListViewModel by navGraphViewModels<FilterShoppingListViewModel>(R.id.navigation_graph)
 
     private lateinit var shoppingListAdapter: ShoppingListAdapter
 
@@ -55,7 +56,6 @@ class MainFragment : Fragment()
         val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)
         toolbar.setNavigationIcon(null)
 
-        Log.d(TAG, "isOpen: ${filterAndSortShoppingListViewModel.isOpen}")
 
         context?.let { context ->
             context.hideKeyboard(binding.root)
@@ -70,6 +70,9 @@ class MainFragment : Fragment()
             {
                 Toast.makeText(context, message.second, Toast.LENGTH_SHORT).show()
             }
+        }
+        firebaseViewModel.spinner.observe(viewLifecycleOwner) { show ->
+
         }
 
         return binding.root
@@ -93,22 +96,25 @@ class MainFragment : Fragment()
         }
 
         firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) {user ->
-            firebaseViewModel.getCurrentUserShoppingListsRealTime(user).observe(viewLifecycleOwner) { listOfShoppingLists ->
-                Log.d(TAG, "${listOfShoppingLists.size}")
-                for(key in listOfShoppingLists.keys)
+            firebaseViewModel.getCurrentUserShoppingListsRealTime(user).observe(viewLifecycleOwner) { mapOfShoppingLists ->
+                Log.d(TAG, "${mapOfShoppingLists.size}")
+                for(key in mapOfShoppingLists.keys)
                 {
                     when(key.type)
                     {
                         DocumentChange.Type.ADDED -> {
-                            val shoppingList = listOfShoppingLists.get(key)
+                            val shoppingList = mapOfShoppingLists.get(key)
                             shoppingList?.let { _shoppingList ->
-                                val intoPosition = filterAndSortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(_shoppingList, shoppingListAdapter.getAllShoppingList())
-                                shoppingListAdapter.addShoppingListItem(_shoppingList, intoPosition)
+                                /** Add to the full shopping lists **/
+                                val intoPosition = sortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(_shoppingList, shoppingListAdapter.getAllShoppingList())
+                                mainFragmentViewModel.addShoppingList(intoPosition, _shoppingList)
+                                val filteredList = filterShoppingListViewModel.runFilter(mainFragmentViewModel.fullListOfShoppingLists)
+                                shoppingListAdapter.addAllShoppingListItem(filteredList)
                             }
                         }
 
                         DocumentChange.Type.MODIFIED -> {
-                            val shoppingList = listOfShoppingLists.get(key)
+                            val shoppingList = mapOfShoppingLists.get(key)
                             shoppingList?.let { _shoppingList ->
                                 val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
                                 shoppingListAdapter.updateShoppingListItem(position, _shoppingList)
@@ -116,7 +122,7 @@ class MainFragment : Fragment()
                         }
 
                         DocumentChange.Type.REMOVED -> {
-                            val shoppingList = listOfShoppingLists.get(key)
+                            val shoppingList = mapOfShoppingLists.get(key)
                             shoppingList?.let { _shoppingList ->
                                 val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
                                 shoppingListAdapter.removeShoppingListItem(position)
@@ -140,6 +146,15 @@ class MainFragment : Fragment()
                     showFabs()
                 }
                 super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+
+        filterShoppingListViewModel.setFilterChangedClickListener(object : FilterShoppingListViewModel.OnFilterChangedClickListener
+        {
+            override fun onFilterChanged()
+            {
+                val filteredList = filterShoppingListViewModel.runFilter(mainFragmentViewModel.fullListOfShoppingLists)
+                shoppingListAdapter.addAllShoppingListItem(filteredList)
             }
         })
     }

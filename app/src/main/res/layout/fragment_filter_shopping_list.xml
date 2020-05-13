@@ -61,7 +61,7 @@
                     android:id="@+id/chb_status_openList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Open"
+                    android:text="@string/open"
                     app:layout_constraintLeft_toLeftOf="@+id/view_status"
                     app:layout_constraintRight_toLeftOf="@id/chb_status_doneList"
                     app:layout_constraintTop_toBottomOf="@+id/tv_status" />
@@ -70,8 +70,17 @@
                     android:id="@+id/chb_status_doneList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Done"
+                    android:text="@string/done"
                     app:layout_constraintLeft_toRightOf="@id/chb_status_openList"
+                    app:layout_constraintRight_toLeftOf="@+id/chb_status_closedList"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_status" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/chb_status_closedList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/closed"
+                    app:layout_constraintLeft_toRightOf="@id/chb_status_doneList"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_status" />
 
@@ -112,29 +121,20 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_createNewList_thirdItem_searchFreinds"
+                <EditText
+                    android:id="@+id/et_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_large"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:textSize="@dimen/textsize_xxlarge"
+                    android:textSize="@dimen/textsize_xlarge"
                     app:errorEnabled="true"
                     app:errorTextAppearance="@color/dark_brown"
                     app:hintEnabled="false"
+                    android:hint="@string/name"
                     app:layout_constraintLeft_toRightOf="@+id/view_name"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_name">
-
-                    <com.inspirecoding.supershopper.customview.DelayAutoCompleteTextView
-                        android:id="@+id/actv_createNewList_thirdItem_searchFriends"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/light_brown"
-                        android:hint="@string/name"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/textsize_xlarge" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -311,11 +311,11 @@
                     android:textSize="@dimen/textsize_xlarge"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/view_actionButtons"
-                    app:layout_constraintRight_toLeftOf="@+id/tv_actionButtons_applyFilter"
+                    app:layout_constraintRight_toLeftOf="@+id/btn_actionButtons_applyFilter"
                     app:layout_constraintTop_toBottomOf="@+id/iv_actionButtons" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/tv_actionButtons_applyFilter"
+                    android:id="@+id/btn_actionButtons_applyFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_roundedallcorners_lightgreen"

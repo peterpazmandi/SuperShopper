@@ -11,6 +11,9 @@ class ShoppingListFragmentViewModel: ViewModel()
 {
     var openedShoppingList: ShoppingList = ShoppingList()
 
+
+
+
     private val _openItemsMLD = MutableLiveData<MutableList<ListItem>>()
     val openItemsLD: LiveData<MutableList<ListItem>>
         get() = _openItemsMLD

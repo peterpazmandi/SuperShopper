@@ -40,6 +40,7 @@ import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
+import com.inspirecoding.supershopper.utilities.ConverterFunctions
 import kotlinx.coroutines.launch
 
 
@@ -320,12 +321,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int)
     {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, dayOfMonth)
-
-        val sdf = SimpleDateFormat("dd-MM-yyyy")
-        val formatedDate: String = sdf.format(calendar.time)
-        val date: Date = sdf.parse(formatedDate)
+        val date = ConverterFunctions.convertToDate(year, month, dayOfMonth)
 
         createNewListFragmentViewModel.selectedDueDate = date
 
@@ -335,6 +331,8 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             binding.tvCreateNewListDueDateError.visibility = View.INVISIBLE
         }
     }
+
+
 
     private fun createShoppingListObject(): ShoppingList?
     {

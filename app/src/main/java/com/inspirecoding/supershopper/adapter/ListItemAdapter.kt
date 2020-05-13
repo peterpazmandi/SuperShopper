@@ -20,18 +20,18 @@ class ListItemAdapter(val context: Context): RecyclerView.Adapter<ListItemAdapte
 {
     var listOfItems: MutableList<ListItem> = mutableListOf()
 
-    private var onItemClickListener: OnItemClickListener? = null
 
+    private var onItemClickListener: OnItemClickListener? = null
     interface OnItemClickListener
     {
         fun onUpdateClick(position: Int, listItem: ListItem)
         fun onDeleteClick(position: Int)
     }
-
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener?)
     {
         this.onItemClickListener = onItemClickListener
     }
+
 
     fun addItem(listItem: ListItem)
     {

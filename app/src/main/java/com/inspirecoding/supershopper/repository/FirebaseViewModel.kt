@@ -679,7 +679,10 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
 
     fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
     {
-        return firestoreRepository.getCurrentUserShoppingListsRealTime(currentUser)
+        _spinner.postValue(true)
+        val listOfShoppingLists = firestoreRepository.getCurrentUserShoppingListsRealTime(currentUser)
+        _spinner.postValue(false)
+        return listOfShoppingLists
     }
     fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<ShoppingList>
     {
