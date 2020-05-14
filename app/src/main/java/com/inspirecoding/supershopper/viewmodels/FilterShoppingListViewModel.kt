@@ -1,11 +1,15 @@
 package com.inspirecoding.supershopper.viewmodels
 
+import android.content.Context
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModel
 import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.ShoppingList
-import org.joda.time.DateTime
 import androidx.core.util.Pair
+import com.inspirecoding.supershopper.model.Friend
+import com.inspirecoding.supershopper.repository.SharedPreferencesViewModel
 import com.inspirecoding.supershopper.utilities.ConverterFunctions
 import java.util.*
 
@@ -17,7 +21,8 @@ class FilterShoppingListViewModel: ViewModel()
     var name: String? = null
     var fromToDueDate: Pair<Date, Date>? = null
     var fromToDueDate_temp: Pair<Date, Date>? = null
-    var idsListOffriendsSharedWith = mutableListOf<String>()
+    var listOfFriendsIds = mutableListOf<String>()
+    var listOfFriendsIds_temp = mutableListOf<String>()
 
     lateinit var onFilterChangedClickListener: OnFilterChangedClickListener
     interface OnFilterChangedClickListener
@@ -29,6 +34,27 @@ class FilterShoppingListViewModel: ViewModel()
         this.onFilterChangedClickListener = onFilterChangedClickListener
     }
 
+
+    fun isUserAlreadySelected(context: Context, view: View, selectedUserId: String): Boolean
+    {
+        context.hideKeyboard(view)
+
+        val userOnTheList = listOfFriendsIds_temp.filter {
+            it == selectedUserId
+        }
+
+        return userOnTheList.count() != 0
+    }
+    fun removeAlreadyAddedFriends(resultList: MutableList<Friend>): MutableList<Friend>
+    {
+        val _usersList = resultList.toMutableList()
+        val filteredList = _usersList.filter {
+            !listOfFriendsIds_temp.contains(it.friendId)
+        }
+        return filteredList.toMutableList()
+    }
+
+
     fun runFilter(listOfShoppingLists: MutableList<ShoppingList>): MutableList<ShoppingList>
     {
         val filteredShoppingLists = mutableListOf<ShoppingList>()
@@ -37,7 +63,8 @@ class FilterShoppingListViewModel: ViewModel()
         {
             if(containsName(shoppingList) &&
                 containsShoppingListState(shoppingList) &&
-                isDueDateInTimePeriod(shoppingList))
+                isDueDateInTimePeriod(shoppingList) &&
+                containsFriend(shoppingList))
             {
                 filteredShoppingLists.add(shoppingList)
                 Log.d(TAG, "filteredShoppingLists: ${filteredShoppingLists}")
@@ -46,6 +73,30 @@ class FilterShoppingListViewModel: ViewModel()
 
         return filteredShoppingLists
     }
+
+
+
+    fun setSharePreferencesFilters(sharedPreferencesViewModel: SharedPreferencesViewModel)
+    {
+        /** Shopping list status **/
+        sharedPreferencesViewModel.setStatusFilter(listOfShoppingListStatus)
+        /** Name **/
+        name?.let { _name ->
+            sharedPreferencesViewModel.setNameFilter(_name)
+        }
+        /** Friends share with **/
+        sharedPreferencesViewModel.setFriendsFilter(listOfFriendsIds)
+        /** Due date from **/
+        fromToDueDate?.first?.time?.let { _from ->
+            sharedPreferencesViewModel.setDueDateFromFilter(_from)
+        }
+        /** Due date to **/
+        fromToDueDate?.second?.time?.let { _from ->
+            sharedPreferencesViewModel.setDueDateToFilter(_from)
+        }
+    }
+
+
 
     fun setShoppingListFilter(isOpenChecked: Boolean, isDoneChecked: Boolean, isClosedChecked: Boolean)
     {
@@ -84,6 +135,17 @@ class FilterShoppingListViewModel: ViewModel()
         }
     }
 
+    private fun containsShoppingListState(shoppingList: ShoppingList): Boolean
+    {
+        return if(listOfShoppingListStatus.size != 0)
+        {
+            listOfShoppingListStatus.contains(shoppingList.shoppingListStatus)
+        }
+        else
+        {
+            true
+        }
+    }
     private fun containsName(shoppingList: ShoppingList): Boolean
     {
         return if (!name.isNullOrEmpty())
@@ -95,16 +157,24 @@ class FilterShoppingListViewModel: ViewModel()
             true
         }
     }
-    private fun containsShoppingListState(shoppingList: ShoppingList): Boolean
+    private fun containsFriend(shoppingList: ShoppingList): Boolean
     {
-        return if(listOfShoppingListStatus.size != 0)
+        var contains = false
+        if (listOfFriendsIds.size != 0)
         {
-            listOfShoppingListStatus.contains(shoppingList.shoppingListStatus)
+            for(friendId in listOfFriendsIds)
+            {
+                if(shoppingList.friendsSharedWith.contains(friendId))
+                {
+                    contains = true
+                }
+            }
         }
         else
         {
-            true
+            contains = true
         }
+        return contains
     }
     private fun isDueDateInTimePeriod(shoppingList: ShoppingList): Boolean
     {
@@ -124,4 +194,11 @@ class FilterShoppingListViewModel: ViewModel()
 
 
 
+
+    fun Context.hideKeyboard(view: View)
+    {
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.apply {
+            hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
 }

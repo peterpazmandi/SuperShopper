@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentChange
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.adapter.ShoppingListAdapter
 import com.inspirecoding.supershopper.databinding.FragmentMainBinding
+import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.model.User
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.viewmodels.FilterShoppingListViewModel
@@ -72,7 +73,8 @@ class MainFragment : Fragment()
             }
         }
         firebaseViewModel.spinner.observe(viewLifecycleOwner) { show ->
-
+            Log.d(TAG, "$show")
+            binding.spinnerLoadingShoppingLists.visibility = if (show) View.VISIBLE else View.GONE
         }
 
         return binding.root
@@ -159,6 +161,19 @@ class MainFragment : Fragment()
         })
     }
 
+
+    private fun addAllShoppingListOrShowEmpty(filteredList: MutableList<ShoppingList>)
+    {
+        if (filteredList.size != 0)
+        {
+            /** Update adapter of shopping lists **/
+            shoppingListAdapter.addAllShoppingListItem(filteredList)
+        }
+        else
+        {
+            /** No shopping list found **/
+        }
+    }
     private fun navigateToFilterShoppingList(view: View)
     {
         val navController: NavController = Navigation.findNavController(view)

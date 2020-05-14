@@ -5,8 +5,6 @@ import com.inspirecoding.supershopper.model.ShoppingList
 
 class SortShoppingListViewModel: ViewModel()
 {
-    var isOpen = 0
-
     fun getPositionsForShoppingListOrderingByDueDate(newElement: ShoppingList, listOfShoppingLists: List<ShoppingList>): Int
     {
         var position: Int = 0

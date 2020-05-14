@@ -27,7 +27,6 @@ import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.viewmodels.CreateNewListFragmentViewModel
 import org.joda.time.DateTime
 import org.koin.android.ext.android.inject
-import java.text.SimpleDateFormat
 import java.util.*
 import androidx.lifecycle.observe
 import androidx.lifecycle.viewModelScope
@@ -74,7 +73,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         binding.actvCreateNewListThirdItemSearchFriends.threshold = 3
         binding.actvCreateNewListThirdItemSearchFriends.setAdapter(userAutoCompleteAdapter)
 
-        setTodaysDate()
+        setTodayDateForDueDateSelection()
 
         context?.let {context ->
             binding.actvCreateNewListThirdItemSearchFriends.addTextChangedListener { searchText ->
@@ -292,7 +291,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    private fun setTodaysDate()
+    private fun setTodayDateForDueDateSelection()
     {
         val today = CurrentDateFunctions.getToday()
         createNewListFragmentViewModel.selectedDueDate = today.toDate()

@@ -37,6 +37,15 @@
             app:layout_constraintBottom_toBottomOf="@+id/gl_top_horizontal"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <!--guideline_horizontal-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.98" />
+
         <!--fab_createNewList-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_createNewList"
@@ -46,12 +55,11 @@
             app:backgroundTint="@color/darkOrange"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             app:srcCompat="@drawable/ic_add_brown"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"/>
 
         <!--fab_createNewList-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -62,11 +70,10 @@
             app:backgroundTint="@color/darkOrange"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             app:srcCompat="@drawable/ic_filter_brown"
             app:layout_constraintRight_toLeftOf="@+id/fab_createNewList"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"/>
 
         <!--fab_createNewList-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -77,11 +84,23 @@
             app:backgroundTint="@color/darkOrange"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginBottom="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             app:srcCompat="@drawable/ic_friends_brown"
             app:layout_constraintLeft_toRightOf="@+id/fab_createNewList"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"/>
+
+
+
+        <ProgressBar
+            android:id="@+id/spinner_loadingShoppingLists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/margin_large"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
