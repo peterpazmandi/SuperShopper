@@ -85,6 +85,7 @@ class MainFragment : Fragment()
         firebaseViewModel.spinner.observe(viewLifecycleOwner) { show ->
             /** Start cart loading animation **/
             startCartLoadingAnimation()
+            /** Hide empty cart screen and RecyclerView while loading **/
             showHideEmptyCart(null)
         }
 

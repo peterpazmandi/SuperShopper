@@ -148,5 +148,8 @@
     <string name="open">Open</string>
     <string name="done">Done</string>
     <string name="closed">Closed</string>
+    <string name="no_shopping_list_found">No shopping list found!</string>
+    <string name="oh_no">Oh no!</string>
+    <string name="no_friends_found">No friends found!</string>
 
 </resources>

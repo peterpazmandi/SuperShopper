@@ -1,5 +1,7 @@
 package com.inspirecoding.supershopper.fragments
 
+import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -30,15 +32,21 @@ class FriendsFragment : Fragment()
 
     private val _layoutManager = LinearLayoutManager(context)
 
+    private lateinit var peopleLoadingAnimation: AnimationDrawable
+
     override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_friends, container, false)
 
-        // To refresh the list of friends
-        // Otherwise the list will be empty
+        /** To refresh the list of friends **/
+        /** Otherwise the list will be empty **/
         firebaseViewModel.clearLastResultOfFriends()
 
         _layoutManager.orientation = RecyclerView.VERTICAL
+
+        /** Init cart loading animation **/
+        binding.ivPeopleLoading.setBackgroundResource(R.drawable.anim_person_loading)
+        peopleLoadingAnimation = binding.ivPeopleLoading.background as AnimationDrawable
 
         return binding.root
     }
@@ -50,30 +58,38 @@ class FriendsFragment : Fragment()
         initRecyclerView()
 
         firebaseViewModel.spinner.observe(viewLifecycleOwner) {show ->
-            binding.spinnerLoadingFriends.visibility = if (show) View.VISIBLE else View.GONE
+            /** Start cart loading animation **/
+            if (show)
+            {
+                startPeopleLoadingAnimation()
+                /** Hide empty cart screen and RecyclerView while loading **/
+                showHideEmptyPeople(null)
+            }
+            else
+            {
+                stopPeopleLoadingAnimation()
+                /** Hide empty cart screen and RecyclerView while loading **/
+                showHideEmptyPeople(friendsListAdapter.itemCount)
+            }
         }
 
         firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) { _currentUser ->
             currentUser = _currentUser
-            Log.d(TAG, "6_ ${_currentUser}")
             firebaseViewModel.getListOfFriendsAsOwner(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
-                Log.d(TAG, "7_ ${_listOfFriends}")
                 loadedFriends += _listOfFriends.size
                 friendsListAdapter.addFriends(_listOfFriends)
+                showHideEmptyPeople(friendsListAdapter.itemCount)
             }
         }
 
         binding.rvListOfFriends.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int)
             {
-                Log.d(TAG, "4_ ${loadedFriends}")
-                Log.d(TAG, "5_ ${currentUser.numberOfFriends}")
                 if(loadedFriends != currentUser.numberOfFriends)
                 {
                     if(!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
                     {
                         firebaseViewModel.getListOfFriendsAsOwner(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
-                            Log.d(TAG, "2_ ${_listOfFriends}")
                             loadedFriends += _listOfFriends.size
                             friendsListAdapter.addFriends(_listOfFriends)
                         }
@@ -94,8 +110,44 @@ class FriendsFragment : Fragment()
         }
     }
 
+    private fun startPeopleLoadingAnimation()
+    {
+        binding.ivPeopleLoading.visibility = View.VISIBLE
+        peopleLoadingAnimation.start()
+    }
+    private fun stopPeopleLoadingAnimation()
+    {
+        binding.ivPeopleLoading.visibility = View.GONE
+        peopleLoadingAnimation.stop()
+    }
+    private fun showHideEmptyPeople(shoppingListsCount: Int?)
+    {
+        if(shoppingListsCount != null)
+        {
+            if(shoppingListsCount > 0)
+            {
+//                binding.rvListOfFriends.visibility = View.VISIBLE
+                binding.llEmptyPerson.visibility = View.INVISIBLE
+            }
+            else
+            {
+//                binding.rvListOfFriends.visibility = View.INVISIBLE
+                binding.llEmptyPerson.visibility = View.VISIBLE
+            }
+        }
+        else
+        {
+//            binding.rvListOfFriends.visibility = View.INVISIBLE
+            binding.llEmptyPerson.visibility = View.INVISIBLE
+        }
+    }
 
+    override fun onResume()
+    {
+        super.onResume()
 
+//        showHideEmptyPeople(friendsListAdapter.itemCount)
+    }
 
 
 
