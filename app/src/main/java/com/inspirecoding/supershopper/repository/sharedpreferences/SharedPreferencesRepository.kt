@@ -56,10 +56,17 @@ class SharedPreferencesRepository
         }
     }
     /** Name **/
-    fun setNameFilter(name: String)
+    fun setNameFilter(name: String?)
     {
         editor = mySharedPreferences.edit()
-        editor.putString(KEY_NAME, name)
+        if(name != null)
+        {
+            editor.putString(KEY_NAME, name)
+        }
+        else
+        {
+            editor.putString(KEY_NAME, "")
+        }
         editor.apply()
     }
     fun getNameFilter(): String?
@@ -78,10 +85,17 @@ class SharedPreferencesRepository
         return mySharedPreferences.getStringSet(KEY_FRIENDS, setOf())?.toMutableList()
     }
     /** Due date from **/
-    fun setDueDateFromFilter(dueDateFrom: Long)
+    fun setDueDateFromFilter(dueDateFrom: Long?)
     {
         editor = mySharedPreferences.edit()
-        editor.putLong(KEY_DUEDATEFROM, dueDateFrom)
+        if(dueDateFrom == null)
+        {
+            editor.putLong(KEY_DUEDATEFROM, 0)
+        }
+        else
+        {
+            editor.putLong(KEY_DUEDATEFROM, dueDateFrom)
+        }
         editor.apply()
     }
     fun getDueDateFromFilter(): Date?
@@ -97,10 +111,17 @@ class SharedPreferencesRepository
         }
     }
     /** Due date to **/
-    fun setDueDateToFilter(dueDateTo: Long)
+    fun setDueDateToFilter(dueDateTo: Long?)
     {
         editor = mySharedPreferences.edit()
-        editor.putLong(KEY_DUEDATETO, dueDateTo)
+        if(dueDateTo == null)
+        {
+            editor.putLong(KEY_DUEDATETO, 0)
+        }
+        else
+        {
+            editor.putLong(KEY_DUEDATETO, dueDateTo)
+        }
         editor.apply()
     }
     fun getDueDateToFilter(): Date?

@@ -681,7 +681,6 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     {
         _spinner.postValue(true)
         val listOfShoppingLists = firestoreRepository.getCurrentUserShoppingListsRealTime(currentUser)
-        _spinner.postValue(false)
         return listOfShoppingLists
     }
     fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<ShoppingList>
@@ -989,7 +988,6 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             when (val result = firestoreRepository.getReceiverFriendRequest(requestPartnerId))
             {
                 is Result.Success -> {
-                    setToastMessage(MyApp.applicationContext().getString(R.string.friend_deleted))
                     for(friendRequest in result.data)
                     {
                         val user = getUserFromFirestore(friendRequest.requestOwnerId)
@@ -1096,6 +1094,10 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     {
         val pair = Pair(false, "")
         _securityCheck.value = pair
+    }
+    fun setSpinner(isShown: Boolean)
+    {
+        _spinner.postValue(isShown)
     }
     private fun setToastMessage(message: String)
     {

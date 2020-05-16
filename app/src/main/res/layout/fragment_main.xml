@@ -13,6 +13,11 @@
         android:background="@color/colorPrimary"
         tools:context=".fragments.MainFragment">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_rounded_topleft_corner_white_noborder"/>
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_top_horizontal"
             android:layout_width="wrap_content"
@@ -32,11 +37,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/shape_rounded_topleft_corner_white_noborder"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@+id/gl_top_horizontal"
             app:layout_constraintTop_toTopOf="parent" />
-
+        <LinearLayout
+            android:id="@+id/ll_emptyCart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_empty_cart"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textsize_3xlarge"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:text="Oh no!"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:text="No shopping list found!"/>
+        </LinearLayout>
 
         <!--guideline_horizontal-->
         <androidx.constraintlayout.widget.Guideline
@@ -48,14 +75,39 @@
 
         <!--fab_createNewList-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_filterList"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:fabCustomSize="40dp"
+            app:backgroundTint="@color/darkOrange"
+            android:layout_marginEnd="@dimen/margin_large"
+            app:srcCompat="@drawable/ic_filter_brown"
+            app:layout_constraintRight_toLeftOf="@+id/fab_createNewList"
+            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"/>
+        <TextView
+            android:id="@+id/tv_activeFitersBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="4"
+            android:background="@drawable/shape_roundedallcorners_lightgreen"
+            android:padding="@dimen/margin_small"
+            android:elevation="7dp"
+            android:textSize="@dimen/textsize_small"
+            android:layout_marginStart="@dimen/margin_3xlarge"
+            android:layout_marginBottom="@dimen/margin_3xlarge"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@+id/fab_filterList"
+            app:layout_constraintBottom_toBottomOf="@id/fab_filterList"
+            app:layout_constraintLeft_toLeftOf="@id/fab_filterList"
+            app:layout_constraintRight_toRightOf="@+id/fab_filterList"/>
+
+        <!--fab_createNewList-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_createNewList"
             android:layout_width="56dp"
             android:layout_height="56dp"
             app:fabCustomSize="56dp"
             app:backgroundTint="@color/darkOrange"
-            android:layout_marginTop="@dimen/margin_large"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_large"
             app:srcCompat="@drawable/ic_add_brown"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -63,40 +115,38 @@
 
         <!--fab_createNewList-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_filterList"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:fabCustomSize="40dp"
-            app:backgroundTint="@color/darkOrange"
-            android:layout_marginTop="@dimen/margin_large"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_large"
-            app:srcCompat="@drawable/ic_filter_brown"
-            app:layout_constraintRight_toLeftOf="@+id/fab_createNewList"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"/>
-
-        <!--fab_createNewList-->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_friends"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginStart="@dimen/margin_large"
             app:fabCustomSize="40dp"
             app:backgroundTint="@color/darkOrange"
-            android:layout_marginTop="@dimen/margin_large"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginEnd="@dimen/margin_large"
             app:srcCompat="@drawable/ic_friends_brown"
             app:layout_constraintLeft_toRightOf="@+id/fab_createNewList"
             app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal"/>
-
-
-
-        <ProgressBar
-            android:id="@+id/spinner_loadingShoppingLists"
+        <TextView
+            android:id="@+id/tv_friendRequests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/margin_large"
+            tools:text="4"
+            android:background="@drawable/shape_roundedallcorners_lightgreen"
+            android:padding="@dimen/margin_small"
+            android:elevation="7dp"
+            android:textSize="@dimen/textsize_small"
+            android:visibility="invisible"
+            android:layout_marginStart="@dimen/margin_3xlarge"
+            android:layout_marginBottom="@dimen/margin_3xlarge"
+            app:layout_constraintTop_toTopOf="@+id/fab_friends"
+            app:layout_constraintBottom_toBottomOf="@id/fab_friends"
+            app:layout_constraintLeft_toLeftOf="@id/fab_friends"
+            app:layout_constraintRight_toRightOf="@+id/fab_friends"/>
+
+        <ImageView
+            android:id="@+id/iv_cart_loading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerInside"
+            android:layout_margin="@dimen/margin_10xlarge"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

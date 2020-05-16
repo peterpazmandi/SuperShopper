@@ -1,6 +1,7 @@
 package com.inspirecoding.supershopper.fragments
 
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -28,6 +30,8 @@ import com.inspirecoding.supershopper.viewmodels.FilterShoppingListViewModel
 import com.inspirecoding.supershopper.viewmodels.MainFragmentViewModel
 import com.inspirecoding.supershopper.viewmodels.SortShoppingListViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 private const val TAG = "MainFragment"
@@ -40,6 +44,8 @@ class MainFragment : Fragment()
     private val mainFragmentViewModel by navGraphViewModels<MainFragmentViewModel>(R.id.navigation_graph)
     private val sortShoppingListViewModel by navGraphViewModels<SortShoppingListViewModel>(R.id.navigation_graph)
     private val filterShoppingListViewModel by navGraphViewModels<FilterShoppingListViewModel>(R.id.navigation_graph)
+
+    private lateinit var cartLoadingAnimation: AnimationDrawable
 
     private lateinit var shoppingListAdapter: ShoppingListAdapter
 
@@ -57,7 +63,11 @@ class MainFragment : Fragment()
         val toolbar = (activity as AppCompatActivity).findViewById<Toolbar>(R.id.toolbar)
         toolbar.setNavigationIcon(null)
 
+        /** Init cart loading animation **/
+        binding.ivCartLoading.setBackgroundResource(R.drawable.anim_cart_loading)
+        cartLoadingAnimation = binding.ivCartLoading.background as AnimationDrawable
 
+        /** Init shopping lists RecyclerView **/
         context?.let { context ->
             context.hideKeyboard(binding.root)
             shoppingListAdapter = ShoppingListAdapter(context, firebaseViewModel)
@@ -73,9 +83,11 @@ class MainFragment : Fragment()
             }
         }
         firebaseViewModel.spinner.observe(viewLifecycleOwner) { show ->
-            Log.d(TAG, "$show")
-            binding.spinnerLoadingShoppingLists.visibility = if (show) View.VISIBLE else View.GONE
+            /** Start cart loading animation **/
+            startCartLoadingAnimation()
+            showHideEmptyCart(null)
         }
+
 
         return binding.root
     }
@@ -97,9 +109,9 @@ class MainFragment : Fragment()
             navigateToFriends(_view)
         }
 
-        firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) {user ->
+        firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) { user ->
             firebaseViewModel.getCurrentUserShoppingListsRealTime(user).observe(viewLifecycleOwner) { mapOfShoppingLists ->
-                Log.d(TAG, "${mapOfShoppingLists.size}")
+                Log.i(TAG, "${mapOfShoppingLists.size}")
                 for(key in mapOfShoppingLists.keys)
                 {
                     when(key.type)
@@ -107,11 +119,26 @@ class MainFragment : Fragment()
                         DocumentChange.Type.ADDED -> {
                             val shoppingList = mapOfShoppingLists.get(key)
                             shoppingList?.let { _shoppingList ->
-                                /** Add to the full shopping lists **/
-                                val intoPosition = sortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(_shoppingList, shoppingListAdapter.getAllShoppingList())
-                                mainFragmentViewModel.addShoppingList(intoPosition, _shoppingList)
-                                val filteredList = filterShoppingListViewModel.runFilter(mainFragmentViewModel.fullListOfShoppingLists)
-                                shoppingListAdapter.addAllShoppingListItem(filteredList)
+                                firebaseViewModel.viewModelScope.launch {
+                                    /** Some delay to show for the user the cart loading animation longer **/
+                                    delay(1_500)
+
+                                    /** Order the shopping lists in date **/
+                                    val intoPosition = sortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(_shoppingList, shoppingListAdapter.getAllShoppingList())
+                                    mainFragmentViewModel.addShoppingList(intoPosition, _shoppingList)
+                                    val filteredList = filterShoppingListViewModel.runFilter(mainFragmentViewModel.fullListOfShoppingLists)
+
+                                    refreshFilterBadge()
+
+                                    /** Add to the full shopping lists **/
+                                    shoppingListAdapter.addAllShoppingListItem(filteredList)
+
+                                    /** Stop cart loading animation **/
+                                    stopCartLoadingAnimation()
+
+                                    /** Show/Hide empty cart screen based on the number of shopping lists **/
+                                    showHideEmptyCart(shoppingListAdapter.itemCount)
+                                }
                             }
                         }
 
@@ -151,12 +178,15 @@ class MainFragment : Fragment()
             }
         })
 
+
         filterShoppingListViewModel.setFilterChangedClickListener(object : FilterShoppingListViewModel.OnFilterChangedClickListener
         {
             override fun onFilterChanged()
             {
                 val filteredList = filterShoppingListViewModel.runFilter(mainFragmentViewModel.fullListOfShoppingLists)
                 shoppingListAdapter.addAllShoppingListItem(filteredList)
+
+                refreshFilterBadge()
             }
         })
     }
@@ -210,6 +240,33 @@ class MainFragment : Fragment()
         }
     }
 
+    private fun refreshFilterBadge()
+    {
+        if(filterShoppingListViewModel.numberOfFilters > 0)
+        {
+            binding.tvActiveFitersBadge.text = filterShoppingListViewModel.numberOfFilters.toString()
+            binding.tvActiveFitersBadge.visibility = View.VISIBLE
+            Log.i(TAG, filterShoppingListViewModel.getNumberOfActiveFilters().toString())
+        }
+        else
+        {
+            binding.tvActiveFitersBadge.visibility = View.GONE
+            Log.i(TAG, binding.tvActiveFitersBadge.text.toString())
+        }
+    }
+    private fun refreshFriendRequestsBadge()
+    {
+        if(mainFragmentViewModel.numberOfReceivedFriendRequests > 0)
+        {
+            binding.tvFriendRequests.text = mainFragmentViewModel.numberOfReceivedFriendRequests.toString()
+            binding.tvFriendRequests.visibility = View.VISIBLE
+        }
+        else
+        {
+            binding.tvFriendRequests.visibility = View.GONE
+        }
+    }
+
     override fun onPrepareOptionsMenu(menu: Menu)
     {
         val alertMenuItem = menu.findItem(R.id.menu_profilePicture)
@@ -242,16 +299,58 @@ class MainFragment : Fragment()
             hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
+    private fun startCartLoadingAnimation()
+    {
+        binding.ivCartLoading.visibility = View.VISIBLE
+        cartLoadingAnimation.start()
+    }
+    private fun stopCartLoadingAnimation()
+    {
+        binding.ivCartLoading.visibility = View.GONE
+        cartLoadingAnimation.stop()
+    }
     private fun showFabs()
     {
         binding.fabFilterList.show()
         binding.fabCreateNewList.show()
         binding.fabFriends.show()
+
+        if(filterShoppingListViewModel.numberOfFilters > 0)
+        {
+            binding.tvActiveFitersBadge.visibility = View.VISIBLE
+        }
+        if(mainFragmentViewModel.numberOfReceivedFriendRequests > 0)
+        {
+            binding.tvFriendRequests.visibility = View.VISIBLE
+        }
     }
     private fun hideFabs()
     {
         binding.fabFilterList.hide()
         binding.fabCreateNewList.hide()
         binding.fabFriends.hide()
+
+        binding.tvActiveFitersBadge.visibility = View.INVISIBLE
+    }
+    private fun showHideEmptyCart(shoppingListsCount: Int?)
+    {
+        if(shoppingListsCount != null)
+        {
+            if(shoppingListsCount > 0)
+            {
+                binding.rvShoppingLists.visibility = View.VISIBLE
+                binding.llEmptyCart.visibility = View.INVISIBLE
+            }
+            else
+            {
+                binding.rvShoppingLists.visibility = View.INVISIBLE
+                binding.llEmptyCart.visibility = View.VISIBLE
+            }
+        }
+        else
+        {
+            binding.rvShoppingLists.visibility = View.INVISIBLE
+            binding.llEmptyCart.visibility = View.INVISIBLE
+        }
     }
 }

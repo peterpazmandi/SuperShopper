@@ -10,9 +10,7 @@ class MainFragmentViewModel: ViewModel()
 {
     val fullListOfShoppingLists = mutableListOf<ShoppingList>()
 
-    private val _mapOfShoppingListOperation = MutableLiveData<MutableMap<DocumentChange, ShoppingList>>()
-    val mapOfShoppingListOperation: LiveData<MutableMap<DocumentChange, ShoppingList>>
-        get() = _mapOfShoppingListOperation
+    var numberOfReceivedFriendRequests = 0
 
     fun addShoppingList(intoPosition: Int, shoppingList: ShoppingList)
     {

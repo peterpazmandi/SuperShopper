@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser
 
 import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.FragmentSplashBinding
+import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
 import com.inspirecoding.supershopper.repository.SharedPreferencesViewModel
 import com.inspirecoding.supershopper.viewmodels.FilterShoppingListViewModel
@@ -88,20 +89,26 @@ class SplashFragment : Fragment()
     {
         /** Shopping list status **/
         sharedPreferencesViewModel.getStatusFilter()?.let {
-            filterShoppingListViewModel.listOfShoppingListStatus = it
+            filterShoppingListViewModel.setShoppingListStatusFilter(
+                it.contains(ShoppingListStatus.OPEN),
+                it.contains(ShoppingListStatus.DONE),
+                it.contains(ShoppingListStatus.CLOSED)
+            )
         }
         /** Name **/
-        filterShoppingListViewModel.name = sharedPreferencesViewModel.getNameFilter()
+        sharedPreferencesViewModel.getNameFilter()?.let {
+            filterShoppingListViewModel.setNameFilter(it)
+        }
         /** Friends share with **/
         sharedPreferencesViewModel.getFriendsFilter()?.let {
-            filterShoppingListViewModel.listOfFriendsIds = it
+            filterShoppingListViewModel.listOfFriendsIds_temp = it
+            filterShoppingListViewModel.setToValidFriendsList()
         }
         /** Due date from + Due date to **/
         if (sharedPreferencesViewModel.getDueDateFromFilter() != null &&
             sharedPreferencesViewModel.getDueDateToFilter() != null)
         {
-            filterShoppingListViewModel.fromToDueDate =
-                Pair(sharedPreferencesViewModel.getDueDateFromFilter()!!, sharedPreferencesViewModel.getDueDateToFilter()!!)
+            filterShoppingListViewModel.setDueDate(Pair(sharedPreferencesViewModel.getDueDateFromFilter()!!, sharedPreferencesViewModel.getDueDateToFilter()!!))
         }
     }
 }

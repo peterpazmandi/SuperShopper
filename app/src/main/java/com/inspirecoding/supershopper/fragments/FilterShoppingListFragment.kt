@@ -81,14 +81,7 @@ class FilterShoppingListFragment : Fragment()
                 }
                 else
                 {
-                    firebaseViewModel.viewModelScope.launch {
-                        val selectedUser = firebaseViewModel.getUserFromFirestore(selectedFriend.friendId)
-                        selectedUser?.let { _selectedUser ->
-                            binding.tilFriendsSharedWith.error = null
-                            filterViewModel.listOfFriendsIds_temp.add(selectedFriend.friendId)
-                            friendsListChipAdapter.addFriend(_selectedUser)
-                        }
-                    }
+                    addToFriendsListChipAdapter(selectedFriend.friendId)
                 }
             }
 
@@ -109,8 +102,18 @@ class FilterShoppingListFragment : Fragment()
         }
 
         binding.btnActionButtonsApplyFilter.setOnClickListener {
-            /** Set filter **/
+            /** Set filters **/
             setFilters()
+            /** Set filters into SharePreferences **/
+            filterViewModel.setSharePreferencesFilters(sharedPreferencesViewModel)
+            /** Apply the new filters **/
+            filterViewModel.onFilterChangedClickListener.onFilterChanged()
+
+            findNavController().navigate(R.id.action_filterShoppingListFragment_to_mainFragment)
+        }
+        binding.tvActionButtonsClearFilter.setOnClickListener {
+            /** Clear filters **/
+            filterViewModel.clearFilters()
             /** Set filters into SharePreferences **/
             filterViewModel.setSharePreferencesFilters(sharedPreferencesViewModel)
             /** Apply the new filters **/
@@ -142,6 +145,18 @@ class FilterShoppingListFragment : Fragment()
         binding.rvFriendsSharedWith.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = friendsListChipAdapter
+        }
+    }
+
+    fun addToFriendsListChipAdapter(friendId: String)
+    {
+        firebaseViewModel.viewModelScope.launch {
+            val selectedUser = firebaseViewModel.getUserFromFirestore(friendId)
+            selectedUser?.let { _selectedUser ->
+                binding.tilFriendsSharedWith.error = null
+                filterViewModel.listOfFriendsIds_temp.add(friendId)
+                friendsListChipAdapter.addFriend(_selectedUser)
+            }
         }
     }
 
@@ -225,10 +240,6 @@ class FilterShoppingListFragment : Fragment()
                 populateDueDate(it)
             }
         }
-        else
-        {
-            binding.etName.setText("")
-        }
     }
     private fun populateDueDate(fromToDueDate: Pair<Date, Date>)
     {
@@ -239,18 +250,18 @@ class FilterShoppingListFragment : Fragment()
 
     private fun setFilters()
     {
-        filterViewModel.setShoppingListFilter(
+        filterViewModel.resetNumberOfFilters()
+
+        filterViewModel.setShoppingListStatusFilter(
             isOpenChecked = binding.chbStatusOpenList.isChecked,
             isDoneChecked = binding.chbStatusDoneList.isChecked,
             isClosedChecked = binding.chbStatusClosedList.isChecked)
         filterViewModel.setNameFilter(binding.etName.text.toString())
         /** When the user click on the Apply button, then the the list of friends can be moved to the permanent variable **/
-        filterViewModel.listOfFriendsIds = filterViewModel.listOfFriendsIds_temp
+        filterViewModel.setToValidFriendsList()
         /** When the user click on the Apply button, then the date can be moved to the permanent variable **/
-        filterViewModel.fromToDueDate = filterViewModel.fromToDueDate_temp
+        filterViewModel.setToValidDueDateFilter()
     }
-
-
 
 
 

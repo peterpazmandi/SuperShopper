@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.ShoppingList
 import androidx.core.util.Pair
+import androidx.lifecycle.MutableLiveData
 import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.repository.SharedPreferencesViewModel
 import com.inspirecoding.supershopper.utilities.ConverterFunctions
@@ -23,6 +24,7 @@ class FilterShoppingListViewModel: ViewModel()
     var fromToDueDate_temp: Pair<Date, Date>? = null
     var listOfFriendsIds = mutableListOf<String>()
     var listOfFriendsIds_temp = mutableListOf<String>()
+    var numberOfFilters: Int = 0
 
     lateinit var onFilterChangedClickListener: OnFilterChangedClickListener
     interface OnFilterChangedClickListener
@@ -81,48 +83,58 @@ class FilterShoppingListViewModel: ViewModel()
         /** Shopping list status **/
         sharedPreferencesViewModel.setStatusFilter(listOfShoppingListStatus)
         /** Name **/
-        name?.let { _name ->
-            sharedPreferencesViewModel.setNameFilter(_name)
-        }
+        sharedPreferencesViewModel.setNameFilter(name)
         /** Friends share with **/
         sharedPreferencesViewModel.setFriendsFilter(listOfFriendsIds)
         /** Due date from **/
-        fromToDueDate?.first?.time?.let { _from ->
-            sharedPreferencesViewModel.setDueDateFromFilter(_from)
-        }
+        sharedPreferencesViewModel.setDueDateFromFilter(fromToDueDate?.first?.time)
         /** Due date to **/
-        fromToDueDate?.second?.time?.let { _from ->
-            sharedPreferencesViewModel.setDueDateToFilter(_from)
-        }
+        sharedPreferencesViewModel.setDueDateToFilter(fromToDueDate?.second?.time)
     }
 
 
 
-    fun setShoppingListFilter(isOpenChecked: Boolean, isDoneChecked: Boolean, isClosedChecked: Boolean)
+    fun setShoppingListStatusFilter(isOpenChecked: Boolean, isDoneChecked: Boolean, isClosedChecked: Boolean)
     {
         listOfShoppingListStatus.clear()
         if (isOpenChecked)
         {
             listOfShoppingListStatus.add(ShoppingListStatus.OPEN)
+            numberOfFilters++
         }
         if (isDoneChecked)
         {
             listOfShoppingListStatus.add(ShoppingListStatus.DONE)
+            numberOfFilters++
         }
         if (isClosedChecked)
         {
             listOfShoppingListStatus.add(ShoppingListStatus.CLOSED)
+            numberOfFilters++
         }
     }
     fun setNameFilter(name: String)
     {
+        if(name.isNotEmpty())
+        {
+            numberOfFilters++
+        }
         this.name = name
     }
-    fun setDueDateFilter(fromToDueDate: Pair<Long, Long>)
+    fun setToValidDueDateFilter()
+    {
+        if(fromToDueDate_temp != null)
+        {
+            numberOfFilters++
+        }
+        this.fromToDueDate = fromToDueDate_temp
+    }
+    fun setDueDate(fromToDueDate: Pair<Date, Date>)
     {
         fromToDueDate.first?.let { _fromDate ->
             fromToDueDate.second?.let {  _toDate ->
-                this.fromToDueDate = Pair(ConverterFunctions.convertToDate(_fromDate), ConverterFunctions.convertToDate(_toDate))
+                this.fromToDueDate = Pair(_fromDate, _toDate)
+                numberOfFilters++
             }
         }
     }
@@ -133,6 +145,56 @@ class FilterShoppingListViewModel: ViewModel()
                 this.fromToDueDate_temp = Pair(ConverterFunctions.convertToDate(_fromDate), ConverterFunctions.convertToDate(_toDate))
             }
         }
+    }
+    fun setToValidFriendsList()
+    {
+        if(listOfFriendsIds_temp.size > 0)
+        {
+            numberOfFilters++
+        }
+        this.listOfFriendsIds = listOfFriendsIds_temp
+    }
+
+    fun clearFilters()
+    {
+        listOfShoppingListStatus.clear()
+        listOfFriendsIds_temp.clear()
+        name = null
+        listOfFriendsIds.clear()
+        listOfFriendsIds_temp.clear()
+        fromToDueDate = null
+        fromToDueDate_temp = null
+
+        resetNumberOfFilters()
+    }
+
+    fun resetNumberOfFilters()
+    {
+        numberOfFilters = 0
+    }
+
+    fun getNumberOfActiveFilters(): Int
+    {
+        var numberOfActiveFilters = 0
+
+        if (listOfFriendsIds.size > 0)
+        {
+            numberOfActiveFilters++
+        }
+        if (name != null && name != "")
+        {
+            numberOfActiveFilters++
+        }
+        if (fromToDueDate != null && fromToDueDate != null)
+        {
+            numberOfActiveFilters++
+        }
+        if (listOfFriendsIds.size > 0)
+        {
+            numberOfActiveFilters++
+        }
+
+        return numberOfActiveFilters
     }
 
     private fun containsShoppingListState(shoppingList: ShoppingList): Boolean

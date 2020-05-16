@@ -23,7 +23,7 @@ class SharedPreferencesViewModel(private val sharedPreferencesRepository: Shared
         return sharedPreferencesRepository.getStatusFilter()
     }
     /** Name **/
-    fun setNameFilter(name: String)
+    fun setNameFilter(name: String?)
     {
         sharedPreferencesRepository.setNameFilter(name)
     }
@@ -41,7 +41,7 @@ class SharedPreferencesViewModel(private val sharedPreferencesRepository: Shared
         return sharedPreferencesRepository.getFriendsFilter()
     }
     /** Due date from **/
-    fun setDueDateFromFilter(dueDateFrom: Long)
+    fun setDueDateFromFilter(dueDateFrom: Long?)
     {
         sharedPreferencesRepository.setDueDateFromFilter(dueDateFrom)
     }
@@ -50,7 +50,7 @@ class SharedPreferencesViewModel(private val sharedPreferencesRepository: Shared
         return sharedPreferencesRepository.getDueDateFromFilter()
     }
     /** Due date to **/
-    fun setDueDateToFilter(dueDateTo: Long)
+    fun setDueDateToFilter(dueDateTo: Long?)
     {
         sharedPreferencesRepository.setDueDateToFilter(dueDateTo)
     }
