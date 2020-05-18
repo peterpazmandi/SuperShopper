@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -50,49 +51,49 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    //Lifecycle
+    /** Lifecycle **/
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
-    //Navigation
+    /** Navigation **/
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
-    //Material Design
+    /** Material Design **/
     implementation "com.google.android.material:material:$material_design_version"
 
-    //Koin
+    /** Koin **/
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
 
-    //CircleImageView
+    /** CircleImageView **/
     implementation "de.hdodenhof:circleimageview:$circular_image_view"
 
-    //Friebase
+    /** Friebase **/
     implementation "com.google.firebase:firebase-auth:$firebase_auth"
-    //Firestore
+    /** Firestore **/
     implementation "com.google.firebase:firebase-firestore:$firestore"
-    //Firebase storage
+    /** Firebase SDK for Google Analytics **/
+    implementation 'com.google.firebase:firebase-analytics:17.4.1'
+    /** Firebase Crashlytics SDK **/
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
+    /** Firebase storage **/
     implementation "com.google.firebase:firebase-storage:$firebase_storage"
-    //Facebook auth
+
+    /** Facebook auth **/
     implementation "com.facebook.android:facebook-android-sdk:$facebook_android_sdk"
-    //Google auth
+    /** Google auth **/
     implementation "com.google.android.gms:play-services-auth:$google_auth"
 
-    //Picasso
+    /** Picasso **/
     implementation "com.squareup.picasso:picasso:$picasso"
     implementation "jp.wasabeef:picasso-transformations:$picasso_transformation"
-    // Glide
-    implementation "com.github.bumptech.glide:glide:$glide"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide"
-    // Coil
-    implementation "io.coil-kt:coil:$coil"
 
-    //Joda time
+    /** Joda time **/
     implementation "net.danlew:android.joda:$joda_time"
 
-    //ViewPager2
+    /** ViewPager2 **/
     implementation "androidx.viewpager2:$viewpager2"
 
-    //ImageCropper
+    /** ImageCropper **/
     implementation "com.theartofdev.edmodo:android-image-cropper:$crop_image"
 }

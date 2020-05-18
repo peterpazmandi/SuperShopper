@@ -43,6 +43,7 @@ class SearchFriendFragment : Fragment()
                 else
                 {
                     usersListAdapter.removeAllItems()
+                    showHideEmptyPeople(0)
                 }
             }
         }
@@ -50,6 +51,7 @@ class SearchFriendFragment : Fragment()
         firebaseViewModel.usersListLD.observe(viewLifecycleOwner) { _listOfFriends ->
             initRecyclerView()
             usersListAdapter.addUsers(_listOfFriends.toMutableList())
+            showHideEmptyPeople(_listOfFriends.size)
         }
         firebaseViewModel.spinner.observe(viewLifecycleOwner) {show ->
             binding.pbLoading.visibility = if (show) View.VISIBLE else View.GONE
@@ -72,5 +74,24 @@ class SearchFriendFragment : Fragment()
         super.onResume()
         initRecyclerView()
         usersListAdapter.removeAllItems()
+    }
+
+    private fun showHideEmptyPeople(shoppingListsCount: Int?)
+    {
+        if(shoppingListsCount != null)
+        {
+            if(shoppingListsCount > 0)
+            {
+                binding.llEmptyPerson.visibility = View.INVISIBLE
+            }
+            else
+            {
+                binding.llEmptyPerson.visibility = View.VISIBLE
+            }
+        }
+        else
+        {
+            binding.llEmptyPerson.visibility = View.INVISIBLE
+        }
     }
 }

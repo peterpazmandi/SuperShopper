@@ -126,27 +126,17 @@ class FriendsFragment : Fragment()
         {
             if(shoppingListsCount > 0)
             {
-//                binding.rvListOfFriends.visibility = View.VISIBLE
                 binding.llEmptyPerson.visibility = View.INVISIBLE
             }
             else
             {
-//                binding.rvListOfFriends.visibility = View.INVISIBLE
                 binding.llEmptyPerson.visibility = View.VISIBLE
             }
         }
         else
         {
-//            binding.rvListOfFriends.visibility = View.INVISIBLE
             binding.llEmptyPerson.visibility = View.INVISIBLE
         }
-    }
-
-    override fun onResume()
-    {
-        super.onResume()
-
-//        showHideEmptyPeople(friendsListAdapter.itemCount)
     }
 
 

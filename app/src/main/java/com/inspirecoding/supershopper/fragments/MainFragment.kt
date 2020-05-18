@@ -122,13 +122,13 @@ class MainFragment : Fragment()
                             shoppingList?.let { _shoppingList ->
                                 firebaseViewModel.viewModelScope.launch {
                                     /** Some delay to show for the user the cart loading animation longer **/
-                                    delay(1_500)
+                                    delay(1_000)
 
                                     /** Order the shopping lists in date **/
                                     val intoPosition = sortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(_shoppingList, shoppingListAdapter.getAllShoppingList())
                                     mainFragmentViewModel.addShoppingList(intoPosition, _shoppingList)
                                     val filteredList = filterShoppingListViewModel.runFilter(mainFragmentViewModel.fullListOfShoppingLists)
-
+                                    Log.i(TAG, "$filteredList")
                                     refreshFilterBadge()
 
                                     /** Add to the full shopping lists **/
@@ -147,7 +147,10 @@ class MainFragment : Fragment()
                             val shoppingList = mapOfShoppingLists.get(key)
                             shoppingList?.let { _shoppingList ->
                                 val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
-                                shoppingListAdapter.updateShoppingListItem(position, _shoppingList)
+                                if(position != -1)
+                                {
+                                    shoppingListAdapter.updateShoppingListItem(position, _shoppingList)
+                                }
                             }
                         }
 
@@ -155,7 +158,10 @@ class MainFragment : Fragment()
                             val shoppingList = mapOfShoppingLists.get(key)
                             shoppingList?.let { _shoppingList ->
                                 val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
-                                shoppingListAdapter.removeShoppingListItem(position)
+                                if(position != -1)
+                                {
+                                    shoppingListAdapter.removeShoppingListItem(position)
+                                }
                             }
                         }
                     }
