@@ -15,19 +15,21 @@ import com.inspirecoding.supershopper.databinding.FragmentCloseDeleteBinding
 import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
+import com.inspirecoding.supershopper.viewmodels.MainFragmentViewModel
 import com.inspirecoding.supershopper.viewmodels.ShoppingListFragmentViewModel
 import org.koin.android.ext.android.inject
 
 class CloseDeleteFragment : Fragment()
 {
-    companion object {
-        val CLOSED = "close"
-        val DELETE = "delete"
+    companion object
+    {
+        const val CLOSED = "close"
+        const val DELETE = "delete"
     }
 
     private lateinit var binding: FragmentCloseDeleteBinding
     private val firebaseViewModel: FirebaseViewModel by inject()
-    private val shoppingListFragmentViewModel by navGraphViewModels<ShoppingListFragmentViewModel>(R.id.navigation_graph)
+    private val mainFragmentViewModel by navGraphViewModels<MainFragmentViewModel>(R.id.navigation_graph)
 
     override fun onCreateView(layoutInflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -58,12 +60,13 @@ class CloseDeleteFragment : Fragment()
                 CLOSED -> {
                     shoppingList.shoppingListStatus = ShoppingListStatus.CLOSED
                     firebaseViewModel.updateShoppingList(shoppingList)
-                    shoppingListFragmentViewModel.openedShoppingList.shoppingListId = ""
                     navigateToMainFragment(view)
                 }
                 DELETE -> {
                     firebaseViewModel.deleteShoppingList(shoppingList.shoppingListId)
-                    shoppingListFragmentViewModel.openedShoppingList.shoppingListId = ""
+                    mainFragmentViewModel.fullListOfShoppingLists.removeAll {
+                        it.shoppingListId == shoppingList.shoppingListId
+                    }
                     navigateToMainFragment(view)
                 }
             }
