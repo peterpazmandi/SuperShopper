@@ -212,6 +212,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
         viewModelScope.launch {
             authRepository.logOutUser()
             setToastMessage(MyApp.applicationContext().getString(R.string.you_have_successfully_logged_out))
+            _spinner.value = false
         }
     }
     fun reAuthenticateUser(email: String, password: String, source: String)
@@ -680,8 +681,7 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
     fun getCurrentUserShoppingListsRealTime(currentUser: User): MutableLiveData<Map<DocumentChange, ShoppingList>>
     {
         _spinner.postValue(true)
-        val listOfShoppingLists = firestoreRepository.getCurrentUserShoppingListsRealTime(currentUser)
-        return listOfShoppingLists
+        return firestoreRepository.getCurrentUserShoppingListsRealTime(currentUser)
     }
     fun getShoppingListRealTime(shoppingListId: String): MutableLiveData<ShoppingList>
     {

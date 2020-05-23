@@ -16,7 +16,9 @@ import com.inspirecoding.supershopper.adapter.OpenBoughtItemsAdapter
 import com.inspirecoding.supershopper.databinding.FragmentOpenBoughtBinding
 import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.ListItem
+import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.repository.FirebaseViewModel
+import com.inspirecoding.supershopper.viewmodels.MainFragmentViewModel
 import com.inspirecoding.supershopper.viewmodels.ShoppingListFragmentViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ class OpenBoughtFragment : Fragment()
 {
     private lateinit var binding: FragmentOpenBoughtBinding
     private val shoppingListFragmentViewModel by navGraphViewModels<ShoppingListFragmentViewModel>(R.id.navigation_graph)
+    private val mainFragmentViewModel by navGraphViewModels<MainFragmentViewModel>(R.id.navigation_graph)
     private val firebaseViewModel: FirebaseViewModel by inject()
     private lateinit var openItemsAdapter: OpenBoughtItemsAdapter
     private lateinit var boughtItemsAdapter: OpenBoughtItemsAdapter
@@ -90,6 +93,9 @@ class OpenBoughtFragment : Fragment()
             Log.d(TAG, "$_shoppingList")
             updateSelectedShoppingListItems(_shoppingList.listOfItems)
 
+            /** Update the local temporary full list of shopping lists **/
+            updateTemporaryFullShoppingLists()
+
             setListEnabledRegardingStatus(_shoppingList.shoppingListStatus)
         }
 
@@ -101,6 +107,9 @@ class OpenBoughtFragment : Fragment()
 
                 shoppingListFragmentViewModel.openedShoppingList.shoppingListStatus = setShoppingListStatus(shoppingListFragmentViewModel.openedShoppingList.listOfItems)
                 firebaseViewModel.updateShoppingList(shoppingListFragmentViewModel.openedShoppingList)
+
+                /** Update the local temporary full list of shopping lists **/
+                updateTemporaryFullShoppingLists()
             }
         })
         boughtItemsAdapter.setOnItemClickListener(object : OpenBoughtItemsAdapter.OnItemClickListener {
@@ -111,10 +120,23 @@ class OpenBoughtFragment : Fragment()
 
                 shoppingListFragmentViewModel.openedShoppingList.shoppingListStatus = setShoppingListStatus(shoppingListFragmentViewModel.openedShoppingList.listOfItems)
                 firebaseViewModel.updateShoppingList(shoppingListFragmentViewModel.openedShoppingList)
+
+                /** Update the local temporary full list of shopping lists **/
+                updateTemporaryFullShoppingLists()
             }
         })
     }
 
+    private fun updateTemporaryFullShoppingLists()
+    {
+        val positionToUpdate = mainFragmentViewModel.fullListOfShoppingLists.indexOfFirst {
+            it.shoppingListId == (shoppingListFragmentViewModel.openedShoppingList).shoppingListId
+        }
+        if(positionToUpdate != -1)
+        {
+            mainFragmentViewModel.fullListOfShoppingLists[positionToUpdate] = shoppingListFragmentViewModel.openedShoppingList
+        }
+    }
     private fun getIndexOfItem(listItem: ListItem, listOfItems: MutableList<ListItem>) = listOfItems.indexOfFirst { it.id == listItem.id }
     private fun setShoppingListStatus(listOfItems: MutableList<ListItem>): ShoppingListStatus
     {

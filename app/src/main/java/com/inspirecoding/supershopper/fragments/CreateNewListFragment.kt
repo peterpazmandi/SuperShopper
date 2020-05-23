@@ -40,6 +40,8 @@ import com.inspirecoding.supershopper.model.Friend
 import com.inspirecoding.supershopper.model.ListItem
 import com.inspirecoding.supershopper.model.ShoppingList
 import com.inspirecoding.supershopper.utilities.ConverterFunctions
+import com.inspirecoding.supershopper.viewmodels.MainFragmentViewModel
+import com.inspirecoding.supershopper.viewmodels.SortShoppingListViewModel
 import kotlinx.coroutines.launch
 
 
@@ -51,6 +53,8 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     private val firebaseViewModel: FirebaseViewModel by inject()
     private lateinit var userAutoCompleteAdapter: UserAutoCompleteAdapter
     private val createNewListFragmentViewModel: CreateNewListFragmentViewModel by navGraphViewModels(R.id.navigation_graph)
+    private val sortShoppingListViewModel by navGraphViewModels<SortShoppingListViewModel>(R.id.navigation_graph)
+    private val mainFragmentViewModel by navGraphViewModels<MainFragmentViewModel>(R.id.navigation_graph)
 
     private lateinit var listItemAdapter: ListItemAdapter
     private lateinit var friendsListChipAdapter: FriendsListChipAdapter
@@ -206,13 +210,32 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                 {
                     if(selectedShoppingList == null)
                     {
+                        /** Insert into the cloud shopping lists **/
                         firebaseViewModel.insertShoppingList(newShoppingList, this)
+
+                        /** Insert into the local temporary shopping lists **/
+                        val intoPosition = sortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(
+                            newShoppingList,
+                            mainFragmentViewModel.fullListOfShoppingLists)
+                        mainFragmentViewModel.addShoppingList(intoPosition, newShoppingList)
+
                         findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
                     }
                     else
                     {
+                        /** Update the cloud shopping lists **/
                         newShoppingList.shoppingListId = (selectedShoppingList as ShoppingList).shoppingListId
                         firebaseViewModel.updateShoppingList(newShoppingList)
+
+                        /** Update the local temporary shopping lists **/
+                        val positionToUpdate = mainFragmentViewModel.fullListOfShoppingLists.indexOfFirst {
+                            it.shoppingListId == (selectedShoppingList as ShoppingList).shoppingListId
+                        }
+                        if(positionToUpdate != -1)
+                        {
+                            mainFragmentViewModel.fullListOfShoppingLists[positionToUpdate] = newShoppingList
+                        }
+
                         findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
                     }
                 }

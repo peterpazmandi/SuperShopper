@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.inspirecoding.supershopper.MainActivity
 
@@ -60,6 +61,12 @@ class RegisterFragment : Fragment()
             binding.tilRegisterPassword.error = null
         }
 
+        binding.tvRegisterPrivacy.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_privacyPolicyFragment)
+        }
+        binding.tvRegisterTerms.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_termsAndConditionsFragment)
+        }
         binding.tvRegisterLoginnow.setOnClickListener { view ->
             navigateToLoginFragment(view)
         }

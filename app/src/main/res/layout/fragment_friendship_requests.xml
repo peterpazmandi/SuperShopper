@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
-                    android:text="@string/no_friends_found"/>
+                    android:text="@string/no_requests_found"/>
             </LinearLayout>
 
             <ImageView

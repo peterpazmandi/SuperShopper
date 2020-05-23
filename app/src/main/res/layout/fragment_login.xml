@@ -11,14 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary">
-
-        <!--guideline_horizontal-->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.275" />
         <!--guideline_vertical-->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical"
@@ -26,16 +18,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.50" />
-
-        <!--iv_login_background-->
-        <ImageView
-            android:id="@+id/iv_login_background"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/loginregister_headerimage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline_horizontal" />
 
         <!--tv_login_welcomeback-->
         <TextView
@@ -45,10 +27,11 @@
             android:gravity="center"
             android:text="@string/welcome_back"
             android:textColor="@color/light_brown"
-            android:textSize="@dimen/textsize_xlarge"
+            android:layout_marginTop="@dimen/margin_xxlarge"
+            android:textSize="@dimen/textsize_xxlarge"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal"/>
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <!--til_login_email-->
         <com.google.android.material.textfield.TextInputLayout

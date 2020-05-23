@@ -27,127 +27,209 @@
     <string name="check_your_emails_to_reset_your_password">Ellenőrizd e-mailjeidet a jelszó visszaállításához!</string>
     <string name="your_password_has_been_updated">Frissítettük a jelszavad!</string>
     <string name="your_email_has_been_updated">Frissítettük az email címed!</string>
-    <string name="your_name_has_been_updated">Your name has been updated</string>
-    <string name="your_profile_picture_has_been_updated">Your profile picture has been updated</string>
-    <string name="login_successful">Login Successful!</string>
-    <string name="you_have_successfully_logged_out">You have successfully logged out</string>
-    <string name="the_security_check_was_successful">The security check was successful.</string>
-    <string name="request_canceled">Request canceled</string>
+    <string name="your_name_has_been_updated">Sikeresen frissítettük a neved</string>
+    <string name="your_profile_picture_has_been_updated">Sikeresen frissítettük a profilképed</string>
+    <string name="login_successful">Sikeres bejelentkezés!</string>
+    <string name="you_have_successfully_logged_out">Sikeresen kijelentkeztél</string>
+    <string name="the_security_check_was_successful">A biztonsági ellenőrzés sikeres volt.</string>
+    <string name="request_canceled">Kérés törölve</string>
 
-    <string name="item_updated">Item updated</string>
-    <string name="shopping_list_deleted">Shopping list deleted</string>
-    <string name="accept_request">Accept request</string>
-    <string name="accept">Accept</string>
-    <string name="friend_deleted">Friend deleted</string>
-    <string name="delete_request">Delete request</string>
-    <string name="decline_request">Decline request</string>
-    <string name="decline">Decline</string>
-    <string name="delete_friend">Delete friend</string>
+    <string name="item_updated">Tétel frissítve</string>
+    <string name="shopping_list_deleted">Bevásárló list törölve</string>
+    <string name="accept_request">Kérés elfogadása</string>
+    <string name="accept">Elfogadás</string>
+    <string name="friend_deleted">Barát törölve</string>
+    <string name="delete_request">Kérelem törlése</string>
+    <string name="decline_request">Kérelem visszautasítása</string>
+    <string name="decline">Visszautasít</string>
+    <string name="delete_friend">Barát törlése</string>
 
-    <string name="facebook_app_id">532612537445839</string>
-    <string name="fb_login_protocol_scheme">fb532612537445839</string>
-    <string name="open_items">Open Items</string>
-    <string name="bought_items">Bought Items</string>
-    <string name="history">History</string>
-    <string name="friends">Friends</string>
-    <string name="requests">Requests</string>
+    <string name="open_items">Nyitott tételek</string>
+    <string name="bought_items">Megvásárolt tételek</string>
+    <string name="history">Történet</string>
+    <string name="friends">Barátok</string>
+    <string name="requests">Kérelmek</string>
 
-    <string name="profile_photo">Profile Photo</string>
+    <string name="profile_photo">Profil kép</string>
 
-    <string name="create_new_list">Create new list</string>
-    <string name="edit_list">Edit list</string>
-    <string name="give_me_a_name">Give me a name</string>
-    <string name="find_your_friends">Find your friends</string>
+    <string name="create_new_list">Új list készítése</string>
+    <string name="edit_list">Lista módosítása</string>
+    <string name="give_me_a_name">Adj meg egy nevet</string>
+    <string name="find_your_friends">Találd meg barátaid</string>
 
-    <string name="enter_at_least_3_characters">Enter at least 3 characters</string>
-    <string name="you_have_already_added_this_friend">You have already added this friend</string>
-    <string name="share_with_your_friends">Share with your friends</string>
-    <string name="friends_shared_with">Friends shared with</string>
-    <string name="due_date">Due date</string>
-    <string name="from_to">From: %1$s\nTo: %2$s</string>
-    <string name="add_new_item">Add new item</string>
+    <string name="enter_at_least_3_characters">Legalább 3 karaktert adj meg</string>
+    <string name="you_have_already_added_this_friend">Már felvetted ezt a barátot</string>
+    <string name="share_with_your_friends">Oszd meg a barátaiddal</string>
+    <string name="friends_shared_with">Barátok, akikkel megosztottad</string>
+    <string name="due_date">Esedékesség dátuma</string>
+    <string name="from_to">%1$s-tól\n%2$s-ig</string>
+    <string name="add_new_item">Új tétel hozzáadása</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="unit">Unit</string>
-    <string name="gram">gram</string>
+    <string name="unit">Egység</string>
+    <string name="gram">gramm</string>
     <string name="g">g</string>
-    <string name="dag">dag</string>
+    <string name="dag">dkg</string>
     <string name="kg">kg</string>
     <string name="ml">ml</string>
-    <string name="items">Items</string>
-    <string name="details">Details</string>
-    <string name="count_items">%1$s Items</string>
+    <string name="items">Tételek</string>
+    <string name="details">Részletek</string>
+    <string name="count_items">%1$s Tétel</string>
     <string name="plus_number">+ %1$s</string>
-    <string name="quantity">Quantity</string>
-    <string name="enter_a_quantity">Enter a quantity</string>
-    <string name="priority">Priority</string>
-    <string name="save_list">Save List</string>
-    <string name="add_item">Add item</string>
-    <string name="update_item">Update item</string>
+    <string name="quantity">Mennyiség</string>
+    <string name="enter_a_quantity">Adj meg mennyiséget</string>
+    <string name="priority">Prioritás</string>
+    <string name="save_list">Lista mentése</string>
+    <string name="add_item">Tétel hozzáadása</string>
+    <string name="update_item">Tétel frissítése</string>
 
-    <string name="enter_a_name">Enter a name</string>
-    <string name="enter_a_qunatity">Enter a qunatity</string>
+    <string name="enter_a_name">Adj meg egy nevet</string>
+    <string name="enter_a_qunatity">Adj meg mennyiséget</string>
 
     <string name="dl">dl</string>
     <string name="l">l</string>
-    <string name="pc">pc</string>
+    <string name="pc">db</string>
 
-    <string name="low">LOW</string>
-    <string name="medium">MEDIUM</string>
-    <string name="high">HIGH</string>
-
-    <string name="select_a_unit">Select a unit</string>
-    <string name="select_a_priority">Select a priority</string>
-    <string name="select_a_due_date">Select a due date</string>
-    <string name="your_list_is_empty">Your list is empty</string>
-    <string name="list_details">List details</string>
-    <string name="shopping_list_details">Shopping list details</string>
-    <string name="profile_picture">Profile Picture</string>
-    <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
-    <string name="creator">Creator</string>
-    <string name="please_enter_nyour_email_address">Please enter\nyour email address</string>
-    <string name="here">here</string>
-    <string name="get_new_password">Get new password</string>
-    <string name="are_you_sure">Are you sure?</string>
-    <string name="delete_shopping_list">Delete shopping list</string>
-    <string name="do_you_really_want_to_delete_these_shopping_list_nthis_process_cannot_be_undone">Do you really want\nto delete these shopping list?\n\nThis process cannot be undone.</string>
-    <string name="yes_delete">Yes, Delete</string>
-    <string name="no_cancel">No, Cancel</string>
-    <string name="profile">Profile</string>
-    <string name="save">Save</string>
-    <string name="change_password">Change Password</string>
-    <string name="sign_out">Sign Out</string>
-    <string name="delete_account">Delete Account</string>
-    <string name="please_enter_nyour_new_password">Please enter\nyour new password</string>
-    <string name="for_security_reasons_nplease_provide_your_login_information">For security reasons,\nplease provide your login information.</string>
+    <string name="select_a_unit">Válassz egységet</string>
+    <string name="select_a_priority">Válassz prioritást</string>
+    <string name="select_a_due_date">Válassz esedékességet</string>
+    <string name="your_list_is_empty">Üres a listád</string>
+    <string name="list_details">Lista részletei</string>
+    <string name="shopping_list_details">Bevásárló lista részletei</string>
+    <string name="profile_picture">Profilkép</string>
+    <string name="edit">Módosít</string>
+    <string name="delete">Töröl</string>
+    <string name="creator">Létrehozó</string>
+    <string name="please_enter_nyour_email_address">Kérlek, add meg\naz email címed.</string>
+    <string name="here">itt</string>
+    <string name="get_new_password">Új jelszót kérek</string>
+    <string name="are_you_sure">Biztos vagy benne?</string>
+    <string name="delete_shopping_list">Bevásárló list törlése</string>
+    <string name="do_you_really_want_to_delete_these_shopping_list_nthis_process_cannot_be_undone">Biztosan törölni szeretnéd ezt a bevásárló listát?\n\nKésőbb nem tudod visszavonni.</string>
+    <string name="yes_delete">Igen, törlöm</string>
+    <string name="no_cancel">Nem, mégse</string>
+    <string name="profile">Profil</string>
+    <string name="save">Mentés</string>
+    <string name="change_password">Jelszó módosítása</string>
+    <string name="sign_out">Kijelentkezés</string>
+    <string name="delete_account">Fiók törlése</string>
+    <string name="please_enter_nyour_new_password">Kérlek, add meg\naz új jelszavad!</string>
+    <string name="for_security_reasons_nplease_provide_your_login_information">Biztonsági okokból,\nkérlek add meg a bejelentkezési adataidat</string>
     <string name="ok">OK</string>
-    <string name="change_email">Change email</string>
-    <string name="please_enter_nyour_new_email">Please enter\nyour new email</string>
-    <string name="for_security_reasons_n_you_must_log_in_again">For security reasons,\n you must log in again.</string>
-    <string name="search">Search</string>
-    <string name="send_friend_request">Send friend request</string>
-    <string name="search_friends">Search friends</string>
-    <string name="search_friend">Search Friend</string>
-    <string name="sensitive_data">Sensitive Data</string>
-    <string name="reset_password">Reset Password</string>
-    <string name="clear_filter">Clear filter</string>
-    <string name="filter_shopping_lists">Filter shopping lists</string>
-    <string name="status">Status</string>
-    <string name="range_of_due_date">Range of due date</string>
-    <string name="select_a_date_range">Select a date range</string>
-    <string name="apply_filter">Apply filter</string>
-    <string name="close_shopping_list">Close shopping list</string>
-    <string name="do_you_really_want_nto_close_this_shopping_list_n_nlater_on_you_can_reopen_it_again">Do you really want\nto close this shopping list?\n\nLater on you can reopen it again.</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="close">Close</string>
-    <string name="open">Open</string>
-    <string name="done">Done</string>
-    <string name="closed">Closed</string>
-    <string name="no_shopping_list_found">No shopping list found!</string>
-    <string name="oh_no">Oh no!</string>
-    <string name="no_friends_found">No friends found!</string>
-    <string name="no_users_found">No users found!</string>
+    <string name="change_email">Email módosítása</string>
+    <string name="please_enter_nyour_new_email">Kérlek, add meg\naz új email címed</string>
+    <string name="for_security_reasons_n_you_must_log_in_again">Biztonsági okokból,\nújra be kell jelentkezned.</string>
+    <string name="search">Keresés</string>
+    <string name="send_friend_request">Küldj barátkérőt</string>
+    <string name="search_friends">Barátok keresése</string>
+    <string name="search_friend">Barát keresése</string>
+    <string name="sensitive_data">Bizalmas adat</string>
+    <string name="reset_password">Jelszó visszaállítása</string>
+    <string name="clear_filter">Szűrők törlése</string>
+    <string name="filter_shopping_lists">Bevásárló listák szűrése</string>
+    <string name="status">Státusz</string>
+    <string name="range_of_due_date">Az esedékesség dátuma</string>
+    <string name="select_a_date_range">Válassz tartományt</string>
+    <string name="apply_filter">Szűrő alkalmazása</string>
+    <string name="close_shopping_list">Bevásárló lista lezárása</string>
+    <string name="do_you_really_want_nto_close_this_shopping_list_n_nlater_on_you_can_reopen_it_again">Biztosan le szeretnéd zárni\nezt a bevásárló listát?\nKésőbb újra meg tudod nyitni.</string>
+    <string name="yes">Igen</string>
+    <string name="no">Nem</string>
+    <string name="close">Bezárás</string>
+    <string name="open">Nyitva</string>
+    <string name="done">Kész</string>
+    <string name="closed">Lezárva</string>
+    <string name="no_shopping_list_found">Nem találtam bevásárló listát!</string>
+    <string name="oh_no">Jaj ne!</string>
+    <string name="no_friends_found">Még nincs barátod!</string>
+    <string name="no_users_found">Nem találtam felhasználót!</string>
+    <string name="no_requests_found">Nem találtam barát kérést!</string>
 
+    <string name="terms_and_conditions">Felhasználási feltételek</string>
+    <string name="privacy_policy">Adatvédelmi nyilatkozat</string>
+    <string name="privacy_policy_text_1">
+    <![CDATA[
+        <p><strong><span data-contrast="auto">** Adatv&eacute;delmi ir&aacute;nyelvek**</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;a&nbsp;</span><span data-contrast="auto">SuperShopper</span><span data-contrast="auto">&nbsp;alkalmaz&aacute;st fizetett alkalmaz&aacute;sk&eacute;nt &eacute;p&iacute;tette fel. Ezt a szolg&aacute;ltat&aacute;st az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;ny&uacute;jtja, &eacute;s a jelenlegi haszn&aacute;latra sz&aacute;nt&aacute;k.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Ez az oldal az&eacute;rt k&eacute;sz&uuml;lt, hogy t&aacute;j&eacute;koztass&aacute;k a l&aacute;togat&oacute;kat a szem&eacute;lyes adatok gyűjt&eacute;s&eacute;re, felhaszn&aacute;l&aacute;s&aacute;ra &eacute;s nyilv&aacute;noss&aacute;gra hozatal&aacute;ra vonatkoz&oacute; politik&aacute;inkr&oacute;l, ha valaki &uacute;gy d&ouml;nt, hogy a szolg&aacute;ltat&aacute;st haszn&aacute;lja.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Ha &uacute;gy d&ouml;nt, hogy a szolg&aacute;ltat&aacute;sunkat haszn&aacute;lja, akkor elfogadja az inform&aacute;ci&oacute;k gyűjt&eacute;s&eacute;t &eacute;s felhaszn&aacute;l&aacute;s&aacute;t ezen dokumentum alapj&aacute;n. A szem&eacute;lyes adatokat, amiket gyűjt&uuml;nk a szolg&aacute;ltat&aacute;s ny&uacute;jt&aacute;s&aacute;hoz &eacute;s annak fejleszt&eacute;s&eacute;hez haszn&aacute;ljuk fel. Nem haszn&aacute;ljuk vagy osztjuk meg adatait senkivel, kiv&eacute;ve a jelen Adatv&eacute;delmi Szab&aacute;lyzatban foglaltakat.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">A jelen Adatv&eacute;delmi Szab&aacute;lyzatban haszn&aacute;lt kifejez&eacute;seknek ugyanaz a jelent&eacute;se, mint a Felhaszn&aacute;l&aacute;si Felt&eacute;teleinkben, amelyek el&eacute;rhetők a&nbsp;</span><span data-contrast="auto">SuperShopper</span><span data-contrast="auto">&nbsp;applik&aacute;ci&oacute;n&aacute;l, ha a jelen Adatv&eacute;delmi Szab&aacute;lyzat m&aacute;sk&eacute;nt nem rendelkezik.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">**Inform&aacute;ci&oacute; gyűjt&eacute;se &eacute;s haszn&aacute;lata**</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">A jobb &eacute;lm&eacute;ny &eacute;rdek&eacute;ben a szolg&aacute;ltat&aacute;sunk haszn&aacute;lata k&ouml;zben megk&iacute;v&aacute;njuk, hogy adjon meg nek&uuml;nk bizonyos szem&eacute;lyes azonos&iacute;t&aacute;sra alkalmas inform&aacute;ci&oacute;kat. Az &aacute;ltalunk ig&eacute;nyelt inform&aacute;ci&oacute;kat megőrizz&uuml;k &eacute;s felhaszn&aacute;ljuk a jelen adatv&eacute;delmi ir&aacute;nyelvben le&iacute;rtak szerint.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Az alkalmaz&aacute;s harmadik f&eacute;l szolg&aacute;ltat&aacute;sait haszn&aacute;lja, amelyek gyűjthetnek inform&aacute;ci&oacute;kat az &Ouml;n azonos&iacute;t&aacute;s&aacute;hoz.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Link az alkalmaz&aacute;s &aacute;ltal haszn&aacute;lt harmadik f&eacute;l szolg&aacute;ltat&oacute;k adatv&eacute;delmi politik&aacute;j&aacute;hoz</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><a href="https://www.google.com/policies/privacy/"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">Google Play Services</span></span></a><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><a href="https://firebase.google.com/policies/analytics"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">Google Analytics for Firebase</span></span></a><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><a href="https://firebase.google.com/support/privacy/"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">Firebase Crashlytics</span></span></a><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><a href="https://www.facebook.com/about/privacy/update/printable"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">Facebook</span></span></a><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">**Inform&aacute;ci&oacute;&nbsp;logol&aacute;sa**&nbsp;</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">T&aacute;j&eacute;koztatni szeretn&eacute;nk, hogy b&aacute;rmikor, amikor szolg&aacute;ltat&aacute;sunkat haszn&aacute;lja, az alkalmaz&aacute;s hib&aacute;ja eset&eacute;n adatokat &eacute;s inform&aacute;ci&oacute;kat gyűjt&uuml;nk a napl&oacute;z&aacute;s c&eacute;lj&aacute;b&oacute;l. Ezek a napl&oacute;adatok tartalmazhatnak olyan inform&aacute;ci&oacute;kat, mint p&eacute;ld&aacute;ul az eszk&ouml;z Internet&nbsp;</span><span data-contrast="auto">Protocol</span><span data-contrast="auto">&nbsp;(IP) c&iacute;me, eszk&ouml;z neve, oper&aacute;ci&oacute;s rendszer verzi&oacute;ja, az alkalmaz&aacute;s konfigur&aacute;ci&oacute;ja a szolg&aacute;ltat&aacute;s ig&eacute;nybev&eacute;telekor, a szolg&aacute;ltat&aacute;s haszn&aacute;lat&aacute;nak d&aacute;tuma, valamint egy&eacute;b statisztik&aacute;k.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">**S&uuml;tik**&nbsp;</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">A s&uuml;tik kev&eacute;s adatot tartalmaz&oacute; f&aacute;jlok, amelyek &aacute;ltal&aacute;ban n&eacute;vtelen egyedi azonos&iacute;t&oacute;k&eacute;nt haszn&aacute;land&oacute;k. Ezek az adatok a b&ouml;ng&eacute;szőnek lettek k&uuml;ldve az &Ouml;n &aacute;ltal megl&aacute;togatott webhelyek &aacute;ltal &eacute;s az eszk&ouml;z&eacute;nek belső mem&oacute;ri&aacute;j&aacute;ban lettek elt&aacute;rolva.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335551550&quot;:1,&quot;335551620&quot;:1,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Az applik&aacute;ci&oacute; k&ouml;zvetlen&uuml;l nem haszn&aacute;lja ezeket az adatokat. Hab&aacute;r, a haszn&aacute;lt harmadik f&eacute;l &aacute;ltali k&oacute;d &eacute;s k&ouml;nyvt&aacute;rak haszn&aacute;lhatnak s&uuml;tiket az inform&aacute;ci&oacute; gyűjt&eacute;s&eacute;hez, amelyeket a saj&aacute;t szolg&aacute;ltat&aacute;suk fejleszt&eacute;s&eacute;hez haszn&aacute;lnak. &Ouml;nnek lehetős&eacute;ge van elfogadni vagy visszautas&iacute;tani&nbsp;</span><span data-contrast="auto">ezket</span><span data-contrast="auto">&nbsp;a s&uuml;tiket &eacute;s &eacute;rtes&uuml;lni amikor ezek elk&uuml;ld&eacute;sre ker&uuml;lnek az &Ouml;n eszk&ouml;z&eacute;re. A s&uuml;tik elutas&iacute;t&aacute;sa azt eredm&eacute;nyezheti, hogy a szolg&aacute;ltat&aacute;s egyes r&eacute;szei nem haszn&aacute;lhatja.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335551550&quot;:1,&quot;335551620&quot;:1,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335551550&quot;:1,&quot;335551620&quot;:1,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">** Szolg&aacute;ltat&oacute;k**</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">K&uuml;lső t&aacute;rsas&aacute;gokat &eacute;s mag&aacute;nszem&eacute;lyeket alkalmazhatunk a k&ouml;vetkező okok miatt:&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+    ]]>
+    </string>
+    <string name="privacy_policy_text_2">
+    <![CDATA[
+        <p><span data-contrast="auto">*&nbsp;&nbsp; Szolg&aacute;ltat&aacute;sunk megk&ouml;nny&iacute;t&eacute;se &eacute;rdek&eacute;ben;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">*&nbsp;&nbsp; A nev&uuml;nkben a szolg&aacute;ltat&aacute;s ny&uacute;jt&aacute;sa;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">*&nbsp;&nbsp; Szolg&aacute;ltat&aacute;ssal kapcsolatos szolg&aacute;ltat&aacute;sok elv&eacute;gz&eacute;se;&nbsp;</span><span data-contrast="auto">vagy</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">*&nbsp;&nbsp; Hogy seg&iacute;tsen nek&uuml;nk a szolg&aacute;ltat&aacute;sunk felhaszn&aacute;l&aacute;s&aacute;nak elemz&eacute;s&eacute;ben.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Szeretn&eacute;nk t&aacute;j&eacute;koztatni ezen szolg&aacute;ltat&aacute;sok felhaszn&aacute;l&oacute;it, hogy ezeknek a&nbsp;</span><span data-contrast="auto">k&ouml;lső</span><span data-contrast="auto">&nbsp;szolg&aacute;ltat&oacute;knak hozz&aacute;f&eacute;r&eacute;se van az &Ouml;n szem&eacute;lyes adatihoz. Ennek oka az, hogy a nev&uuml;kben&nbsp;</span><span data-contrast="auto">elv&eacute;gzz&uuml;k</span><span data-contrast="auto">&nbsp;a r&aacute;juk ruh&aacute;zott feladatokat. K&ouml;telezt&uuml;k Őket azonban arra, hogy az inform&aacute;ci&oacute;kat ne hozz&aacute;k nyilv&aacute;noss&aacute;gra &eacute;s ne haszn&aacute;lj&aacute;k fel semmilyen m&aacute;s c&eacute;lra.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">** Biztons&aacute;g&nbsp;</span></strong><strong><span data-contrast="auto">**&nbsp;</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Nagyra &eacute;rt&eacute;kelj&uuml;k az &Ouml;n bizalm&aacute;t a szem&eacute;lyes adatainak megad&aacute;sa ir&aacute;nt, ez&eacute;rt igyeksz&uuml;nk kereskedelmi szempontb&oacute;l elfogadhat&oacute; eszk&ouml;z&ouml;ket haszn&aacute;lni annak v&eacute;delm&eacute;re. De ne feledje, hogy az interneten kereszt&uuml;li tov&aacute;bb&iacute;t&aacute;s vagy az elektronikus t&aacute;rol&aacute;s egyik m&oacute;dja sem 100% -ban biztons&aacute;gos &eacute;s megb&iacute;zhat&oacute;, &eacute;s abszol&uacute;t biztons&aacute;g&aacute;t nem garant&aacute;lhatjuk.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">**</span></strong><strong><span data-contrast="auto">Linkek</span></strong><strong><span data-contrast="auto">&nbsp;</span></strong><strong><span data-contrast="auto">más</span></strong><strong><span data-contrast="auto">&nbsp;</span></strong><strong><span data-contrast="auto">oldalakra</span></strong><strong><span data-contrast="auto">**</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">A szolg&aacute;ltat&aacute;s tartalmazhat linkeket m&aacute;s oldalakra. Ha r&aacute;kattint ezekre a linkekre, akkor &aacute;t lesz ir&aacute;ny&iacute;tva ezekre az oldalakra. K&eacute;rj&uuml;k vegye figyelembe, hogy ezek az oldalak nincsenek a mi ir&aacute;ny&iacute;t&aacute;sunk alatt. Ez&eacute;rt erősen aj&aacute;nljuk, hogy tekintse &aacute;t ezen oldalak adatkezel&eacute;si szab&aacute;lyzat&aacute;t. Nincs ir&aacute;ny&iacute;t&aacute;sunk ezen harmadik forr&aacute;sb&oacute;l&nbsp;</span><span data-contrast="auto">sz&aacute;ramaz&oacute;</span><span data-contrast="auto">&nbsp;oldalak felett &eacute;s nem v&aacute;llalunk felelőss&eacute;get a tartalom, az adatkezel&eacute;si szab&aacute;lyzat &eacute;s annak kezel&eacute;si gyakorlata felett.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">** A gyermekek adatv&eacute;delme&nbsp;</span></strong><strong><span data-contrast="auto">**&nbsp;</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Ezek a szolg&aacute;ltat&aacute;sok nem vonatkoznak 13 &eacute;v alatti szem&eacute;lyekre. 13 &eacute;ven aluli gyermekektől nem gyűjt&uuml;nk tudatosan szem&eacute;lyes adatokat. Abban az esetben, ha egy 13 &eacute;ven aluli&nbsp;</span><span data-contrast="auto">gyermeketől</span><span data-contrast="auto">&nbsp;sz&aacute;rmaz&oacute; adatot tal&aacute;lunk a szerveren, azonnal t&ouml;r&ouml;lj&uuml;k ezen inform&aacute;ci&oacute;kat.&nbsp; Ha &Ouml;n sz&uuml;lő vagy gondviselő, &eacute;s tiszt&aacute;ban van azzal, hogy gyermeke szem&eacute;lyes inform&aacute;ci&oacute;kat adott meg nek&uuml;nk, k&eacute;rj&uuml;k, vegye fel vel&uuml;nk a kapcsolatot, hogy meg tudjuk tenni a sz&uuml;ks&eacute;ges l&eacute;p&eacute;seket.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335551550&quot;:1,&quot;335551620&quot;:1,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">**V&aacute;ltoz&aacute;sok az adatv&eacute;delmi ir&aacute;nyelvekben**&nbsp;</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Időről időre friss&iacute;thetj&uuml;k adatv&eacute;delmi ir&aacute;nyelveinket. Ez&eacute;rt azt javasoljuk, hogy rendszeresen vizsg&aacute;lja fel&uuml;l ezt az oldalt a v&aacute;ltoz&aacute;sok eset&eacute;re. &eacute;rtes&iacute;tj&uuml;k &Ouml;nt minden v&aacute;ltoz&aacute;sr&oacute;l az &uacute;j Adatv&eacute;delmi ir&aacute;nyelvek ezen az oldalon t&ouml;rt&eacute;nő k&ouml;zz&eacute;t&eacute;tel&eacute;vel.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Ez a politika 2020.05.01-től hat&aacute;lyos</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">**Kapcsolat**</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Ha k&eacute;rd&eacute;se vagy javaslata van az adatkezel&eacute;si ir&aacute;nyelvekkel kapcsolatban, ne habozzon kapcsolatba l&eacute;pni vel&uuml;nk&nbsp;</span><a href="mailto:inspire.coding.apps@gmail.com"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">inspire.coding.apps@gmail.com</span></span></a><span data-contrast="auto">.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+    ]]>
+    </string>
+    <string name="terms_and_conditions_text_1">
+    <![CDATA[
+        <p><strong><span data-contrast="auto">** Felhaszn&aacute;l&aacute;si felt&eacute;telek&nbsp;</span></strong><strong><span data-contrast="auto">**&nbsp;</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Az applik&aacute;ci&oacute; let&ouml;lt&eacute;s&eacute;vel &eacute;s haszn&aacute;lat&aacute;val ezen felhaszn&aacute;l&aacute;si felt&eacute;telek automatikusan &eacute;rv Semmilyen m&oacute;don nem m&aacute;solhatja vagy m&oacute;dos&iacute;thatja az alkalmaz&aacute;st, az alkalmaz&aacute;s b&aacute;rmely r&eacute;sz&eacute;t vagy a v&eacute;djegyeinket. Nem szabad megk&iacute;s&eacute;relnie az alkalmaz&aacute;s forr&aacute;sk&oacute;dj&aacute;nak kinyer&eacute;s&eacute;t, &eacute;s nem szabad megpr&oacute;b&aacute;lnia az alkalmaz&aacute;st m&aacute;s nyelvekre leford&iacute;tani, vagy sz&aacute;rmaz&eacute;kos verzi&oacute;kat k&eacute;sz&iacute;teni. Maga az alkalmaz&aacute;s, valamint az ahhoz kapcsol&oacute;d&oacute; &ouml;sszes v&eacute;djegy, szerzői jog, adatb&aacute;zis-jog &eacute;s egy&eacute;b szellemi tulajdonjog tov&aacute;bbra is az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;tulajdon&aacute;ban van.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;elk&ouml;telezett amellett, hogy az alkalmaz&aacute;s a lehető leghasznosabb &eacute;s hat&eacute;konyabb legyen. Ez&eacute;rt fenntartjuk a jogot, hogy b&aacute;rmikor &eacute;s b&aacute;rmilyen okb&oacute;l v&aacute;ltoztasson az alkalmaz&aacute;sban, vagy sz&aacute;moljon fel annak szolg&aacute;ltat&aacute;sai&eacute;rt. Soha nem sz&aacute;molunk fel d&iacute;jat az alkalmaz&aacute;s&eacute;rt vagy annak szolg&aacute;ltat&aacute;s&aacute;&eacute;rt, an&eacute;lk&uuml;l, hogy vil&aacute;goss&aacute; tenn&eacute;nk &Ouml;nnek, hogy pontosan mit fizet.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">A&nbsp;</span><span data-contrast="auto">SuperShopper</span><span data-contrast="auto">&nbsp;alkalmaz&aacute;s t&aacute;rolja &eacute;s feldolgozza a szem&eacute;lyes adatait, amelyeket &Ouml;n megadott nek&uuml;nk a szolg&aacute;ltat&aacute;sunk ny&uacute;jt&aacute;sa &eacute;rdek&eacute;ben. Az &Ouml;n felelőss&eacute;ge a telefon &eacute;s az alkalmaz&aacute;shoz val&oacute; hozz&aacute;f&eacute;r&eacute;s biztons&aacute;gos maradjon. Ez&eacute;rt azt javasoljuk, hogy ne&nbsp;</span><span data-contrast="auto">rootolja</span><span data-contrast="auto">&nbsp;a telefont, mivel ezzel elt&aacute;vol&iacute;tja a szoftver korl&aacute;toz&aacute;sait, amelyeket a k&eacute;sz&uuml;l&eacute;k hivatalos oper&aacute;ci&oacute;s rendszere vezet be. Ez a telefont &eacute;rz&eacute;kenny&eacute; teheti a rosszindulat&uacute; programok / v&iacute;rusok szemben, vesz&eacute;lyeztetheti a telefon biztons&aacute;gi funkci&oacute;it, mely azt jelentheti, hogy a&nbsp;</span><span data-contrast="auto">SuperShopper</span><span data-contrast="auto">&nbsp;alkalmaz&aacute;s nem műk&ouml;dik megfelelően vagy egy&aacute;ltal&aacute;n&nbsp;</span><span data-contrast="auto">nem.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Az alkalmaz&aacute;s tartalmaz harmadik f&eacute;ltől sz&aacute;rmaz&oacute; szolg&aacute;ltat&aacute;sokat, amelyek szab&aacute;lyzata&nbsp;</span><span data-contrast="auto">elt&eacute;rehet</span><span data-contrast="auto">&nbsp;az itt foglaltakt&oacute;l.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Linkek az alkalmaz&aacute;s &aacute;ltal haszn&aacute;lt harmadik felek szolg&aacute;ltat&oacute;inak &Aacute;ltal&aacute;nos Szerződ&eacute;si Felt&eacute;teleihez</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><a href="https://www.google.com/policies/privacy/"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">Google Play Services</span></span></a><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><a href="https://firebase.google.com/policies/analytics"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">Google Analytics for Firebase</span></span></a><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><a href="https://firebase.google.com/support/privacy/"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">Firebase Crashlytics</span></span></a><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><a href="https://www.facebook.com/about/privacy/update/printable"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">Facebook</span></span></a><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559685&quot;:708,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Tudnia kell, hogy vannak bizonyos dolgok, amelyek&eacute;rt az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;nem v&aacute;llal felelőss&eacute;get. Az alkalmaz&aacute;s egyes funkci&oacute;i megk&ouml;vetelik, hogy az alkalmaz&aacute;s akt&iacute;v internet-kapcsolattal rendelkezzen. A kapcsolat lehet&nbsp;</span><span data-contrast="auto">Wi</span><span data-contrast="auto">-Fi, vagy a mobilh&aacute;l&oacute;zat-szolg&aacute;ltat&oacute; biztos&iacute;tja, de az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;nem v&aacute;llalja a felelőss&eacute;get az&eacute;rt, hogy az alkalmaz&aacute;s nem műk&ouml;dik megfelelően, ha nincs hozz&aacute;f&eacute;r&eacute;se a&nbsp;</span><span data-contrast="auto">Wi</span><span data-contrast="auto">-Fi-</span><span data-contrast="auto">hez</span><span data-contrast="auto">.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+    ]]>
+    </string>
+    <string name="terms_and_conditions_text_2">
+    <![CDATA[
+        <p><span data-contrast="auto">Ha az alkalmaz&aacute;st&nbsp;</span><span data-contrast="auto">Wi</span><span data-contrast="auto">-Fi h&aacute;l&oacute;zaton k&iacute;v&uuml;l haszn&aacute;lja, ne feledje, hogy a mobilh&aacute;l&oacute;zat-szolg&aacute;ltat&oacute;val k&ouml;t&ouml;tt szerződ&eacute;s felt&eacute;telei tov&aacute;bbra is &eacute;rv&eacute;nyesek lesznek. Ennek eredm&eacute;nyek&eacute;nt a mobilszolg&aacute;ltat&oacute; d&iacute;jat sz&aacute;m&iacute;that fel &Ouml;nnek az adatk&ouml;lts&eacute;gek&eacute;rt a kapcsolat időtartam&aacute;ig az alkalmaz&aacute;s el&eacute;r&eacute;se k&ouml;zben, vagy egy&eacute;b harmadik f&eacute;l d&iacute;jait. Az alkalmaz&aacute;s haszn&aacute;latakor v&aacute;llalja a felelőss&eacute;get az ilyen d&iacute;jak&eacute;rt, ide&eacute;rtve a&nbsp;</span><span data-contrast="none">roaming&nbsp;</span><span data-contrast="auto">adatd&iacute;jakat is, ha az alkalmaz&aacute;st a haz&aacute;j&aacute;ban (azaz a r&eacute;gi&oacute;n vagy orsz&aacute;gon k&iacute;v&uuml;l) haszn&aacute;lja, an&eacute;lk&uuml;l, hogy az adatroamingot kikapcsoln&aacute;. Ha az eszk&ouml;z nem az &Ouml;n tulajdon&aacute;ban van, amelyen az alkalmaz&aacute;st haszn&aacute;lja, nem sz&aacute;mlafizetője, k&eacute;rj&uuml;k, vegye figyelembe, hogy felt&eacute;telezz&uuml;k, hogy enged&eacute;lyt kapott a sz&aacute;mlafizetőtől az alkalmaz&aacute;s haszn&aacute;lat&aacute;hoz.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Ugyanezen vonal ment&eacute;n az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;nem v&aacute;llalja a felelőss&eacute;get az alkalmaz&aacute;s haszn&aacute;lat&aacute;&eacute;rt, azaz meg kell győződnie arr&oacute;l, hogy k&eacute;sz&uuml;l&eacute;ke felt&ouml;lt&ouml;tt &aacute;llapotban van - ha az akkumul&aacute;tor lemer&uuml;l, &eacute;s nem tudja bekapcsolni a szolg&aacute;ltat&aacute;s ig&eacute;nybev&eacute;tel&eacute;hez, az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;nem v&aacute;llal felelőss&eacute;get.&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Tekintettel az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;felelőss&eacute;g&eacute;re az alkalmaz&aacute;s haszn&aacute;lat&aacute;&eacute;rt, az alkalmaz&aacute;s haszn&aacute;latakor fontos szem előtt tartani, hogy t&ouml;reksz&uuml;nk annak mindenkori friss&iacute;t&eacute;s&eacute;re &eacute;s helyess&eacute;g&eacute;re, t&aacute;maszkodunk harmadik felektől sz&aacute;rmaz&oacute; inform&aacute;ci&oacute;kra, hogy el&eacute;rhetőv&eacute; tegy&uuml;k az &Ouml;n sz&aacute;m&aacute;ra. Az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;nem v&aacute;llal semmif&eacute;le felelőss&eacute;get semmilyen k&ouml;zvetlen vagy k&ouml;zvetett vesztes&eacute;g&eacute;rt, amelyet teljes m&eacute;rt&eacute;kben az alkalmaz&aacute;s ezen funkci&oacute;j&aacute;nak haszn&aacute;latakor tapasztal.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Időnk&eacute;nt &eacute;rdemes friss&iacute;teni az alkalmaz&aacute;st. Az alkalmaz&aacute;s jelenleg el&eacute;rhető Android rendszerre (&eacute;s minden tov&aacute;bbi rendszerre vonatkoz&oacute; k&ouml;vetelm&eacute;nyek, amelyek &uacute;gy d&ouml;nt&uuml;nk, hogy kiterjesztj&uuml;k az alkalmaz&aacute;st) megv&aacute;ltozhatnak, &eacute;s ha tov&aacute;bbra is az alkalmaz&aacute;st szeretn&eacute; haszn&aacute;lni, le&nbsp;kell t&ouml;ltenie a friss&iacute;t&eacute;seket. Az&nbsp;</span><span data-contrast="auto">Inspire</span><span data-contrast="auto">&nbsp;</span><span data-contrast="auto">Coding</span><span data-contrast="auto">&nbsp;nem &iacute;g&eacute;ri, hogy mindig friss&iacute;ti az alkalmaz&aacute;st &uacute;gy, hogy az relev&aacute;ns az &Ouml;n sz&aacute;m&aacute;ra &eacute;s / vagy&nbsp;</span><span data-contrast="auto">műk&ouml;dj&ouml;n</span><span data-contrast="auto">&nbsp;az eszk&ouml;z&eacute;re telep&iacute;tett Android verzi&oacute;val. Ugyanakkor, hogy mindig elfogadja az alkalmaz&aacute;s friss&iacute;t&eacute;seit, amikor azt &Ouml;n sz&aacute;m&aacute;ra felk&iacute;n&aacute;lja. Előfordulhat, hogy abbahagyjuk az alkalmaz&aacute;s futtat&aacute;si lehetős&eacute;g&eacute;t, &eacute;s b&aacute;rmikor felmondhatjuk annak haszn&aacute;lat&aacute;t an&eacute;lk&uuml;l, hogy &eacute;rtes&iacute;ten&eacute;nk a felmond&aacute;st. Hacsak nem mondjuk m&aacute;sk&eacute;pp, b&aacute;rmilyen megszűn&eacute;s eset&eacute;n (a) az &Ouml;n &aacute;ltal e felt&eacute;telekkel megadott jogok &eacute;s enged&eacute;lyek v&eacute;get &eacute;rnek; (b) abba kell hagynia az alkalmaz&aacute;s haszn&aacute;lat&aacute;t, &eacute;s (ha sz&uuml;ks&eacute;ges) t&ouml;r&ouml;lnie kell az eszk&ouml;z&eacute;ről.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">**&nbsp;V&aacute;ltoz&aacute;sok a Felhaszn&aacute;l&aacute;si felt&eacute;telekben **</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Időről időre friss&iacute;thetj&uuml;k az &Aacute;ltal&aacute;nos Szerződ&eacute;si Felt&eacute;teleket. Ez&eacute;rt azt javasoljuk, hogy rendszeresen vizsg&aacute;lja fel&uuml;l ezt az oldalt a v&aacute;ltoz&aacute;sok miatt. A v&aacute;ltoz&aacute;sokr&oacute;l az &uacute;j &Aacute;ltal&aacute;nos Szerződ&eacute;si Felt&eacute;telek ezen az oldalon t&ouml;rt&eacute;nő k&ouml;zz&eacute;t&eacute;tel&eacute;vel &eacute;rtes&iacute;tj&uuml;k &Ouml;nt.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Ez a felhaszn&aacute;l&aacute;si felt&eacute;tel 2020-05-01-től &eacute;rv&eacute;nyes.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">&nbsp;</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><strong><span data-contrast="auto">**Kapcsolat**</span></strong><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+        <p><span data-contrast="auto">Ha b&aacute;rmi k&eacute;rd&eacute;se vagy javaslata van, ne habozzon &eacute;s vegye fel vel&uuml;nk a kapcsolatot.&nbsp;</span><a href="mailto:inspire.coding.apps@gmail.com"><span data-contrast="none"><span data-ccp-charstyle="Hyperlink">inspire.coding.apps@gmail.com</span></span></a><span data-contrast="auto">.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>
+    ]]>
+    </string>
 </resources>

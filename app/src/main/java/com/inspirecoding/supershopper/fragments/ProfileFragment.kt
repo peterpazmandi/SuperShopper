@@ -97,7 +97,6 @@ class ProfileFragment : Fragment()
                 firebaseViewModel.getAllFriendsAsFriend(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
                     for(friend in _listOfFriends)
                     {
-                        Log.d(TAG, "getAllFriendsAsFriend $friend")
                         firebaseViewModel.updateFriendName(friend.id, currentUser.name)
                     }
                 }
@@ -182,7 +181,6 @@ class ProfileFragment : Fragment()
             {
                 isImageCropperRunning = false
                 currentUser.profilePicture = (result.uri.path as String)
-                Log.d(TAG, "${currentUser.profilePicture}")
                 firebaseViewModel.updateProfilePictureOfUserInFirestore(currentUser)
             }
         }

@@ -110,64 +110,7 @@ class MainFragment : Fragment()
             navigateToFriends(_view)
         }
 
-        firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) { user ->
-            firebaseViewModel.getCurrentUserShoppingListsRealTime(user).observe(viewLifecycleOwner) { mapOfShoppingLists ->
-                Log.i(TAG, "${mapOfShoppingLists.size}")
-                for(key in mapOfShoppingLists.keys)
-                {
-                    when(key.type)
-                    {
-                        DocumentChange.Type.ADDED -> {
-                            val shoppingList = mapOfShoppingLists.get(key)
-                            shoppingList?.let { _shoppingList ->
-                                firebaseViewModel.viewModelScope.launch {
-                                    /** Some delay to show for the user the cart loading animation longer **/
-                                    delay(1_000)
-
-                                    /** Order the shopping lists in date **/
-                                    val intoPosition = sortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(_shoppingList, shoppingListAdapter.getAllShoppingList())
-                                    mainFragmentViewModel.addShoppingList(intoPosition, _shoppingList)
-                                    val filteredList = filterShoppingListViewModel.runFilter(mainFragmentViewModel.fullListOfShoppingLists)
-                                    Log.i(TAG, "$filteredList")
-                                    refreshFilterBadge()
-
-                                    /** Add to the full shopping lists **/
-                                    shoppingListAdapter.addAllShoppingListItem(filteredList)
-
-                                    /** Stop cart loading animation **/
-                                    stopCartLoadingAnimation()
-
-                                    /** Show/Hide empty cart screen based on the number of shopping lists **/
-                                    showHideEmptyCart(shoppingListAdapter.itemCount)
-                                }
-                            }
-                        }
-
-                        DocumentChange.Type.MODIFIED -> {
-                            val shoppingList = mapOfShoppingLists.get(key)
-                            shoppingList?.let { _shoppingList ->
-                                val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
-                                if(position != -1)
-                                {
-                                    shoppingListAdapter.updateShoppingListItem(position, _shoppingList)
-                                }
-                            }
-                        }
-
-                        DocumentChange.Type.REMOVED -> {
-                            val shoppingList = mapOfShoppingLists.get(key)
-                            shoppingList?.let { _shoppingList ->
-                                val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
-                                if(position != -1)
-                                {
-                                    shoppingListAdapter.removeShoppingListItem(position)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        getShoppingListsRealTime()
 
         binding.rvShoppingLists.addOnScrollListener(object: RecyclerView.OnScrollListener()
         {
@@ -196,6 +139,87 @@ class MainFragment : Fragment()
                 refreshFilterBadge()
             }
         })
+    }
+
+    override fun onResume()
+    {
+        super.onResume()
+
+        getShoppingListsRealTime()
+    }
+
+    private fun getShoppingListsRealTime()
+    {
+        firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) { user ->
+            firebaseViewModel.getCurrentUserShoppingListsRealTime(user).observe(viewLifecycleOwner) { mapOfShoppingLists ->
+                Log.i(TAG, "${mapOfShoppingLists.size}")
+                /** In case, if there aren't any shopping lists **/
+                if(mapOfShoppingLists.size == 0)
+                {
+                    /** Stop cart loading animation **/
+                    stopCartLoadingAnimation()
+
+                    /** Show/Hide empty cart screen based on the number of shopping lists **/
+                    showHideEmptyCart(shoppingListAdapter.itemCount)
+                }
+                /** If there are at least one created shopping list **/
+                for(key in mapOfShoppingLists.keys)
+                {
+                    when(key.type)
+                    {
+                        DocumentChange.Type.ADDED -> {
+                            val shoppingList = mapOfShoppingLists[key]
+                            shoppingList?.let { _shoppingList ->
+                                firebaseViewModel.viewModelScope.launch {
+                                    /** Some delay to show for the user the cart loading animation longer **/
+                                    delay(1_000)
+
+                                    /** Order the shopping lists in date **/
+                                    val intoPosition = sortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(_shoppingList, shoppingListAdapter.getAllShoppingList())
+                                    mainFragmentViewModel.addShoppingList(intoPosition, _shoppingList)
+                                    val filteredList = filterShoppingListViewModel.runFilter(mainFragmentViewModel.fullListOfShoppingLists)
+                                    Log.i(TAG, "ADDED: $filteredList")
+                                    refreshFilterBadge()
+
+                                    /** Add to the full shopping lists **/
+                                    shoppingListAdapter.addAllShoppingListItem(filteredList)
+
+                                    /** Stop cart loading animation **/
+                                    stopCartLoadingAnimation()
+
+                                    /** Show/Hide empty cart screen based on the number of shopping lists **/
+                                    showHideEmptyCart(shoppingListAdapter.itemCount)
+                                }
+                            }
+                        }
+
+                        DocumentChange.Type.MODIFIED -> {
+                            val shoppingList = mapOfShoppingLists[key]
+                            Log.i(TAG, "MODIFIED: $shoppingList")
+                            shoppingList?.let { _shoppingList ->
+                                val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
+                                Log.i(TAG, "MODIFIED: $_shoppingList")
+                                if (position != -1)
+                                {
+                                    shoppingListAdapter.updateShoppingListItem(position, _shoppingList)
+                                }
+                            }
+                        }
+
+                        DocumentChange.Type.REMOVED -> {
+                            val shoppingList = mapOfShoppingLists[key]
+                            shoppingList?.let { _shoppingList ->
+                                val position = shoppingListAdapter.getPositionOfShoppingListItem(_shoppingList)
+                                if(position != -1)
+                                {
+                                    shoppingListAdapter.removeShoppingListItem(position)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
