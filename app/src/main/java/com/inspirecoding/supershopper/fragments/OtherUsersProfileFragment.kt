@@ -209,8 +209,8 @@ class OtherUsersProfileFragment : Fragment()
             Picasso
                 .get()
                 .load(user.profilePicture)
-                .placeholder(R.drawable.ic_person)
-                .error(R.drawable.ic_person)
+                .placeholder(R.drawable.profilepicture_blank)
+                .error(R.drawable.profilepicture_blank)
                 .into(binding.civProfilePicture)
         }
     }

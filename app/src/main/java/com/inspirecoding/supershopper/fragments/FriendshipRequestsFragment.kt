@@ -2,7 +2,6 @@ package com.inspirecoding.supershopper.fragments
 
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -59,13 +58,13 @@ class FriendshipRequestsFragment : Fragment()
             {
                 startPeopleLoadingAnimation()
                 /** Hide empty cart screen and RecyclerView while loading **/
-                showHideEmptyPeople(null)
+                showHideEmptyPeopleScreen(null)
             }
             else
             {
                 stopPeopleLoadingAnimation()
                 /** Hide empty cart screen and RecyclerView while loading **/
-                showHideEmptyPeople(receivedFriendRequestsAdapter.itemCount)
+                showHideEmptyPeopleScreen(receivedFriendRequestsAdapter.itemCount)
             }
         }
 
@@ -73,7 +72,7 @@ class FriendshipRequestsFragment : Fragment()
             currentUser = _currentUser
             firebaseViewModel.getReceiverFriendRequest(currentUser.id).observe(viewLifecycleOwner) { _listOfFriendRequests ->
                 receivedFriendRequestsAdapter.addRequests(_listOfFriendRequests)
-                showHideEmptyPeople(receivedFriendRequestsAdapter.itemCount)
+                showHideEmptyPeopleScreen(receivedFriendRequestsAdapter.itemCount)
             }
         }
 
@@ -113,7 +112,7 @@ class FriendshipRequestsFragment : Fragment()
         binding.ivPeopleLoading.visibility = View.GONE
         peopleLoadingAnimation.stop()
     }
-    private fun showHideEmptyPeople(shoppingListsCount: Int?)
+    private fun showHideEmptyPeopleScreen(shoppingListsCount: Int?)
     {
         if(shoppingListsCount != null)
         {

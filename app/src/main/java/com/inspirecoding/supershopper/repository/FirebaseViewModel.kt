@@ -746,7 +746,6 @@ class FirebaseViewModel(val authRepository: AuthRepository, val firestoreReposit
             when (val result = firestoreRepository.getListOfFriendsAsOwner(friendshipOwnerId))
             {
                 is Result.Success -> {
-                    setToastMessage(MyApp.applicationContext().getString(R.string.friend_deleted))
                     for(friend in result.data)
                     {
                         val user = getUserFromFirestore(friend.friendId)

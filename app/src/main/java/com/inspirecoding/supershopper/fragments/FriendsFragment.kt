@@ -1,9 +1,7 @@
 package com.inspirecoding.supershopper.fragments
 
-import android.content.Context
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +26,6 @@ class FriendsFragment : Fragment()
     private lateinit var friendsListAdapter: FriendsListAdapter
 
     private var currentUser = User()
-    private var loadedFriends = 0
 
     private val _layoutManager = LinearLayoutManager(context)
 
@@ -63,36 +60,31 @@ class FriendsFragment : Fragment()
             {
                 startPeopleLoadingAnimation()
                 /** Hide empty cart screen and RecyclerView while loading **/
-                showHideEmptyPeople(null)
+                showHideEmptyPeopleScreen(null)
             }
             else
             {
                 stopPeopleLoadingAnimation()
                 /** Hide empty cart screen and RecyclerView while loading **/
-                showHideEmptyPeople(friendsListAdapter.itemCount)
+                showHideEmptyPeopleScreen(friendsListAdapter.itemCount)
             }
         }
 
         firebaseViewModel.currentUserLD.observe(viewLifecycleOwner) { _currentUser ->
             currentUser = _currentUser
             firebaseViewModel.getListOfFriendsAsOwner(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
-                loadedFriends += _listOfFriends.size
                 friendsListAdapter.addFriends(_listOfFriends)
-                showHideEmptyPeople(friendsListAdapter.itemCount)
+                showHideEmptyPeopleScreen(friendsListAdapter.itemCount)
             }
         }
 
         binding.rvListOfFriends.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int)
             {
-                if(loadedFriends != currentUser.numberOfFriends)
+                if(!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
                 {
-                    if(!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE)
-                    {
-                        firebaseViewModel.getListOfFriendsAsOwner(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
-                            loadedFriends += _listOfFriends.size
-                            friendsListAdapter.addFriends(_listOfFriends)
-                        }
+                    firebaseViewModel.getListOfFriendsAsOwner(currentUser.id).observe(viewLifecycleOwner) { _listOfFriends ->
+                        friendsListAdapter.addFriends(_listOfFriends)
                     }
                 }
             }
@@ -120,7 +112,7 @@ class FriendsFragment : Fragment()
         binding.ivPeopleLoading.visibility = View.GONE
         peopleLoadingAnimation.stop()
     }
-    private fun showHideEmptyPeople(shoppingListsCount: Int?)
+    private fun showHideEmptyPeopleScreen(shoppingListsCount: Int?)
     {
         if(shoppingListsCount != null)
         {
