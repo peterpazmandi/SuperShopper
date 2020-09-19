@@ -17,6 +17,7 @@ import com.inspirecoding.supershopper.R
 import com.inspirecoding.supershopper.databinding.FragmentAddNewItemDialogBinding
 import com.inspirecoding.supershopper.enums.Prioirities
 import com.inspirecoding.supershopper.model.ListItem
+import com.inspirecoding.supershopper.utilities.toStringWithDecimal
 import com.inspirecoding.supershopper.viewmodels.CreateNewListFragmentViewModel
 import java.util.*
 
@@ -62,16 +63,7 @@ class AddNewItemDialog : BottomSheetDialogFragment()
                 binding.tvAddNewItemUnitError.visibility = View.INVISIBLE
             }
         }
-        binding.chgCreateNewItemPriority.setOnCheckedChangeListener { chipGroup, i ->
-            if(binding.chgCreateNewItemPriority.checkedChipId == -1)
-            {
-                binding.tvAddNewItemPriorityError.visibility = View.VISIBLE
-            }
-            else
-            {
-                binding.tvAddNewItemPriorityError.visibility = View.INVISIBLE
-            }
-        }
+
         binding.etCreateNewItemThirdItemQuantity.addTextChangedListener {
             binding.tilCreateNewItemThirdItemQuantity.error = null
         }
@@ -81,8 +73,7 @@ class AddNewItemDialog : BottomSheetDialogFragment()
             {
                 if(validateName() &&
                     validateSelectedUnit() != "" &&
-                    validateQuantity() &&
-                    validateSelectedPriority() != Prioirities.EMPTY)
+                    validateQuantity())
                 {
                     val _listItem = createListItemObject()
                     Log.d(TAG, "$_listItem")
@@ -191,7 +182,7 @@ class AddNewItemDialog : BottomSheetDialogFragment()
             UUID.randomUUID().toString(),
             binding.etCreateNewItemFirstItemName.text.toString(),
             validateSelectedUnit(),
-            binding.etCreateNewItemThirdItemQuantity.text.toString().toInt(),
+            binding.etCreateNewItemThirdItemQuantity.text.toString().toFloat(),
             validateSelectedPriority()
         )
     }
@@ -223,7 +214,7 @@ class AddNewItemDialog : BottomSheetDialogFragment()
                 binding.chgCreateNewItemUnit.check(R.id.chip_createNewItem_pc)
             }
         }
-        binding.etCreateNewItemThirdItemQuantity.setText(listItem.qunatity.toString())
+        binding.etCreateNewItemThirdItemQuantity.setText(listItem.qunatity.toStringWithDecimal())
         when(listItem.priority)
         {
             Prioirities.LOW -> binding.chgCreateNewItemPriority.check(R.id.chip_createNewItem_low)

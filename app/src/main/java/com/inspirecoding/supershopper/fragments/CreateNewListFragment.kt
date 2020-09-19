@@ -53,7 +53,6 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
     private val firebaseViewModel: FirebaseViewModel by inject()
     private lateinit var userAutoCompleteAdapter: UserAutoCompleteAdapter
     private val createNewListFragmentViewModel: CreateNewListFragmentViewModel by navGraphViewModels(R.id.navigation_graph)
-    private val sortShoppingListViewModel by navGraphViewModels<SortShoppingListViewModel>(R.id.navigation_graph)
     private val mainFragmentViewModel by navGraphViewModels<MainFragmentViewModel>(R.id.navigation_graph)
 
     private lateinit var listItemAdapter: ListItemAdapter
@@ -172,6 +171,9 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             binding.pbCreateNewListThirdItemSearchFriends.visibility = View.GONE
         }
 
+        /**
+         * List of the items
+         **/
         createNewListFragmentViewModel.itemsListActionLD.observe(viewLifecycleOwner) { result ->
             result?.let { _result ->
                 val (crud, position, listItem) = _result
@@ -213,12 +215,6 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
                         /** Insert into the cloud shopping lists **/
                         firebaseViewModel.insertShoppingList(newShoppingList, this)
 
-                        /** Insert into the local temporary shopping lists **/
-                        val intoPosition = sortShoppingListViewModel.getPositionsForShoppingListOrderingByDueDate(
-                            newShoppingList,
-                            mainFragmentViewModel.fullListOfShoppingLists)
-                        mainFragmentViewModel.addShoppingList(intoPosition, newShoppingList)
-
                         findNavController().navigate(R.id.action_createNewListFragment_to_mainFragment)
                     }
                     else
@@ -246,7 +242,7 @@ class CreateNewListFragment : Fragment(), DatePickerDialog.OnDateSetListener
             }
         }
 
-        friendsListChipAdapter.setOnItemClickListener(object: FriendsListChipAdapter.OnItemClickListener{
+        friendsListChipAdapter.setOnItemClickListener(object: FriendsListChipAdapter.OnItemClickListener {
             override fun onDeleteClick(position: Int)
             {
                 createNewListFragmentViewModel.listOfFriendsIds.removeAt(position)

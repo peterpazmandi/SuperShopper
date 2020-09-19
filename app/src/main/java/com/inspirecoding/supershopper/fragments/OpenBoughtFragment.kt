@@ -137,7 +137,9 @@ class OpenBoughtFragment : Fragment()
             mainFragmentViewModel.fullListOfShoppingLists[positionToUpdate] = shoppingListFragmentViewModel.openedShoppingList
         }
     }
+
     private fun getIndexOfItem(listItem: ListItem, listOfItems: MutableList<ListItem>) = listOfItems.indexOfFirst { it.id == listItem.id }
+
     private fun setShoppingListStatus(listOfItems: MutableList<ListItem>): ShoppingListStatus
     {
         return when(listOfItems.filter { !it.isBought }.count())

@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.inspirecoding.supershopper.R
@@ -13,7 +12,7 @@ import com.inspirecoding.supershopper.databinding.ItemOfShoppinglistOpenBoughtBi
 import com.inspirecoding.supershopper.enums.Prioirities
 import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.model.ListItem
-import com.inspirecoding.supershopper.model.ShoppingList
+import com.inspirecoding.supershopper.utilities.toStringWithDecimal
 
 private val TAG = "OpenBoughtItemsAdapter"
 class OpenBoughtItemsAdapter(val context: Context): RecyclerView.Adapter<OpenBoughtItemsAdapter.OpenBoughItemsViewHolder>()
@@ -100,15 +99,10 @@ class OpenBoughtItemsAdapter(val context: Context): RecyclerView.Adapter<OpenBou
         fun bindItem(listItem: ListItem)
         {
             binding.tvItem.text = listItem.item
-            binding.tvQuantity.text = listItem.qunatity.toString()
+            binding.tvQuantity.text = listItem.qunatity.toStringWithDecimal()
             binding.tvUnit.text = listItem.unit
 
-            when (listItem.priority)
-            {
-                Prioirities.LOW -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_green)
-                Prioirities.MEDIUM -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_orange)
-                Prioirities.HIGH -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_red)
-            }
+            setPriority(listItem.priority)
 
             when(shoppingListStatus)
             {
@@ -123,6 +117,25 @@ class OpenBoughtItemsAdapter(val context: Context): RecyclerView.Adapter<OpenBou
         {
             Log.d(TAG, "${binding.cbItemIsBought.isChecked}, $adapterPosition, ${View.generateViewId()}")
             onItemClickListener?.onItemSelected(listOfItems[adapterPosition], binding.cbItemIsBought.isChecked)
+        }
+        private fun setPriority(prioirities: Prioirities)
+        {
+            when (prioirities)
+            {
+                Prioirities.LOW -> {
+                    binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_green)
+                    binding.viewPriority.visibility = View.VISIBLE
+                }
+                Prioirities.MEDIUM -> {
+                    binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_orange)
+                    binding.viewPriority.visibility = View.VISIBLE
+                }
+                Prioirities.HIGH -> {
+                    binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_red)
+                    binding.viewPriority.visibility = View.VISIBLE
+                }
+                Prioirities.EMPTY -> binding.viewPriority.visibility = View.INVISIBLE
+            }
         }
     }
 

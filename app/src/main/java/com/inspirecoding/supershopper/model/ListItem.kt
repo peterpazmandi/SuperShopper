@@ -9,7 +9,7 @@ data class ListItem (
     var id: String = "",
     var item: String = "",
     var unit: String = "",
-    var qunatity: Int = 0,
+    var qunatity: Float = 0f,
     var priority: Prioirities = Prioirities.LOW,
     var isBought: Boolean = false
 ) : Parcelable

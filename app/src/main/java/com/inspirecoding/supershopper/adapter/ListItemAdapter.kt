@@ -14,6 +14,7 @@ import com.inspirecoding.supershopper.enums.Prioirities
 import com.inspirecoding.supershopper.enums.ShoppingListStatus
 import com.inspirecoding.supershopper.fragments.CreateNewListFragmentDirections
 import com.inspirecoding.supershopper.model.ListItem
+import com.inspirecoding.supershopper.utilities.toStringWithDecimal
 
 private const val TAG = "ListItemAdapter"
 class ListItemAdapter(val context: Context): RecyclerView.Adapter<ListItemAdapter.ItemViewHolder>()
@@ -115,13 +116,27 @@ class ListItemAdapter(val context: Context): RecyclerView.Adapter<ListItemAdapte
         fun bindItem(listItem: ListItem)
         {
             binding.tvItem.text = listItem.item
-            binding.tvQuantity.text = listItem.qunatity.toString()
+            binding.tvQuantity.text = listItem.qunatity.toStringWithDecimal()
             binding.tvUnit.text = listItem.unit
-            when (listItem.priority)
+            setPriority(listItem.priority)
+        }
+        private fun setPriority(prioirities: Prioirities)
+        {
+            when (prioirities)
             {
-                Prioirities.LOW -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_green)
-                Prioirities.MEDIUM -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_orange)
-                Prioirities.HIGH -> binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_red)
+                Prioirities.LOW -> {
+                    binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_green)
+                    binding.viewPriority.visibility = View.VISIBLE
+                }
+                Prioirities.MEDIUM -> {
+                    binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_orange)
+                    binding.viewPriority.visibility = View.VISIBLE
+                }
+                Prioirities.HIGH -> {
+                    binding.viewPriority.setBackgroundResource(R.drawable.shape_roundedleftside_red)
+                    binding.viewPriority.visibility = View.VISIBLE
+                }
+                Prioirities.EMPTY -> binding.viewPriority.visibility = View.INVISIBLE
             }
         }
     }
